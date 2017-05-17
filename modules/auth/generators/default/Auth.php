@@ -45,6 +45,6 @@ class <?= StringHelper::basename($generator->authClass) ?> extends <?= '\\' . tr
             ],
         ];
 
-        return $old + $new;
+        return array_merge($old, $new);
     }
 }
