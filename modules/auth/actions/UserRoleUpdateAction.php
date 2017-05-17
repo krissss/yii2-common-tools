@@ -41,22 +41,20 @@ class UserRoleUpdateAction extends Action
 
     public function run()
     {
-        $id = Yii::$app->request->get('id');
+        $id = Yii::$app->request->get($this->queryParameter);
         if (!$id) {
-            throw new ForbiddenHttpException('need id parameter');
+            throw new ForbiddenHttpException('need ' . $this->queryParameter . ' parameter');
         }
         if ($this->permissionName) {
             AuthValidate::run($this->permissionName);
         }
         /** @var \kriss\modules\auth\components\User $user */
         $user = Yii::$app->user;
-        if ($id == $user->superAdminId || $id == $user->id){
+        if ($id == $user->superAdminId || $id == $user->id) {
             throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
         }
 
         $updateUserRole = new UpdateUserRole([
-            'userClass' => $this->userClass,
-            'userClassAuthRoleAttribute' => $this->userClassAuthRoleAttribute,
             'userId' => $id
         ]);
 
