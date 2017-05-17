@@ -37,6 +37,7 @@ class RoleController extends Controller
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
         AuthValidate::run($authClass::ROLE_VIEW);
+        /** @var \kriss\modules\auth\components\User $user */
 
         Url::remember();
 
@@ -105,7 +106,10 @@ class RoleController extends Controller
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
         AuthValidate::run($authClass::ROLE_UPDATE);
-        if ($id == static::SUPER_ADMIN_ID) throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+
+        if(!AuthRole::canLoginUserModify($id)){
+            throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+        }
 
         $model = $this->findModel($id);
 
@@ -134,7 +138,10 @@ class RoleController extends Controller
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
         AuthValidate::run($authClass::ROLE_DELETE);
-        if ($id == static::SUPER_ADMIN_ID) throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+
+        if(!AuthRole::canLoginUserModify($id)){
+            throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+        }
 
         $this->findModel($id)->delete();
         Yii::$app->session->setFlash('success', '删除成功');

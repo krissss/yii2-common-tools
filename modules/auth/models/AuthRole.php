@@ -2,6 +2,7 @@
 
 namespace kriss\modules\auth\models;
 
+use Yii;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -27,7 +28,8 @@ class AuthRole extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['name'], 'required'],
             [['name'], 'string', 'max' => 64],
@@ -39,7 +41,8 @@ class AuthRole extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => 'ID',
             'name' => '角色名称',
@@ -48,9 +51,33 @@ class AuthRole extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function findName($ids) {
+    public static function findName($ids)
+    {
         $models = AuthRole::find()->select('name')->where(['id' => $ids])->asArray()->all();
         $nameArr = ArrayHelper::getColumn($models, 'name');
         return implode(',', $nameArr);
+    }
+
+    /**
+     * check login user can modify auth_role
+     * super admin can not be modify
+     * and
+     * user self can not modify his self role
+     * @param $roleId
+     * @return bool
+     */
+    public static function canLoginUserModify($roleId)
+    {
+        /** @var \kriss\modules\auth\components\User $user */
+        $user = Yii::$app->user;
+        if ($roleId == $user->superAdminId) {
+            return false;
+        };
+        $userIdentity = $user->identity;
+        $authRole = $user->userAuthRoleAttribute;
+        if (strpos(";$userIdentity->$authRole;", ",$roleId,") !== false) {
+            return false;
+        }
+        return true;
     }
 }

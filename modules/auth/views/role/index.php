@@ -5,6 +5,7 @@
 
 use yii\helpers\Html;
 use kriss\modules\auth\tools\AuthValidate;
+use kriss\modules\auth\models\AuthRole;
 
 /** @var \kriss\modules\auth\models\Auth $authClass */
 $authClass = Yii::$app->user->authClass;
@@ -41,35 +42,23 @@ $columns = [
                 return '';
             },
             'update' => function ($url, $model) use ($authClass) {
-                /** @var \kriss\modules\auth\components\User $user */
-                $user = Yii::$app->user;
-                if (AuthValidate::has($authClass::ROLE_UPDATE) && $model->id != $user->superAdminId) {
-                    $userIdentity = $user->identity;
-                    $authRole = $user->userAuthRoleAttribute;
-                    if (strpos(";$userIdentity->$authRole;",",$model->id,") === false){
-                        $options = [
-                            'data-pjax' => '0',
-                        ];
-                        return Html::a('修改', $url, $options);
-                    }
+                if (AuthValidate::has($authClass::ROLE_UPDATE) && AuthRole::canLoginUserModify($model->id)) {
+                    $options = [
+                        'data-pjax' => '0',
+                    ];
+                    return Html::a('修改', $url, $options);
                 }
                 return '';
             },
             'delete' => function ($url, $model) use ($authClass) {
-                /** @var \kriss\modules\auth\components\User $user */
-                $user = Yii::$app->user;
-                if (AuthValidate::has($authClass::ROLE_DELETE) && $model->id != $user->superAdminId) {
-                    $userIdentity = $user->identity;
-                    $authRole = $user->userAuthRoleAttribute;
-                    if (strpos(";$userIdentity->$authRole;",",$model->id,") === false){
-                        $options = [
-                            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                            'data-method' => 'post',
-                            'data-pjax' => '0',
-                            'class' => ['btn btn-danger']
-                        ];
-                        return Html::a('删除', $url, $options);
-                    }
+                if (AuthValidate::has($authClass::ROLE_DELETE) && AuthRole::canLoginUserModify($model->id)) {
+                    $options = [
+                        'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                        'data-method' => 'post',
+                        'data-pjax' => '0',
+                        'class' => ['btn btn-danger']
+                    ];
+                    return Html::a('删除', $url, $options);
                 }
                 return '';
             }
