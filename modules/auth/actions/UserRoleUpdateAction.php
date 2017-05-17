@@ -9,23 +9,15 @@ use kriss\modules\auth\models\UpdateUserRole;
 use kriss\modules\auth\tools\AuthValidate;
 use Yii;
 use yii\base\Action;
-use yii\base\InvalidConfigException;
 use yii\web\ForbiddenHttpException;
 
 class UserRoleUpdateAction extends Action
 {
     /**
+     * auth permission name
      * @var string
      */
-    public $userClass;
-    /**
-     * @var string
-     */
-    public $userClassAuthRoleAttribute = 'auth_role';
-    /**
-     * @var int
-     */
-    public $superAdminId = 1;
+    public $permissionName;
     /**
      * it can be redirect
      * @var string|callable
@@ -42,18 +34,10 @@ class UserRoleUpdateAction extends Action
      */
     public $view;
     /**
-     * auth permission name
+     * query parameter: user ID
      * @var string
      */
-    public $permissionName;
-
-    public function init()
-    {
-        parent::init();
-        if (!$this->userClass) {
-            throw new InvalidConfigException('userClass must be set');
-        }
-    }
+    public $queryParameter = 'id';
 
     public function run()
     {
@@ -64,7 +48,11 @@ class UserRoleUpdateAction extends Action
         if ($this->permissionName) {
             AuthValidate::run($this->permissionName);
         }
-        if ($id == $this->superAdminId) throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+        /** @var \kriss\modules\auth\components\User $user */
+        $user = Yii::$app->user;
+        if ($id == $user->superAdminId || $id == $user->id){
+            throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+        }
 
         $updateUserRole = new UpdateUserRole([
             'userClass' => $this->userClass,

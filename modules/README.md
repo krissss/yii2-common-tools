@@ -23,7 +23,6 @@ set UserRoleAction to AdminController
 
         $actions['user-role-update'] = [
             'class' => UserRoleUpdateAction::className(),
-            'userClass' => Admin::className(),
             'isRenderAjax' => true,
             'view' => '_update_role',
             'successCallback' => function ($action, $result) {

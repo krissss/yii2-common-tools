@@ -76,7 +76,7 @@ class AuthRole extends \yii\db\ActiveRecord
         $userIdentity = $user->identity;
         $authRole = $user->userAuthRoleAttribute;
         $adminAuthRole = $userIdentity->$authRole;
-        if (strpos(";$adminAuthRole;", ",$roleId,") !== false) {
+        if (strpos(",$adminAuthRole,", ",$roleId,") !== false) {
             return false;
         }
         return true;

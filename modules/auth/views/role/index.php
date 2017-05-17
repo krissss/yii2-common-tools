@@ -18,10 +18,10 @@ $this->params['breadcrumbs'] = [
 
 $columns = [
     ['class' => 'kartik\grid\SerialColumn'],
-    [
+    /*[
         'attribute' => 'id',
         'hAlign' => 'center',
-    ], [
+    ],*/ [
         'attribute' => 'name',
         'hAlign' => 'center',
         'enableSorting' => false,
@@ -34,6 +34,7 @@ $columns = [
     ], */
     [
         'class' => 'kartik\grid\ActionColumn',
+        'width' => '200px',
         'buttons' => [
             'view' => function ($url) use ($authClass) {
                 if (AuthValidate::has($authClass::ROLE_VIEW)) {

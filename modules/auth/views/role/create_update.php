@@ -16,7 +16,9 @@ $this->params['breadcrumbs'] = [
     $this->title,
 ];
 
-$form = SimpleActiveForm::begin();
+$form = SimpleActiveForm::begin([
+    'title' => $this->title
+]);
 echo $form->field($model, 'name')->textInput(['maxlength' => 64]);
 echo $form->field($model, 'description')->textInput(['maxlength' => 255]);
 ?>
