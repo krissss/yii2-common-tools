@@ -20,6 +20,12 @@ class Module extends \yii\base\Module
      * @var array
      */
     public $behaviors = [];
+    /**
+     * auth operation which to be hidden
+     * use id in table auth_operation
+     * @var array
+     */
+    public $skipAuthOptions = [];
 
     public function behaviors()
     {

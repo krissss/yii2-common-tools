@@ -2,6 +2,7 @@
 
 namespace kriss\modules\auth\models;
 
+use kriss\modules\auth\Module;
 use Yii;
 
 /**
@@ -13,18 +14,21 @@ use Yii;
  */
 class AuthOperation extends \yii\db\ActiveRecord
 {
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'auth_operation';
     }
 
-    public function rules() {
+    public function rules()
+    {
         return [
             [['parent_id'], 'integer'],
             [['name'], 'string', 'max' => 32]
         ];
     }
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => Yii::t('app', 'ID'),
             'parent_id' => Yii::t('app', 'Parent ID'),
@@ -36,16 +40,23 @@ class AuthOperation extends \yii\db\ActiveRecord
      * 获取所有权限
      * @return array
      */
-    public static function findAllOperations() {
+    public static function findAllOperations()
+    {
         $operations = [];
         /** @var AuthOperation[] $rootOperations */
         $rootOperations = AuthOperation::find()->where(['parent_id' => 0])->all();
         foreach ($rootOperations as $rootOperation) {
+            if (in_array($rootOperation->id, Module::getInstance()->skipAuthOptions)) {
+                continue;
+            }
             $operations[$rootOperation->id]['name'] = $rootOperation->getViewName();
         }
         /** @var AuthOperation[] $subOperations */
         $subOperations = AuthOperation::find()->where('parent_id <> 0')->all();
         foreach ($subOperations as $subOperation) {
+            if (in_array($subOperation->id, Module::getInstance()->skipAuthOptions)) {
+                continue;
+            }
             $operations[$subOperation->parent_id]['sub'][$subOperation->name] = $subOperation->getViewName();
         }
         return $operations;
@@ -55,7 +66,8 @@ class AuthOperation extends \yii\db\ActiveRecord
      * 获得显示用的名字
      * @return string
      */
-    public function getViewName() {
+    public function getViewName()
+    {
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
         return $authClass::getName($this->name);
@@ -65,7 +77,8 @@ class AuthOperation extends \yii\db\ActiveRecord
      * 获得显示用的名字
      * @return string
      */
-    public static function findViewName($name) {
+    public static function findViewName($name)
+    {
         if ($name === 'all') {
             return '所有';
         }
