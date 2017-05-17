@@ -31,6 +31,11 @@ class User extends \yii\web\User
      * @var string
      */
     public $userAuthRoleAttribute = 'auth_role';
+    /**
+     * super admin ID
+     * @var int
+     */
+    public $superAdminId = 1;
 
     private $_operations;
 
@@ -38,7 +43,7 @@ class User extends \yii\web\User
     {
         parent::init();
 
-        if($this->authClass === null){
+        if ($this->authClass === null) {
             throw new InvalidConfigException('User::authClass must be set.');
         }
     }
@@ -64,22 +69,22 @@ class User extends \yii\web\User
     public function can($permissionName, $params = [], $allowCaching = true)
     {
         if ($allowCaching && isset($this->_operations)) {
-           $operations =  $this->_operations;
+            $operations = $this->_operations;
         } else {
             $user = Yii::$app->user->identity;
             $authRole = $this->userAuthRoleAttribute;
-            $userAuthRoles = explode(',',$user->$authRole);
-            $operationsArr = ArrayHelper::getColumn(AuthRole::find()->select('operation_list')->where(['id'=>$userAuthRoles])->asArray()->all(),'operation_list');
-            $operations = implode(';',$operationsArr);
+            $userAuthRoles = explode(',', $user->$authRole);
+            $operationsArr = ArrayHelper::getColumn(AuthRole::find()->select('operation_list')->where(['id' => $userAuthRoles])->asArray()->all(), 'operation_list');
+            $operations = implode(';', $operationsArr);
             $this->_operations = $operations;
         }
 
         //super admin
-        if (strpos(';' . $operations . ';', 'all')){
+        if (strpos(";$operations;", 'all')) {
             return true;
         }
 
-        if (strpos(';' . $operations . ';', $permissionName) === false)
+        if (strpos(";$operations;", ";$permissionName;") === false)
             return false;
         else
             return true;

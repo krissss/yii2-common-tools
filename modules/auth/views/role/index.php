@@ -36,35 +36,40 @@ $columns = [
         'buttons' => [
             'view' => function ($url) use ($authClass) {
                 if (AuthValidate::has($authClass::ROLE_VIEW)) {
-                    $options = [
-                        'title' => '查看',
-                        'data-toggle' => 'tooltip',
-                    ];
-                    return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, $options);
+                    return Html::a('查看', $url);
                 }
                 return '';
             },
             'update' => function ($url, $model) use ($authClass) {
-                if (AuthValidate::has($authClass::ROLE_UPDATE) && $model->id !== 1) {
-                    $options = [
-                        'title' => '编辑',
-                        'data-toggle' => 'tooltip',
-                        'data-pjax' => '0',
-                    ];
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                /** @var \kriss\modules\auth\components\User $user */
+                $user = Yii::$app->user;
+                if (AuthValidate::has($authClass::ROLE_UPDATE) && $model->id != $user->superAdminId) {
+                    $userIdentity = $user->identity;
+                    $authRole = $user->userAuthRoleAttribute;
+                    if (strpos(";$userIdentity->$authRole;",",$model->id,") === false){
+                        $options = [
+                            'data-pjax' => '0',
+                        ];
+                        return Html::a('修改', $url, $options);
+                    }
                 }
                 return '';
             },
             'delete' => function ($url, $model) use ($authClass) {
-                if (AuthValidate::has($authClass::ROLE_DELETE) && $model->id !== 1) {
-                    $options = [
-                        'title' => '删除',
-                        'data-toggle' => 'tooltip',
-                        'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                        'data-method' => 'post',
-                        'data-pjax' => '0',
-                    ];
-                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, $options);
+                /** @var \kriss\modules\auth\components\User $user */
+                $user = Yii::$app->user;
+                if (AuthValidate::has($authClass::ROLE_DELETE) && $model->id != $user->superAdminId) {
+                    $userIdentity = $user->identity;
+                    $authRole = $user->userAuthRoleAttribute;
+                    if (strpos(";$userIdentity->$authRole;",",$model->id,") === false){
+                        $options = [
+                            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                            'data-method' => 'post',
+                            'data-pjax' => '0',
+                            'class' => ['btn btn-danger']
+                        ];
+                        return Html::a('删除', $url, $options);
+                    }
                 }
                 return '';
             }
@@ -80,10 +85,8 @@ $simpleDynaGrid = new \kriss\widgets\SimpleDynaGrid([
     'extraToolbar' => [
         [
             'content' =>
-                (AuthValidate::has($authClass::ROLE_CREATE) ? Html::a('<i class="fa fa-plus"></i>', ['create'], [
+                (AuthValidate::has($authClass::ROLE_CREATE) ? Html::a('新增', ['create'], [
                     'class' => 'btn btn-default',
-                    'title' => '添加',
-                    'data-toggle' => 'tooltip',
                 ]) : '')
         ],
     ],
