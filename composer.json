@@ -1,0 +1,33 @@
+{
+    "name": "kriss/yii2-common-class",
+    "description": "yii2 common class",
+    "type": "yii2-extension",
+    "keywords": ["yii2"],
+    "license": "MIT",
+    "homepage": "https://github.com/krissss/yii2-common-class",
+    "authors": [
+        {
+            "name": "kriss",
+            "email": "462679766@qq.com"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "dmstr/yii2-adminlte-asset": "2.*",
+        "kartik-v/yii2-krajee-base": "^1.8",
+        "kartik-v/yii2-widgets": "^3.4",
+        "kartik-v/yii2-helpers": "*",
+        "kartik-v/yii2-grid": "^3.1",
+        "kartik-v/yii2-dynagrid": "^1.4",
+        "kartik-v/yii2-mpdf": "^1.0",
+        "kartik-v/yii2-datecontrol": "dev-master",
+        "kartik-v/yii2-field-range": "*",
+        "kartik-v/yii2-export": "*",
+        "2amigos/yii2-ckeditor-widget": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "kriss\\": "/"
+        }
+    }
+}
