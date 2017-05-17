@@ -37,7 +37,10 @@ $columns = [
         'buttons' => [
             'view' => function ($url) use ($authClass) {
                 if (AuthValidate::has($authClass::ROLE_VIEW)) {
-                    return Html::a('查看', $url);
+                    $options = [
+                        'class' => 'btn btn-default'
+                    ];
+                    return Html::a('查看', $url, $options);
                 }
                 return '';
             },
@@ -45,6 +48,7 @@ $columns = [
                 if (AuthValidate::has($authClass::ROLE_UPDATE) && AuthRole::canLoginUserModify($model->id)) {
                     $options = [
                         'data-pjax' => '0',
+                        'class' => 'btn btn-default'
                     ];
                     return Html::a('修改', $url, $options);
                 }
@@ -56,7 +60,7 @@ $columns = [
                         'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                         'data-method' => 'post',
                         'data-pjax' => '0',
-                        'class' => ['btn btn-danger']
+                        'class' => 'btn btn-danger'
                     ];
                     return Html::a('删除', $url, $options);
                 }
