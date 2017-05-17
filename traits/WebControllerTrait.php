@@ -6,13 +6,11 @@ use Yii;
 use yii\helpers\Url;
 use yii\web\Controller;
 
+/**
+ * use this trait, the class must extend yii\web\Controller
+ */
 trait WebControllerTrait
 {
-    /**
-     * @var Controller
-     */
-    public $thisController;
-
     /**
      * remember current url for redirect
      */
@@ -35,7 +33,8 @@ trait WebControllerTrait
             return Url::previous();
         } else {
             Yii::trace('redirect previous url', __METHOD__);
-            return $this->thisController->redirect(Url::previous());
+            /** @var $this Controller */
+            return $this->redirect(Url::previous());
         }
     }
 }
