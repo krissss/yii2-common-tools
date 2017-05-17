@@ -84,7 +84,6 @@ class InitAuthController extends Controller
         foreach ($roles as $id => $role) {
             $model = new AuthRole();
             $model->id = $id;
-            $model->company_id = 1;
             $model->name = $role[0];
             $model->description = $role[1];
             $model->operation_list = $role[2];

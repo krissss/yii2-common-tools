@@ -1,23 +1,24 @@
 <?php
 
 namespace kriss\tools;
-
+/**
+ * extend this and cover getKEY() and getIV()
+ */
 class AES
 {
     protected static function getKEY()
     {
-        // 生成方式：base64_encode(openssl_random_pseudo_bytes(32));
+        // generated ：base64_encode(openssl_random_pseudo_bytes(32));
         return base64_decode('ZULnwdUJGWoX0OPJFdgYfM1zEJNaSSP6+etzAX1lVPE=');
     }
 
     protected static function getIV()
     {
-        // 生成方式：base64_encode(openssl_random_pseudo_bytes(16));
+        // generated：base64_encode(openssl_random_pseudo_bytes(16));
         return base64_decode('GXo1x3fsrl6k0uAODL5HBg==');
     }
 
     /**
-     * 加密
      * @param $str
      * @return string
      */
@@ -28,7 +29,6 @@ class AES
     }
 
     /**
-     * 解密
      * @param $str
      * @return string
      */

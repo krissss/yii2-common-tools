@@ -46,7 +46,8 @@ class UpdateUserRole extends Model
         if(!$this->userClass){
             throw new InvalidConfigException('userClass must be set');
         }
-        $this->user = $this->userClass::find()->andWhere(['id' => $this->userId])->one();
+        $userClass = $this->userClass;
+        $this->user = $userClass::find()->andWhere(['id' => $this->userId])->one();
         if (!$this->user) {
             throw new Exception('用户不存在');
         }
