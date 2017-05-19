@@ -16,6 +16,16 @@ class Module extends \yii\base\Module
      */
     public $defaultRoute = 'get';
     /**
+     * auth token param
+     * @var string
+     */
+    public $authTokenParam = 'token';
+    /**
+     * auth token value
+     * @var string
+     */
+    public $authToken = 'suiyitianxie';
+    /**
      * ActiveRecord Class to export namespace
      * like '\common\models'
      * @var string
