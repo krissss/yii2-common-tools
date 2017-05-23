@@ -49,7 +49,6 @@ class LinkPagerWithSubmit extends \yii\widgets\LinkPager
      */
     public $submitButtonLabel = 'Submit';
 
-
     /**
      * @var string
      */

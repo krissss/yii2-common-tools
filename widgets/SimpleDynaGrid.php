@@ -221,6 +221,7 @@ class SimpleDynaGrid extends Object
                     'lastPageLabel' => '最后一页',
                     'pageSizeLabel' => '每页',
                     'pageLabel' => '当前',
+                    'submitButtonLabel' => '确定',
                 ],
                 'export' => [
                     'showConfirmAlert' => false,
