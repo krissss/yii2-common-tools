@@ -216,9 +216,11 @@ class SimpleDynaGrid extends Object
                     'footer' => false
                 ],
                 'pager' => [
-                    'class' => LinkPagerWithJump::className(),
+                    'class' => LinkPagerWithSubmit::className(),
                     'firstPageLabel' => '第一页',
                     'lastPageLabel' => '最后一页',
+                    'pageSizeLabel' => '每页',
+                    'pageLabel' => '当前',
                 ],
                 'export' => [
                     'showConfirmAlert' => false,
