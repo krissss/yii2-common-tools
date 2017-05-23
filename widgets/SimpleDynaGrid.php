@@ -85,7 +85,8 @@ class SimpleDynaGrid extends Object
     public $showPageSummary = false;
 
     /**
-     * 是否允许分页
+     * 是否允许设置分页
+     * isDynagrid 为 true 时有效
      * @var bool
      */
     public $allowPageSetting = true;
@@ -190,7 +191,7 @@ class SimpleDynaGrid extends Object
             'allowFilterSetting' => false,
             'allowSortSetting' => false,
             'allowThemeSetting' => false,
-            'allowPageSetting' => $this->allowPageSetting,
+            'allowPageSetting' => $this->isDynagrid ? $this->allowPageSetting : false,
             'gridOptions' => [
                 'id' => 'grid',
                 'dataProvider' => $this->dataProvider,
@@ -235,12 +236,12 @@ class SimpleDynaGrid extends Object
 
         // 导出全部去除隐藏的列
         $fullExportMenuColumns = $this->columns;
-        foreach ($fullExportMenuColumns as $key => &$column){
-            if(isset($column['visible'])){
+        foreach ($fullExportMenuColumns as $key => &$column) {
+            if (isset($column['visible'])) {
                 unset($column['visible']);
             }
             // 去除操作栏
-            if(in_array($column['class'], ['\yii\grid\ActionColumn', '\kartik\grid\ActionColumn'])){
+            if (in_array($column['class'], ['\yii\grid\ActionColumn', '\kartik\grid\ActionColumn'])) {
                 unset($fullExportMenuColumns[$key]);
             }
         }
