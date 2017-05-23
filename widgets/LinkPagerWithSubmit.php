@@ -174,8 +174,11 @@ HTML;
      */
     protected function renderCustomButton()
     {
+        $buttonOptions = array_merge($this->customButtonOptions, [
+            'id' => $this->_submitButtonId
+        ]);
         $customButtonHtml = Html::tag('div',
-            Html::tag('button', $this->submitButtonLabel, $this->customButtonOptions)
+            Html::tag('button', $this->submitButtonLabel, $buttonOptions)
             , ['class' => 'input-group']);
         return Html::tag('div', $customButtonHtml, $this->customButtonContainerOptions);
     }
