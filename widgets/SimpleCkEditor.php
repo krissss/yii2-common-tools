@@ -12,13 +12,13 @@ class SimpleCkEditor extends CKEditor
      * 填''为禁用
      * @var array|string
      */
-    public $imageUploadUrl = ['upload/ck-image'];
+    public $imageUploadUrl = ['/upload/ck-image'];
     /**
      * 上传的图片浏览目录
      * 填''为禁用
      * @var array|string
      */
-    public $imageBrowserUrl = ['upload/ck-image-browser'];
+    public $imageBrowserUrl = ['/upload/ck-image-browser'];
     /**
      * 使用的tools数
      * @var string
