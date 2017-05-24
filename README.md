@@ -23,7 +23,7 @@ Yii::setAlias('@kriss', dirname(dirname(__DIR__)) . '/kriss');
 Basic: \common\config\web.php write before other config
 
 ```php
-Yii::setAlias('kriss', dirname(__DIR__) . '/kriss' );
+Yii::setAlias('@kriss', dirname(__DIR__) . '/kriss' );
 ```
 
 # Usage And Example
