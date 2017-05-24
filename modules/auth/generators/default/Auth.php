@@ -32,7 +32,7 @@ class <?= StringHelper::basename($generator->authClass) ?> extends <?= '\\' . tr
 
     public static function initData()
     {
-        $old = parent::iniData();
+        $old = parent::initData();
 
         $new = [
             [

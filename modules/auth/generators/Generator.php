@@ -13,7 +13,7 @@ class Generator extends \yii\gii\Generator
     public $moduleId;
     public $moduleKey;
     public $moduleName;
-    public $childOperations = 'view=>查看';
+    public $childOperations = 'view=>查看,create=>新增,update=>修改,delete=>删除';
     public $useModulePrefix = true;
     public $baseClass = '\kriss\modules\auth\models\Auth';
 
@@ -51,7 +51,7 @@ class Generator extends \yii\gii\Generator
      */
     public function stickyAttributes()
     {
-        return ['baseClass'];
+        return ['authClass', 'childOperations', 'baseClass'];
     }
 
     /**
