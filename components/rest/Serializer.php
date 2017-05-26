@@ -20,6 +20,18 @@ class Serializer extends \yii\rest\Serializer
     public $metaEnvelope = 'pagination';
 
     /**
+     * 验证失败的返回错误集合
+     * @var string
+     */
+    public $modelErrorsLabel = 'errors';
+    /**
+     * model 返回的字段名
+     * @var string
+     */
+    public $modelLabel = 'data';
+
+
+    /**
      * 调整：让 linksEnvelope 和 metaEnvelope 可以分开显示
      * @inheritdoc
      */
@@ -46,14 +58,21 @@ class Serializer extends \yii\rest\Serializer
      */
     protected function serializeModelErrors($model)
     {
-        $this->response->setStatusCode(422, 'Data Validation Failed.');
-        $result = [];
-        foreach ($model->getFirstErrors() as $name => $message) {
-            $result['errors'][] = [
-                'field' => $name,
-                'message' => $message,
-            ];
-        }
-        return $result;
+        $data = parent::serializeModelErrors($model);
+        return [
+            $this->modelErrorsLabel => $data
+        ];
+    }
+
+    /**
+     * 调整：把 model 放到 data 下，避免和 status 和 message 的冲突
+     * @inheritdoc
+     */
+    protected function serializeModel($model)
+    {
+        $data = parent::serializeModel($model);
+        return [
+            $this->modelLabel => $data
+        ];
     }
 }
