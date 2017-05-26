@@ -33,7 +33,11 @@ class InitAuthController extends Controller
      */
     public $authClass = 'common\models\base\Auth';
 
-    public function actionIndex()
+    /**
+     * delete and create operations and role
+     * @throws Exception
+     */
+    public function actionRestore()
     {
         $transaction = Yii::$app->db->beginTransaction();
         try {
@@ -46,6 +50,24 @@ class InitAuthController extends Controller
         }
     }
 
+    /**
+     * delete and create operations
+     * @throws Exception
+     */
+    public function actionUpdateOperations(){
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $this->initAuthOperations();
+            $transaction->commit();
+        } catch (Exception $exception) {
+            $transaction->rollBack();
+            throw $exception;
+        }
+    }
+
+    /**
+     * @return array
+     */
     protected function getInitRoles()
     {
         return [
