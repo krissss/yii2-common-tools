@@ -29,6 +29,11 @@ class Serializer extends \yii\rest\Serializer
      * @var string
      */
     public $modelLabel = 'data';
+    /**
+     * models 返回的字段名
+     * @var string
+     */
+    public $modelsLabel = 'items';
 
 
     /**
@@ -73,6 +78,18 @@ class Serializer extends \yii\rest\Serializer
         $data = parent::serializeModel($model);
         return [
             $this->modelLabel => $data
+        ];
+    }
+
+    /**
+     * 调整：把 models 放到 data 下，避免和 status 和 message 的冲突
+     * @inheritdoc
+     */
+    protected function serializeModels(array $models)
+    {
+        $data = parent::serializeModels($models);
+        return [
+            $this->modelsLabel => $data
         ];
     }
 }
