@@ -2,6 +2,9 @@
 
 namespace kriss\components\rest;
 
+use yii\base\Arrayable;
+use yii\base\Model;
+use yii\data\DataProviderInterface;
 use yii\web\Link;
 
 class Serializer extends \yii\rest\Serializer
@@ -9,7 +12,7 @@ class Serializer extends \yii\rest\Serializer
     /**
      * @inheritdoc
      */
-    public $collectionEnvelope = 'items';
+    public $collectionEnvelope = 'data';
     /**
      * @var bool|string
      */
@@ -30,11 +33,30 @@ class Serializer extends \yii\rest\Serializer
      */
     public $modelLabel = 'data';
     /**
-     * models 返回的字段名
+     * 普通的所有数据返回的字段名
      * @var string
      */
-    public $modelsLabel = 'items';
+    public $dataCommonLabel = 'data';
 
+    /**
+     * 调整：修改通用的数据序列化
+     * @inheritdoc
+     */
+    public function serialize($data)
+    {
+        if ($data instanceof Model && $data->hasErrors()) {
+            return $this->serializeModelErrors($data);
+        } elseif ($data instanceof Arrayable) {
+            return $this->serializeModel($data);
+        } elseif ($data instanceof DataProviderInterface) {
+            return $this->serializeDataProvider($data);
+        } else {
+            if($this->dataCommonLabel){
+                return [$this->dataCommonLabel => $data];
+            }
+            return $data;
+        }
+    }
 
     /**
      * 调整：让 linksEnvelope 和 metaEnvelope 可以分开显示
@@ -78,18 +100,6 @@ class Serializer extends \yii\rest\Serializer
         $data = parent::serializeModel($model);
         return [
             $this->modelLabel => $data
-        ];
-    }
-
-    /**
-     * 调整：把 models 放到 data 下，避免和 status 和 message 的冲突
-     * @inheritdoc
-     */
-    protected function serializeModels(array $models)
-    {
-        $data = parent::serializeModels($models);
-        return [
-            $this->modelsLabel => $data
         ];
     }
 }
