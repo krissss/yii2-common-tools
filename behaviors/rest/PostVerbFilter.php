@@ -53,7 +53,8 @@ class PostVerbFilter extends Behavior
 
         // validate request method
         $verb = Yii::$app->getRequest()->getMethod();
-        if ($verb !== $allowed) {
+        $allowed = array_map('strtoupper', $allowed);
+        if (!in_array($verb, $allowed)) {
             $event->isValid = false;
             // http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.7
             Yii::$app->getResponse()->getHeaders()->set('Allow', implode(', ', $allowed));
