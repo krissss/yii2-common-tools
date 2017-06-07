@@ -17,7 +17,8 @@ trait WebControllerTrait
     public function rememberUrl()
     {
         Yii::trace('remember current url', __METHOD__);
-        Url::remember();
+        /** @var $this Controller */
+        Url::remember('', get_class($this));
     }
 
     /**
@@ -29,12 +30,12 @@ trait WebControllerTrait
     public function actionPreviousRedirect()
     {
         if (Yii::$app->request->isAjax && !Yii::$app->request->isPjax) {
-            Yii::trace('return previous url string', __METHOD__);
-            return Url::previous();
+            Yii::trace('return previous url string: ' . Url::previous(get_class($this)), __METHOD__);
+            return Url::previous(get_class($this));
         } else {
-            Yii::trace('redirect previous url', __METHOD__);
+            Yii::trace('redirect previous url: ' . Url::previous(get_class($this)), __METHOD__);
             /** @var $this Controller */
-            return $this->redirect(Url::previous());
+            return $this->redirect(Url::previous(get_class($this)));
         }
     }
 }
