@@ -5,6 +5,7 @@
  */
 namespace kriss\actions\web;
 
+use Codeception\Exception\ConfigurationException;
 use kriss\models\FileUpload;
 use yii\base\Action;
 use Yii;
@@ -22,16 +23,25 @@ class CkImageAction extends Action
      * @var string
      */
     public $extensions = 'jpg,png';
+    /**
+     * 文件上传接收的类，必须是 kriss\models\FileUpload 或它的子类
+     * @var string
+     */
+    public $fileUploadClass = 'kriss\models\FileUpload';
 
     public function run()
     {
         $request = Yii::$app->request;
         $funcNum = $request->get('CKEditorFuncNum');
         $cKEditorName = $request->get('CKEditor');
-        $model = new FileUpload([
+        $fileUploadClass = $this->fileUploadClass;
+        $model = new $fileUploadClass([
             'maxSize' => $this->maxSize,
             'extensions' => $this->extensions,
         ]);
+        if(!$model instanceof FileUpload){
+            throw new ConfigurationException('fileUploadClass must be instance of kriss\models\FileUpload');
+        }
         if ($fileName = $model->upload('upload', $cKEditorName)) {
             $url = $fileName;
             $message = '上传成功';
