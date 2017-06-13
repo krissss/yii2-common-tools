@@ -9,7 +9,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
         parent::init();
         $this->pagination = [
             'pageParam' => 'page',
-            'pageSizeParam' => 'per-page',
+            'pageSizeParam' => 'per_page',
             'validatePage' => false,
         ];
     }
