@@ -39,6 +39,30 @@ class Serializer extends \yii\rest\Serializer
     public $dataCommonLabel = 'data';
 
     /**
+     * 总数
+     * @var string
+     */
+    public $paginationTotalCount = 'totalCount';
+
+    /**
+     * 总页数
+     * @var string
+     */
+    public $paginationPageCount = 'pageCount';
+
+    /**
+     * 当前页
+     * @var string
+     */
+    public $paginationCurrentPage = 'currentPage';
+
+    /**
+     * 每页显示数量
+     * @var string
+     */
+    public $paginationPageSize = 'perPage';
+
+    /**
      * 调整：修改通用的数据序列化
      * @inheritdoc
      */
@@ -51,7 +75,7 @@ class Serializer extends \yii\rest\Serializer
         } elseif ($data instanceof DataProviderInterface) {
             return $this->serializeDataProvider($data);
         } else {
-            if($this->dataCommonLabel){
+            if ($this->dataCommonLabel) {
                 return [$this->dataCommonLabel => $data];
             }
             return $data;
@@ -65,15 +89,15 @@ class Serializer extends \yii\rest\Serializer
     protected function serializePagination($pagination)
     {
         $result = [];
-        if($this->linksEnvelope){
+        if ($this->linksEnvelope) {
             $result[$this->linksEnvelope] = Link::serialize($pagination->getLinks(true));
         }
-        if($this->metaEnvelope){
+        if ($this->metaEnvelope) {
             $result[$this->metaEnvelope] = [
-                'totalCount' => $pagination->totalCount,
-                'pageCount' => $pagination->getPageCount(),
-                'currentPage' => $pagination->getPage() + 1,
-                'perPage' => $pagination->getPageSize(),
+                $this->paginationTotalCount => $pagination->totalCount,
+                $this->paginationPageCount => $pagination->getPageCount(),
+                $this->paginationCurrentPage => $pagination->getPage() + 1,
+                $this->paginationPageSize => $pagination->getPageSize(),
             ];
         }
         return $result;
