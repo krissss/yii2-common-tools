@@ -14,20 +14,14 @@ use kriss\tools\Fun;
 class CkImageAction extends Action
 {
     /**
-     * 默认5M
-     * @var int
-     */
-    public $maxSize = 5242880;
-    /**
-     * 允许的扩展名
-     * @var string
-     */
-    public $extensions = 'jpg,png';
-    /**
      * 文件上传接收的类，必须是 kriss\models\FileUpload 或它的子类
-     * @var string
+     * @var string|array
      */
-    public $fileUploadClass = 'kriss\models\FileUpload';
+    public $fileUploadClass = [
+        'class' => 'kriss\models\FileUpload',
+        'maxSize' => 5242880, // 5M
+        'extensions' => 'jpg,png'
+    ];
 
     public function run()
     {
@@ -35,10 +29,7 @@ class CkImageAction extends Action
         $funcNum = $request->get('CKEditorFuncNum');
         $cKEditorName = $request->get('CKEditor');
         $fileUploadClass = $this->fileUploadClass;
-        $model = new $fileUploadClass([
-            'maxSize' => $this->maxSize,
-            'extensions' => $this->extensions,
-        ]);
+        $model = Yii::createObject($fileUploadClass);
         if(!$model instanceof FileUpload){
             throw new ConfigurationException('fileUploadClass must be instance of kriss\models\FileUpload');
         }
