@@ -12,6 +12,7 @@ use kartik\export\ExportMenu;
 use kartik\grid\GridView;
 use yii\base\Exception;
 use yii\base\Object;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 class SimpleDynaGrid extends Object
@@ -254,7 +255,7 @@ class SimpleDynaGrid extends Object
                 unset($fullExportMenuColumns[$key]);
             }
         }
-        $fullExportMenu = ExportMenu::widget(array_merge([
+        $fullExportMenu = ExportMenu::widget(ArrayHelper::merge([
             'dataProvider' => $this->dataProvider,
             'columns' => $fullExportMenuColumns,
             'target' => ExportMenu::TARGET_BLANK,
