@@ -73,6 +73,12 @@ class SimpleDynaGrid extends Object
     public $isExportAll = false;
 
     /**
+     * ExportMenu 的配置
+     * @var array
+     */
+    public $exportMenuConfig = [];
+
+    /**
      * 是否需要显示所有的按钮
      * @var bool
      */
@@ -248,7 +254,7 @@ class SimpleDynaGrid extends Object
                 unset($fullExportMenuColumns[$key]);
             }
         }
-        $fullExportMenu = ExportMenu::widget([
+        $fullExportMenu = ExportMenu::widget(array_merge([
             'dataProvider' => $this->dataProvider,
             'columns' => $fullExportMenuColumns,
             'target' => ExportMenu::TARGET_BLANK,
@@ -264,7 +270,7 @@ class SimpleDynaGrid extends Object
                 'label' => '导出全部',
                 'class' => 'btn btn-default',
             ],
-        ]);
+        ], $this->exportMenuConfig));
 
         $toolbar = [];
         if (isset($this->extraToolbar)) {
