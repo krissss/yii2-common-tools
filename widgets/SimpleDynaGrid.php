@@ -174,6 +174,10 @@ class SimpleDynaGrid extends Object
             }
         }
 
+        if(!$this->exportMenuClass){
+            $this->exportMenuClass = ExportMenu::className();
+        }
+
         $this->_pjaxContainerId = 'pjax-' . rand(1000, 9999);
 
         foreach ($this->columns as &$column) {
@@ -250,37 +254,6 @@ class SimpleDynaGrid extends Object
             $config['gridOptions']['filterModel'] = $this->searchModel;
         }
 
-        // 导出全部去除隐藏的列
-        $fullExportMenuColumns = $this->columns;
-        foreach ($fullExportMenuColumns as $key => &$column) {
-            if (isset($column['visible'])) {
-                unset($column['visible']);
-            }
-            // 去除操作栏
-            if (in_array($column['class'], ['\yii\grid\ActionColumn', '\kartik\grid\ActionColumn'])) {
-                unset($fullExportMenuColumns[$key]);
-            }
-        }
-        /** @var ExportMenu $exportMenu */
-        $exportMenu = $this->exportMenuClass;
-        $fullExportMenu = $exportMenu::widget(ArrayHelper::merge([
-            'dataProvider' => $this->dataProvider,
-            'columns' => $fullExportMenuColumns,
-            'target' => ExportMenu::TARGET_BLANK,
-            'pjaxContainerId' => $this->_pjaxContainerId,
-            'clearBuffers' => true,
-            'exportConfig' => [
-                ExportMenu::FORMAT_HTML => false,
-                ExportMenu::FORMAT_CSV => false,
-                ExportMenu::FORMAT_PDF => false,
-                ExportMenu::FORMAT_TEXT => false,
-            ],
-            'dropdownOptions' => [
-                'label' => '导出全部',
-                'class' => 'btn btn-default',
-            ],
-        ], $this->exportMenuConfig));
-
         $toolbar = [];
         if (isset($this->extraToolbar)) {
             $toolbar = array_merge($toolbar, $this->extraToolbar);
@@ -295,6 +268,36 @@ class SimpleDynaGrid extends Object
             array_push($toolbar, '{export}');
         }
         if ($this->isExportAll === true) {
+            // 导出全部去除隐藏的列
+            $fullExportMenuColumns = $this->columns;
+            foreach ($fullExportMenuColumns as $key => &$column) {
+                if (isset($column['visible'])) {
+                    unset($column['visible']);
+                }
+                // 去除操作栏
+                if (in_array($column['class'], ['\yii\grid\ActionColumn', '\kartik\grid\ActionColumn'])) {
+                    unset($fullExportMenuColumns[$key]);
+                }
+            }
+            /** @var ExportMenu $exportMenu */
+            $exportMenu = $this->exportMenuClass;
+            $fullExportMenu = $exportMenu::widget(ArrayHelper::merge([
+                'dataProvider' => $this->dataProvider,
+                'columns' => $fullExportMenuColumns,
+                'target' => ExportMenu::TARGET_BLANK,
+                'pjaxContainerId' => $this->_pjaxContainerId,
+                'clearBuffers' => true,
+                'exportConfig' => [
+                    ExportMenu::FORMAT_HTML => false,
+                    ExportMenu::FORMAT_CSV => false,
+                    ExportMenu::FORMAT_PDF => false,
+                    ExportMenu::FORMAT_TEXT => false,
+                ],
+                'dropdownOptions' => [
+                    'label' => '导出全部',
+                    'class' => 'btn btn-default',
+                ],
+            ], $this->exportMenuConfig));
             array_push($toolbar, $fullExportMenu);
         }
         if ($this->toolbarRefresh === true) {
