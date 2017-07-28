@@ -74,6 +74,12 @@ class SimpleDynaGrid extends Object
     public $isExportAll = false;
 
     /**
+     * 导出菜单，必须是 kartik\export\ExportMenu 的子类
+     * @var string
+     */
+    public $exportMenuClass;
+
+    /**
      * ExportMenu 的配置
      * @var array
      */
@@ -255,7 +261,9 @@ class SimpleDynaGrid extends Object
                 unset($fullExportMenuColumns[$key]);
             }
         }
-        $fullExportMenu = ExportMenu::widget(ArrayHelper::merge([
+        /** @var ExportMenu $exportMenu */
+        $exportMenu = $this->exportMenuClass;
+        $fullExportMenu = $exportMenu::widget(ArrayHelper::merge([
             'dataProvider' => $this->dataProvider,
             'columns' => $fullExportMenuColumns,
             'target' => ExportMenu::TARGET_BLANK,
