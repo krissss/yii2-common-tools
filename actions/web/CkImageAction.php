@@ -5,7 +5,7 @@
  */
 namespace kriss\actions\web;
 
-use Codeception\Exception\ConfigurationException;
+use yii\base\InvalidConfigException;
 use kriss\models\FileUpload;
 use yii\base\Action;
 use Yii;
@@ -31,7 +31,7 @@ class CkImageAction extends Action
         $fileUploadClass = $this->fileUploadClass;
         $model = Yii::createObject($fileUploadClass);
         if(!$model instanceof FileUpload){
-            throw new ConfigurationException('fileUploadClass must be instance of kriss\models\FileUpload');
+            throw new InvalidConfigException('fileUploadClass must be instance of kriss\models\FileUpload');
         }
         if ($fileName = $model->upload('upload', $cKEditorName)) {
             $url = $fileName;
