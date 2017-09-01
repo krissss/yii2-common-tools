@@ -1,6 +1,9 @@
 <?php
-
-namespace app\kriss\actions\web;
+/**
+ * wangEditor 上传操作
+ * @link https://www.kancloud.cn/wangfupeng/wangeditor3/335782
+ */
+namespace kriss\actions\web;
 
 use kriss\models\FileUpload;
 use kriss\tools\Fun;
