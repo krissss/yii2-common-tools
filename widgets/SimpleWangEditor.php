@@ -7,6 +7,11 @@ use yii\helpers\Html;
 
 class SimpleWangEditor extends WangEditorWidget
 {
+    /**
+     * @var string
+     */
+    public $uploadUrl = '/upload/wang-editor';
+
     public function init()
     {
         parent::init();
@@ -37,7 +42,7 @@ class SimpleWangEditor extends WangEditorWidget
             'redo'  // 重复
         ]);
         $this->clientJs = <<<JS
-{name}.customConfig.uploadImgServer = '/upload/wang-editor';
+{name}.customConfig.uploadImgServer = '{$this->uploadUrl}';
 {name}.customConfig.uploadFileName = 'filename[]';
 {name}.customConfig.uploadImgParams = {
     name: 'filename',
