@@ -43,8 +43,7 @@ class WangEditorUploadAction extends Action
             ];
         }
         return [
-            'errno' => 1,
-            'data' => Fun::formatModelErrors2String($model->errors)
+            'error' => Fun::formatModelErrors2String($model->errors)
         ];
     }
 }

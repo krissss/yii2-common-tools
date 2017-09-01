@@ -8,20 +8,44 @@ use yii\helpers\Html;
 class SimpleWangEditor extends WangEditorWidget
 {
     /**
+     * 上传文件路径
      * @var string
      */
     public $uploadUrl = '/upload/wang-editor';
 
+    /**
+     * 上传文件大小：默认5M
+     * @var int
+     */
+    public $uploadImgMaxSize = 5242880;
+
+    /**
+     * 一次上传文件数量
+     * @var int
+     */
+    public $uploadImgMaxLength = 10;
+
     public function init()
     {
         parent::init();
-        if ($this->hasModel()) {
-            $prefix = Html::getInputId($this->model, $this->attribute);
-        } else {
-            $prefix = $this->name;
-        }
-        // @link https://www.kancloud.cn/wangfupeng/wangeditor3/335777
-        $menu = json_encode([
+        $this->setClientJs();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPrefix()
+    {
+        return $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->name;
+    }
+
+    /**
+     * @link https://www.kancloud.cn/wangfupeng/wangeditor3/335777
+     * @return array
+     */
+    protected function getMenu()
+    {
+        return [
             'head',  // 标题
             'bold',  // 粗体
             'italic',  // 斜体
@@ -40,13 +64,34 @@ class SimpleWangEditor extends WangEditorWidget
             'code',  // 插入代码
             'undo',  // 撤销
             'redo'  // 重复
-        ]);
+        ];
+    }
+
+    protected function setClientJs()
+    {
+        $menu = json_encode($this->getMenu());
+        $prefix = $this->getPrefix();
         $this->clientJs = <<<JS
 {name}.customConfig.uploadImgServer = '{$this->uploadUrl}';
 {name}.customConfig.uploadFileName = 'filename[]';
+{name}.customConfig.uploadImgMaxSize = {$this->uploadImgMaxSize};
+{name}.customConfig.uploadImgMaxLength = {$this->uploadImgMaxLength};
 {name}.customConfig.uploadImgParams = {
     name: 'filename',
     prefix: '{$prefix}'
+};
+{name}.customConfig.uploadImgHooks = {
+    fail: function (xhr, editor, result) {
+        editor.hasAlerted = true
+        alert('图片上传失败:' + result.error)
+    }
+}
+{name}.customConfig.customAlert = function (info) {
+    if(!{name}.hasAlerted){
+        alert(info);
+    }else{
+        {name}.hasAlerted = false;
+    }
 };
 {name}.customConfig.menus = {$menu};
 JS;

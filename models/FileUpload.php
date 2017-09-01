@@ -95,6 +95,8 @@ class FileUpload extends Model
 
     /**
      * 上传单个文件
+     * @param $requestName
+     * @param $prefix
      * @return bool|string
      */
     protected function uploadOneFile($requestName, $prefix)
@@ -109,6 +111,7 @@ class FileUpload extends Model
     /**
      * 上传多个文件
      * @param $requestName
+     * @param $prefix
      * @return array|bool
      */
     protected function uploadMultiFiles($requestName, $prefix)
