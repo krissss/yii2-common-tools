@@ -106,6 +106,14 @@ class SimpleFileUpload extends InputWidget
     }
 
     /**
+     * @return string
+     */
+    protected function getPrefix()
+    {
+        return $this->hasModel() ? Html::getInputId($this->model, $this->attribute) : $this->name;
+    }
+
+    /**
      * 渲染隐藏域
      */
     protected function renderHiddenInput()
@@ -173,7 +181,7 @@ JS;
                 'deleteUrl' => Url::to($this->deleteUrl),
                 'uploadExtraData' => [
                     'name' => $uploadName,
-                    'prefix' => 'goods-photos',
+                    'prefix' => $this->getPrefix(),
                 ],
                 'allowedFileTypes' => $this->allowedFileTypes,
                 'allowedFileExtensions' => $this->allowedFileExtensions,
