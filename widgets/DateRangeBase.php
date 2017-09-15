@@ -26,7 +26,7 @@ class DateRangeBase extends FieldRange
             $this->widgetOptions1['type'] = $this->displayType;
             $this->widgetOptions2['type'] = $this->displayType;
         }
-        Html::addCssClass($this->container, 'no-margin');
+        Html::addCssClass($this->container, 'no-margin-bottom');
         parent::init();
     }
 }
