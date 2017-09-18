@@ -145,7 +145,14 @@ class SimpleDynaGrid extends Object
      * @link http://demos.krajee.com/dynagrid#module
      * @var string
      */
-    public $storage = 'cookie';
+    public $storage = 'session';
+
+    /**
+     * DataColumn 的 class 名
+     * 必须是 yii\grid\DataColumn 的子类
+     * @var string
+     */
+    public $dataColumnClass = '\kriss\widgets\DataColumn';
 
     /**
      * @var string
@@ -183,12 +190,12 @@ class SimpleDynaGrid extends Object
         foreach ($this->columns as &$column) {
             if (!is_array($column)) {
                 $column = [
-                    'class' => DataColumn::className(),
+                    'class' => $this->dataColumnClass,
                     'attribute' => $column,
                 ];
             } else {
                 if (!isset($column['class'])) {
-                    $column['class'] = DataColumn::className();
+                    $column['class'] = $this->dataColumnClass;
                 }
             }
         }
