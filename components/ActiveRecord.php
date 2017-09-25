@@ -16,6 +16,8 @@ class ActiveRecord extends \yii\db\ActiveRecord
             $arr = array_filter($arr);
             if ($arr) {
                 return ',' . implode(',,', $arr) . ',';
+            } else {
+                return '';
             }
         }
         return $arr;
