@@ -11,10 +11,12 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     protected function array2Str($arr)
     {
-        // 去除空值
         if (is_array($arr)) {
+            // 去除空值
             $arr = array_filter($arr);
-            return ',' . implode(',,', $arr) . ',';
+            if ($arr) {
+                return ',' . implode(',,', $arr) . ',';
+            }
         }
         return $arr;
     }
