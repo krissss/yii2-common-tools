@@ -1,21 +1,24 @@
 <?php
-/* @var $this yii\web\View */
-/* @var $generator \kriss\generators\dynagrid\Generator */
-/* @var $action string the action ID */
+/** @var $this yii\web\View */
+/** @var $generator \kriss\generators\dynagrid\Generator */
+/** @var $action string the action ID */
 
 $actionColumns = $generator->getActionColumns();
 $hasActionColumn = (bool)$actionColumns;
 
+$toolbarActions = $generator->getToolbarActions();
+$hasToolbarAction = (bool)$toolbarActions;
+
 echo "<?php\n";
 ?>
-/* @var $this yii\web\View */
-/* @var $dataProvider <?= ltrim($generator->activeDataProviderClass, '\\') ?> */
+/** @var $this yii\web\View */
+/** @var $dataProvider <?= ltrim($generator->activeDataProviderClass, '\\') ?> */
 <?php if(!empty($generator->searchModelClass)): ?>
-/* @var $searchModel <?= ltrim($generator->searchModelClass, '\\') ?> */
+/** @var $searchModel <?= ltrim($generator->searchModelClass, '\\') ?> */
 <?php endif; ?>
 
 use backend\widgets\SimpleDynaGrid;
-<?php if($hasActionColumn): ?>
+<?php if($hasActionColumn || $hasToolbarAction): ?>
 use yii\helpers\Html;
 <?php endif; ?>
 
@@ -53,11 +56,30 @@ $columns = [
         ],
     ],
 <?php endif; ?>
+<?php if($generator->hasCheckboxColumn): ?>
+    [
+        'class' => '\kartik\grid\CheckboxColumn',
+    ],
+<?php endif; ?>
 ];
 
 $simpleDynaGrid = new SimpleDynaGrid([
     'dynaGridId' => 'dynagrid-<?=$generator->getControllerID()?>-<?=$generator->actionIndex?>',
     'columns' => $columns,
     'dataProvider' => $dataProvider,
+<?php if($hasToolbarAction): ?>
+<?php
+$toolbarActionsStrArr = [];
+foreach ($toolbarActions as $url => $label) {
+    $toolbarActionsStrArr[] = "Html::button('{$label}', ['{$url}'], ['class' => 'btn btn-default']";
+}
+$toolbarActionsStr = implode("\n            . ", $toolbarActionsStrArr);
+?>
+    'extraToolbar' => [
+        [
+            <?= $toolbarActionsStr . "\n"; ?>
+        ]
+    ]
+<?php endif; ?>
 ]);
 $simpleDynaGrid->renderDynaGrid();

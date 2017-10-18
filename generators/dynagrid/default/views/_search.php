@@ -1,6 +1,6 @@
 <?php
-/* @var $this yii\web\View */
-/* @var $generator \kriss\generators\dynagrid\Generator */
+/** @var $this yii\web\View */
+/** @var $generator \kriss\generators\dynagrid\Generator */
 
 $searchAttributes = $generator->getSearchAttributes();
 echo "<?php\n";

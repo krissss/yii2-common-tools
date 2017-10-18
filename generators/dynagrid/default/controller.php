@@ -1,11 +1,12 @@
 <?php
 use yii\helpers\Inflector;
 
-/* @var $this yii\web\View */
-/* @var $generator \kriss\generators\dynagrid\Generator */
+/** @var $this yii\web\View */
+/** @var $generator \kriss\generators\dynagrid\Generator */
 
 $useClasses = $generator->getControllerUseClasses();
 $operateActions = $generator->getActionColumns();
+$toolbarActions = $generator->getToolbarActions();
 echo "<?php\n";
 ?>
 
@@ -46,9 +47,17 @@ class <?= $generator->getClassName($generator->controllerClass) ?> extends <?= $
 <?php endif; ?>
     }
 
-<?php foreach ($operateActions as $action => $label): ?>
+<?php foreach ($toolbarActions as $action => $label): ?>
     // <?=$label . "\n"?>
     public function action<?= Inflector::id2camel($action) ?>()
+    {
+        // TODO
+    }
+
+<?php endforeach; ?>
+<?php foreach ($operateActions as $action => $label): ?>
+    // <?=$label . "\n"?>
+    public function action<?= Inflector::id2camel($action) ?>($id)
     {
         // TODO
     }

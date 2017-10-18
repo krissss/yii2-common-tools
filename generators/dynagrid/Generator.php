@@ -32,6 +32,10 @@ class Generator extends \yii\gii\Generator
 
     public $actionColumns = 'update:更新,view:详情';
 
+    public $toolbarActions = 'create:新增';
+
+    public $hasCheckboxColumn = false;
+
     public function getName()
     {
         return 'Dynagrid Generator';
@@ -42,8 +46,9 @@ class Generator extends \yii\gii\Generator
         return array_merge(parent::rules(), [
             [[
                 'controllerClass', 'controllerBaseClass', 'activeDataProviderClass', 'searchModelClass', 'modelClass',
-                'searchAttributes', 'actionIndex', 'title', 'dataColumns', 'actionColumns'
-            ], 'safe']
+                'searchAttributes', 'actionIndex', 'title', 'dataColumns', 'actionColumns', 'toolbarActions'
+            ], 'safe'],
+            ['hasCheckboxColumn', 'boolean']
         ]);
     }
 
@@ -60,6 +65,8 @@ class Generator extends \yii\gii\Generator
             'title' => '列表页面的标题, (e.g. <code>文章管理</code>)',
             'dataColumns' => '列表页面的 DataColumn 属性字段, (e.g. <code>id,name</code>)',
             'actionColumns' => '列表页面的 ActionColumn 属性字段,可以为空, (e.g. <code>update:更新,view:详情</code>)',
+            'toolbarActions' => '列表页面的 Toolbar 操作,可以为空, (e.g. <code>create:新增</code>)',
+            'hasCheckboxColumn' => '是否有复选框',
         ]);
     }
 
@@ -153,6 +160,21 @@ class Generator extends \yii\gii\Generator
     {
         $array = [];
         $temp1 = explode(',', $this->actionColumns);
+        foreach ($temp1 as $item) {
+            $temp2 = explode(':', $item);
+            $array[$temp2[0]] = Inflector::camel2id($temp2[1]);
+        }
+        return $array;
+    }
+
+    /**
+     * index 页面的 toolbar 操作
+     * @return array
+     */
+    public function getToolbarActions()
+    {
+        $array = [];
+        $temp1 = explode(',', $this->toolbarActions);
         foreach ($temp1 as $item) {
             $temp2 = explode(':', $item);
             $array[$temp2[0]] = Inflector::camel2id($temp2[1]);
