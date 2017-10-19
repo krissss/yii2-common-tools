@@ -25,6 +25,7 @@ class OperateLogger extends Object
         'categories' => ['api', 'frontend', 'backend'],
         'logVars' => [],
         ]
+     * @param $logCategory string
      */
     public static function logger($logCategory)
     {

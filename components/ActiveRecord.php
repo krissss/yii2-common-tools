@@ -39,19 +39,20 @@ class ActiveRecord extends \yii\db\ActiveRecord
 
     /**
      * 获取名称
-     * @param $index
-     * @param $dataArr
+     * @param $index string|integer
+     * @param $dataArr array
+     * @param $notExistValue string
      * @return string
      */
-    protected function toName($index, $dataArr)
+    protected function toName($index, $dataArr, $notExistValue = '未知')
     {
-        return isset($dataArr[$index]) ? $dataArr[$index] : '未知';
+        return isset($dataArr[$index]) ? $dataArr[$index] : $notExistValue;
     }
 
     /**
      * 获取名称数组
-     * @param $indexArr
-     * @param $dataArr
+     * @param $indexArr array
+     * @param $dataArr array
      * @return array
      */
     protected function toNameArr($indexArr, $dataArr)
