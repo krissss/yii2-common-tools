@@ -10,6 +10,7 @@ echo $this->render('@gii-model/form', [
 ]);
 echo $form->field($generator, 'generateDao')->checkbox();
 echo $form->field($generator, 'daoNs');
+echo $form->field($generator, 'skipTables');
 
 $js = <<<JS
     // model generator: hide class name inputs when table name input contains *

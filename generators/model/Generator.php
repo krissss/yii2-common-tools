@@ -9,6 +9,7 @@ class Generator extends \yii\gii\generators\model\Generator
 {
     public $generateDao = true;
     public $daoNs = 'common\models\dao';
+    public $skipTables = 'migration';
 
     public $ns = 'common\models';
     public $baseClass = 'common\models\base\ActiveRecord';
@@ -47,7 +48,8 @@ class Generator extends \yii\gii\generators\model\Generator
     {
         return array_merge(parent::rules(), [
             ['generateDao', 'boolean'],
-            ['daoNs', 'validateNamespace']
+            ['daoNs', 'validateNamespace'],
+            ['skipTables', 'string']
         ]);
     }
 
@@ -59,6 +61,7 @@ class Generator extends \yii\gii\generators\model\Generator
         return array_merge(parent::attributeLabels(), [
             'generateDao' => 'Generate Dao',
             'daoNs' => 'Dao Namespace',
+            'skipTables' => 'Skip Table'
         ]);
     }
 
@@ -70,6 +73,7 @@ class Generator extends \yii\gii\generators\model\Generator
         return array_merge(parent::hints(), [
             'generateDao' => 'This indicates whether to generate ActiveQuery for the ActiveRecord class.',
             'daoNs' => 'This is the namespace of the ActiveQuery class to be generated, e.g., <code>app\models</code>',
+            'skipTables' => 'which table or tables that skip to render, split by <code>,</code>, e.g., <code>migration</code>',
         ]);
     }
 
@@ -78,7 +82,7 @@ class Generator extends \yii\gii\generators\model\Generator
      */
     public function stickyAttributes()
     {
-        return array_merge(parent::stickyAttributes(), ['generateDao', 'daoNs']);
+        return array_merge(parent::stickyAttributes(), ['generateDao', 'daoNs', 'skipTables']);
     }
 
     /**
@@ -94,6 +98,9 @@ class Generator extends \yii\gii\generators\model\Generator
         $relations = $this->generateRelations();
         $db = $this->getDbConnection();
         foreach ($this->getTableNames() as $tableName) {
+            if (in_array($tableName, $this->getSkipTableNames())) {
+                continue;
+            }
             // dao :
             $modelClassName = $this->generateClassName($tableName);
             $daoClassName = $this->generateDaoClassName($modelClassName);
@@ -151,5 +158,13 @@ class Generator extends \yii\gii\generators\model\Generator
             $queryClassName = $modelClassName . 'Dao';
         }
         return $queryClassName;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getSkipTableNames()
+    {
+        return explode(',', $this->skipTables);
     }
 }
