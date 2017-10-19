@@ -38,7 +38,7 @@ class Generator extends \yii\gii\Generator
 
     public function getName()
     {
-        return 'Dynagrid Generator';
+        return 'kriss Dynagrid Generator';
     }
 
     public function rules()

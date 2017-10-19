@@ -17,11 +17,27 @@ class Generator extends \yii\gii\generators\model\Generator
 
     public function init()
     {
-        \Yii::$app->setAliases([
+        Yii::$app->setAliases([
             '@gii-model' => '@vendor/yiisoft/yii2-gii/generators/model',
             '@gii-model-view' => '@vendor/yiisoft/yii2-gii/generators/model/default'
         ]);
         parent::init();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getName()
+    {
+        return 'Kriss Model Generator';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getDescription()
+    {
+        return 'This generator generates an ActiveRecord class for the specified database table.';
     }
 
     /**
@@ -57,6 +73,17 @@ class Generator extends \yii\gii\generators\model\Generator
         ]);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function stickyAttributes()
+    {
+        return array_merge(parent::stickyAttributes(), ['generateDao', 'daoNs']);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function generate()
     {
         if (!$this->generateDao) {
