@@ -19,8 +19,9 @@ $js = <<<JS
         if ($('#generator-generatequery').is(':checked')) {
             $('.field-generator-queryclass').toggle(show);
         }
-    }).change();
+    });
 
+    // model generator: translate table name to model class
     $('#generator-tablename').on('blur', function () {
         var tableName = $(this).val();
         var tablePrefix = $(this).attr('table_prefix') || '';
@@ -40,5 +41,42 @@ $js = <<<JS
             $('#generator-modelclass').val(modelClass).blur();
         }
     });
+
+    // model generator: translate model class to query class
+    $('#generator-modelclass').on('blur', function () {
+        var modelClass = $(this).val();
+        if (modelClass !== '') {
+            var queryClass = $('#generator-queryclass').val();
+            if (queryClass === '') {
+                queryClass = modelClass + 'Query';
+                $('#generator-queryclass').val(queryClass);
+            }
+        }
+    });
+    
+    // model generator: synchronize query namespace with model namespace
+    $('#generator-ns').on('blur', function () {
+        var stickyValue = $('#model-generator .field-generator-queryns .sticky-value');
+        var input = $('#model-generator #generator-queryns');
+        if (stickyValue.is(':visible') || !input.is(':visible')) {
+            var ns = $(this).val();
+            stickyValue.html(ns);
+            input.val(ns);
+        }
+    });
+
+    // model generator: toggle query fields
+    $('form #generator-generatequery').change(function () {
+        $('form .field-generator-queryns').toggle($(this).is(':checked'));
+        $('form .field-generator-queryclass').toggle($(this).is(':checked'));
+        $('form .field-generator-querybaseclass').toggle($(this).is(':checked'));
+    }).change();
+    
+    // model generator: toggle dao fields
+    $('form #generator-generatequery').change(function () {
+        $('form .field-generator-queryns').toggle($(this).is(':checked'));
+        $('form .field-generator-queryclass').toggle($(this).is(':checked'));
+        $('form .field-generator-querybaseclass').toggle($(this).is(':checked'));
+    }).change();
 JS;
 $this->registerJs($js);
