@@ -43,6 +43,7 @@ $columns = [
 <?php if($hasActionColumn): ?>
     [
         'class' => '\kartik\grid\ActionColumn',
+        'width' => '150px',
         'template' => '<?= implode(' ', array_map(function ($v){ return '{'.$v.'}'; }, array_keys($actionColumns))) ?>',
         'buttons' => [
 <?php foreach ($actionColumns as $column => $label): ?>
