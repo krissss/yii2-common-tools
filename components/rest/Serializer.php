@@ -74,6 +74,8 @@ class Serializer extends \yii\rest\Serializer
             return $this->serializeModel($data);
         } elseif ($data instanceof DataProviderInterface) {
             return $this->serializeDataProvider($data);
+        } elseif (is_array($data) && isset($data[0]) && $data[0] instanceof Arrayable) {
+            return $this->serializeModelArr($data);
         } else {
             if ($this->dataCommonLabel) {
                 return [$this->dataCommonLabel => $data];
@@ -122,6 +124,19 @@ class Serializer extends \yii\rest\Serializer
     protected function serializeModel($model)
     {
         $data = parent::serializeModel($model);
+        return [
+            $this->modelLabel => $data
+        ];
+    }
+
+    /**
+     * 序列化模型数组
+     * @param $models
+     * @return array
+     */
+    protected function serializeModelArr($models)
+    {
+        $data = static::serializeModels($models);
         return [
             $this->modelLabel => $data
         ];
