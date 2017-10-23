@@ -77,7 +77,7 @@ $toolbarActionsStr = implode("\n            . ", $toolbarActionsStrArr);
 ?>
     'extraToolbar' => [
         [
-            <?= $toolbarActionsStr . "\n"; ?>
+            'content' => <?= $toolbarActionsStr . "\n"; ?>
         ]
     ]
 <?php endif; ?>
