@@ -71,7 +71,7 @@ $simpleDynaGrid = new SimpleDynaGrid([
 <?php
 $toolbarActionsStrArr = [];
 foreach ($toolbarActions as $url => $label) {
-    $toolbarActionsStrArr[] = "Html::button('{$label}', ['{$url}'], ['class' => 'btn btn-default']";
+    $toolbarActionsStrArr[] = "Html::a('{$label}', ['{$url}'], ['class' => 'btn btn-default'])";
 }
 $toolbarActionsStr = implode("\n            . ", $toolbarActionsStrArr);
 ?>
