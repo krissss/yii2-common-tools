@@ -181,7 +181,7 @@ class SimpleDynaGrid extends Object
             }
         }
 
-        if(!$this->exportMenuClass){
+        if ($this->isExportAll && !$this->exportMenuClass) {
             $this->exportMenuClass = ExportMenu::className();
         }
 
@@ -286,26 +286,29 @@ class SimpleDynaGrid extends Object
                     unset($fullExportMenuColumns[$key]);
                 }
             }
-            /** @var ExportMenu $exportMenu */
-            $exportMenu = $this->exportMenuClass;
-            $fullExportMenu = $exportMenu::widget(ArrayHelper::merge([
-                'dataProvider' => $this->dataProvider,
-                'columns' => $fullExportMenuColumns,
-                'target' => ExportMenu::TARGET_BLANK,
-                'pjaxContainerId' => $this->_pjaxContainerId,
-                'clearBuffers' => true,
-                'exportConfig' => [
-                    ExportMenu::FORMAT_HTML => false,
-                    ExportMenu::FORMAT_CSV => false,
-                    ExportMenu::FORMAT_PDF => false,
-                    ExportMenu::FORMAT_TEXT => false,
-                ],
-                'dropdownOptions' => [
-                    'label' => '导出全部',
-                    'class' => 'btn btn-default',
-                ],
-            ], $this->exportMenuConfig));
-            array_push($toolbar, $fullExportMenu);
+
+            if ($this->isExportAll) {
+                /** @var ExportMenu $exportMenu */
+                $exportMenu = $this->exportMenuClass;
+                $fullExportMenu = $exportMenu::widget(ArrayHelper::merge([
+                    'dataProvider' => $this->dataProvider,
+                    'columns' => $fullExportMenuColumns,
+                    'target' => ExportMenu::TARGET_BLANK,
+                    'pjaxContainerId' => $this->_pjaxContainerId,
+                    'clearBuffers' => true,
+                    'exportConfig' => [
+                        ExportMenu::FORMAT_HTML => false,
+                        ExportMenu::FORMAT_CSV => false,
+                        ExportMenu::FORMAT_PDF => false,
+                        ExportMenu::FORMAT_TEXT => false,
+                    ],
+                    'dropdownOptions' => [
+                        'label' => '导出全部',
+                        'class' => 'btn btn-default',
+                    ],
+                ], $this->exportMenuConfig));
+                array_push($toolbar, $fullExportMenu);
+            }
         }
         if ($this->toolbarRefresh === true) {
             array_push($toolbar, [
