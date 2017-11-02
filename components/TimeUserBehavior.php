@@ -1,6 +1,6 @@
 <?php
 
-namespace common\components;
+namespace kriss\components;
 
 use Yii;
 use yii\base\Behavior;
