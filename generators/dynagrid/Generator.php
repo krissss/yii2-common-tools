@@ -112,13 +112,13 @@ class Generator extends \yii\gii\Generator
      */
     public function getControllerUseClasses()
     {
-        if($this->searchModelClass){
+        if ($this->searchModelClass) {
             $useClasses = [
                 'Yii',
                 $this->controllerBaseClass,
                 $this->searchModelClass,
             ];
-        }else{
+        } else {
             $useClasses = [
                 $this->controllerBaseClass,
                 $this->activeDataProviderClass,
@@ -159,7 +159,7 @@ class Generator extends \yii\gii\Generator
     public function getActionColumns()
     {
         $array = [];
-        $temp1 = explode(',', $this->actionColumns);
+        $temp1 = array_filter(explode(',', $this->actionColumns));
         foreach ($temp1 as $item) {
             $temp2 = explode(':', $item);
             $array[$temp2[0]] = Inflector::camel2id($temp2[1]);
@@ -174,7 +174,7 @@ class Generator extends \yii\gii\Generator
     public function getToolbarActions()
     {
         $array = [];
-        $temp1 = explode(',', $this->toolbarActions);
+        $temp1 = array_filter(explode(',', $this->toolbarActions));
         foreach ($temp1 as $item) {
             $temp2 = explode(':', $item);
             $array[$temp2[0]] = Inflector::camel2id($temp2[1]);
