@@ -2,7 +2,9 @@
 
 namespace kriss\traits;
 
+use kriss\tools\Fun;
 use Yii;
+use yii\base\Widget;
 use yii\helpers\Url;
 use yii\web\Controller;
 
@@ -37,5 +39,17 @@ trait WebControllerTrait
             /** @var $this Controller */
             return $this->redirect(Url::previous(get_class($this)));
         }
+    }
+
+    /**
+     * @param $view
+     * @param array $params
+     * @return mixed
+     */
+    public function renderAjax($view, $params = [])
+    {
+        // fix form validate
+        Widget::$autoIdPrefix = Fun::generateRandString(random_int(4, 6));
+        return parent::renderAjax($view, $params);
     }
 }
