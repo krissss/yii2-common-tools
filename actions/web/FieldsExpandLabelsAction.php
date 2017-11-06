@@ -8,19 +8,19 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
+use yii\web\ForbiddenHttpException;
 
 class FieldsExpandLabelsAction extends Action
 {
+    /**
+     * @var bool
+     */
+    public $canUse = YII_DEBUG;
     /**
      * table_name 的参数名
      * @var string
      */
     public $paramTableName = 'model';
-    /**
-     * id 的参数名
-     * @var string
-     */
-    public $paramId = 'id';
     /**
      * ActiveRecord 的 namespace
      * 字符串或数组
@@ -30,22 +30,20 @@ class FieldsExpandLabelsAction extends Action
 
     public function run()
     {
+        if (!$this->canUse) {
+            throw new ForbiddenHttpException('不可用');
+        }
         try {
             $request = Yii::$app->request;
             $tableName = $request->get($this->paramTableName);
-            $id = $request->get($this->paramId);
             if (!$tableName) {
                 throw new InvalidConfigException('必须传递 ' . $this->paramTableName);
             }
-            if (!$id) {
-                throw new InvalidConfigException('必须传递 ' . $this->paramId);
-            }
 
             $modelClass = $this->getActiveClass($tableName);
-
-            $model = $modelClass::findOne($id);
+            $model = $modelClass::find()->limit(1)->one();
             if (!$model) {
-                throw new InvalidConfigException($this->paramId . '为' . $id . '的数据不存在');
+                throw new InvalidConfigException('请联系后台人员补充至少一条记录');
             }
 
             return $this->getFieldsAndExpandLabels($model);
@@ -96,19 +94,37 @@ class FieldsExpandLabelsAction extends Action
         $fields = $model->fields();
         $expand = $model->extraFields();
         $labels = $model->attributeLabels();
-        foreach ($fields as $key => &$value) {
-            if (isset($labels[$key])) {
-                $value = $labels[$key];
-            }
-        }
-        foreach ($expand as $key => &$value) {
-            if (isset($labels[$key])) {
-                $value = $labels[$key];
-            }
-        }
+
+        $fields = $this->solveFields($fields, $labels);
+        $expand = $this->solveFields($expand, $labels);
+
         return [
             'fields' => $fields,
             'expand' => $expand
         ];
+    }
+
+    /**
+     * @param $fields
+     * @param $labels
+     * @return mixed
+     */
+    protected function solveFields($fields, $labels)
+    {
+        $data = [];
+        foreach ($fields as $field => $definition) {
+            if (is_int($field)) {
+                $field = $definition;
+            }
+            if (!is_string($definition)) {
+                $definition = $field;
+            }
+            if (isset($labels[$field])) {
+                $data[$field] = $labels[$field];
+            } else {
+                $data[$field] = $definition;
+            }
+        }
+        return $data;
     }
 }
