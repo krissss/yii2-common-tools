@@ -23,6 +23,16 @@ class Serializer extends \yii\rest\Serializer
     public $metaEnvelope = 'pagination';
 
     /**
+     * DataProvider 是否返回到 data 中
+     * @var bool
+     */
+    public $dataProviderInData = false;
+    /**
+     * DataProvider 返回时的字段名， $dataProviderInData 为 true 时有效
+     * @var string
+     */
+    public $dataProviderLabel = 'data';
+    /**
      * 验证失败的返回错误集合
      * @var string
      */
@@ -140,5 +150,20 @@ class Serializer extends \yii\rest\Serializer
         return [
             $this->modelLabel => $data
         ];
+    }
+
+    /**
+     * 可以把 $dataProvider 合并到 data 下
+     * @inheritdoc
+     */
+    public function serializeDataProvider($dataProvider)
+    {
+        if (!$this->dataProviderInData) {
+            return parent::serializeDataProvider($dataProvider);
+        } else {
+            return [
+                'data' => parent::serializeDataProvider($dataProvider)
+            ];
+        }
     }
 }
