@@ -2,11 +2,20 @@
 
 namespace kriss\widgets;
 
+use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 class SimpleAjaxForm extends ActiveForm
 {
     public $header;
+
+    public $renderCancel = true;
+    public $cancelLabel = '取消';
+    public $cancelOptions = ['class' => 'btn btn-default'];
+
+    public $renderSubmit = true;
+    public $submitLabel = '确定';
+    public $submitOptions = ['class' => 'btn btn-primary'];
 
     public function init()
     {
@@ -41,12 +50,21 @@ HTML;
 
     public static function end()
     {
+        /** @var self $widget */
         $widget = parent::end();
+        $buttons = [];
+        if ($widget->renderCancel) {
+            $widget->cancelOptions['data-dismiss'] = 'modal';
+            $buttons[] = Html::button($widget->cancelLabel, $widget->cancelOptions);
+        }
+        if ($widget->renderSubmit) {
+            $buttons[] = Html::submitButton($widget->submitLabel, $widget->submitOptions);
+        }
+        $footerButton = implode(' ', $buttons);
         echo <<<HTML
     </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="submit" class="btn btn-primary">确认</button>
+                {$footerButton}
             </div>
 HTML;
         return $widget;
