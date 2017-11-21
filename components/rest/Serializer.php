@@ -28,6 +28,11 @@ class Serializer extends \yii\rest\Serializer
      */
     public $dataProviderInData = false;
     /**
+     * 是否要在 headers 中显示分页信息
+     * @var bool
+     */
+    public $addPaginationHeaders = false;
+    /**
      * DataProvider 返回时的字段名， $dataProviderInData 为 true 时有效
      * @var string
      */
@@ -47,25 +52,21 @@ class Serializer extends \yii\rest\Serializer
      * @var string
      */
     public $dataCommonLabel = 'data';
-
     /**
      * 总数
      * @var string
      */
     public $paginationTotalCount = 'totalCount';
-
     /**
      * 总页数
      * @var string
      */
     public $paginationPageCount = 'pageCount';
-
     /**
      * 当前页
      * @var string
      */
     public $paginationCurrentPage = 'currentPage';
-
     /**
      * 每页显示数量
      * @var string
@@ -164,6 +165,17 @@ class Serializer extends \yii\rest\Serializer
             return [
                 'data' => parent::serializeDataProvider($dataProvider)
             ];
+        }
+    }
+
+    /**
+     * 可以关闭headers中显示分页信息
+     * @inheritdoc
+     */
+    protected function addPaginationHeaders($pagination)
+    {
+        if ($this->addPaginationHeaders) {
+            parent::addPaginationHeaders($pagination);
         }
     }
 }
