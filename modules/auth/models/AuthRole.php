@@ -72,9 +72,11 @@ class AuthRole extends \yii\db\ActiveRecord
     {
         /** @var \kriss\modules\auth\components\User $user */
         $user = Yii::$app->user;
+        // 超级管理员角色不能被修改
         if ($roleId == $user->superAdminId) {
             return false;
         }
+        // 角色 id 在当前登录的用户的角色内，不能修改
         $userIdentity = $user->identity;
         $authRole = $user->userAuthRoleAttribute;
         $adminAuthRole = $userIdentity->$authRole;
