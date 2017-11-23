@@ -37,7 +37,8 @@ class User extends \yii\web\User
      */
     public $userAuthRoleAttribute = 'auth_role';
     /**
-     * super admin ID
+     * 超级管理员 id
+     * 如果不确定，可以设置成0或者空
      * @var int
      */
     public $superAdminId = 1;

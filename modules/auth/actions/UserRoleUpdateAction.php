@@ -44,14 +44,8 @@ class UserRoleUpdateAction extends Action
         if (!$id) {
             throw new ForbiddenHttpException('need ' . $this->queryParameter . ' parameter');
         }
-        if ($this->permissionName) {
-            AuthValidate::run($this->permissionName);
-        }
-        /** @var \kriss\modules\auth\components\User $user */
-        $user = Yii::$app->user;
-        if ($id == $user->superAdminId || $id == $user->id) {
-            throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
-        }
+
+        $this->checkAuth($id);
 
         $updateUserRole = new UpdateUserRole([
             'userId' => $id
@@ -64,6 +58,22 @@ class UserRoleUpdateAction extends Action
 
         $updateUserRole->initData();
         return $this->renderHtml($updateUserRole);
+    }
+
+    /**
+     * 检查操作权限
+     * @param $id
+     * @throws ForbiddenHttpException
+     */
+    protected function checkAuth ($id) {
+        if ($this->permissionName) {
+            AuthValidate::run($this->permissionName);
+        }
+        /** @var \kriss\modules\auth\components\User $user */
+        $user = Yii::$app->user;
+        if ($id == $user->superAdminId || $id == $user->id) {
+            throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+        }
     }
 
     /**
