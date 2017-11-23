@@ -19,6 +19,7 @@ class InitAuthController extends Controller
     public $adminClass = 'common\models\Admin';
     /**
      * super admin id
+     * can be null or ''
      * @var int
      */
     public $superAdminId = 1;
@@ -32,6 +33,16 @@ class InitAuthController extends Controller
      * @var Auth
      */
     public $authClass = 'common\models\base\Auth';
+    /**
+     * subclass of kriss\modules\auth\models\AuthRole
+     * @var AuthRole
+     */
+    public $authRoleClass = 'kriss\modules\auth\models\AuthRole';
+    /**
+     * subclass of kriss\modules\auth\models\AuthOperation
+     * @var AuthOperation
+     */
+    public $authOperationClass = 'kriss\modules\auth\models\AuthOperation';
 
     /**
      * delete and create operations and role
@@ -54,7 +65,8 @@ class InitAuthController extends Controller
      * delete and create operations
      * @throws Exception
      */
-    public function actionUpdateOperations(){
+    public function actionUpdateOperations()
+    {
         $transaction = Yii::$app->db->beginTransaction();
         try {
             $this->initAuthOperations();
@@ -70,9 +82,12 @@ class InitAuthController extends Controller
      */
     protected function getInitRoles()
     {
-        return [
-            $this->superAdminId => ['超级管理员', '拥有所有权限', 'all']
-        ];
+        if ($this->superAdminId) {
+            return [
+                $this->superAdminId => ['超级管理员', '拥有所有权限', 'all']
+            ];
+        }
+        return [];
     }
 
     protected function initAuthOperations()
@@ -80,15 +95,18 @@ class InitAuthController extends Controller
         $authClass = $this->authClass;
         $permissions = $authClass::initData();
         echo "initAuthOperations ______________ start\n";
-        AuthOperation::deleteAll();
+        $authOperationClass = $this->authOperationClass;
+        $authOperationClass::deleteAll();
         foreach ($permissions as $permission) {
-            $model = new AuthOperation();
+            /** @var AuthOperation $model */
+            $model = new $authOperationClass();
             $model->id = $permission['id'];
             $model->parent_id = 0;
             $model->name = $permission['name'];
             $model->save(false);
             foreach ($permission['children'] as $item) {
-                $model = new AuthOperation();
+                /** @var AuthOperation $model */
+                $model = new $authOperationClass();
                 $model->id = $item['id'];
                 $model->parent_id = $permission['id'];
                 $model->name = $item['name'];
@@ -101,15 +119,19 @@ class InitAuthController extends Controller
     protected function initAuthRole()
     {
         echo "initAuthRole ______________ start\n";
-        AuthRole::deleteAll();
+        $authRoleClass = $this->authRoleClass;
+        $authRoleClass::deleteAll();
         $roles = $this->getInitRoles();
-        foreach ($roles as $id => $role) {
-            $model = new AuthRole();
-            $model->id = $id;
-            $model->name = $role[0];
-            $model->description = $role[1];
-            $model->operation_list = $role[2];
-            $model->save(false);
+        if ($roles) {
+            foreach ($roles as $id => $role) {
+                /** @var AuthRole $model */
+                $model = new $authRoleClass();
+                $model->id = $id;
+                $model->name = $role[0];
+                $model->description = $role[1];
+                $model->operation_list = $role[2];
+                $model->save(false);
+            }
         }
 
         if ($this->superAdminId) {
