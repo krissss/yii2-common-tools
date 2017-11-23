@@ -57,7 +57,7 @@ class AuthRole extends \yii\db\ActiveRecord
      */
     public static function findName($ids)
     {
-        $models = AuthRole::find()->select('name')->andWhere(['id' => $ids])->asArray()->all();
+        $models = static::find()->select('name')->andWhere(['id' => $ids])->asArray()->all();
         $nameArr = ArrayHelper::getColumn($models, 'name');
         return implode(',', $nameArr);
     }
@@ -109,6 +109,6 @@ class AuthRole extends \yii\db\ActiveRecord
      */
     public static function getOperationsArr($authRoleIds)
     {
-        return ArrayHelper::getColumn(AuthRole::find()->select('operation_list')->andWhere(['id' => $authRoleIds])->asArray()->all(), 'operation_list');
+        return ArrayHelper::getColumn(static::find()->select('operation_list')->andWhere(['id' => $authRoleIds])->asArray()->all(), 'operation_list');
     }
 }
