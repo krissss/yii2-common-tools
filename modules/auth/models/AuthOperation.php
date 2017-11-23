@@ -52,7 +52,7 @@ class AuthOperation extends \yii\db\ActiveRecord
             $operations[$rootOperation->id]['name'] = $rootOperation->getViewName();
         }
         /** @var AuthOperation[] $subOperations */
-        $subOperations = AuthOperation::find()->where('parent_id <> 0')->all();
+        $subOperations = AuthOperation::find()->where(['!=', 'parent_id', 0])->all();
         foreach ($subOperations as $subOperation) {
             if (in_array($subOperation->id, Module::getInstance()->skipAuthOptions)) {
                 continue;
@@ -75,7 +75,8 @@ class AuthOperation extends \yii\db\ActiveRecord
 
     /**
      * 获得显示用的名字
-     * @return string
+     * @param $name
+     * @return mixed|string
      */
     public static function findViewName($name)
     {

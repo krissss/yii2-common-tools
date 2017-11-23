@@ -17,7 +17,6 @@ namespace kriss\modules\auth\components;
 use kriss\modules\auth\models\AuthRole;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\helpers\ArrayHelper;
 
 class User extends \yii\web\User
 {
@@ -26,6 +25,12 @@ class User extends \yii\web\User
      * @var string
      */
     public $authClass;
+    /**
+     * AuthRole Class
+     * must be subClass of kriss\modules\auth\models\AuthRole
+     * @var string|AuthRole
+     */
+    public $authRoleClass = 'kriss\modules\auth\models\AuthRole';
     /**
      * auth role attribute in Admin table
      * @var string
@@ -74,7 +79,8 @@ class User extends \yii\web\User
             $user = Yii::$app->user->identity;
             $authRole = $this->userAuthRoleAttribute;
             $userAuthRoles = explode(',', $user->$authRole);
-            $operationsArr = ArrayHelper::getColumn(AuthRole::find()->select('operation_list')->where(['id' => $userAuthRoles])->asArray()->all(), 'operation_list');
+            $authRoleClass = $this->authRoleClass;
+            $operationsArr = $authRoleClass::getOperationsArr($userAuthRoles);
             $operations = implode(';', $operationsArr);
             $this->_operations = $operations;
         }
@@ -88,5 +94,15 @@ class User extends \yii\web\User
             return false;
         else
             return true;
+    }
+
+    /**
+     * 查询所有的角色信息
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function findAllRoles()
+    {
+        $authRoleClass = $this->authRoleClass;
+        return $authRoleClass::findAllIdName(true);
     }
 }

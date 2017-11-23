@@ -8,7 +8,6 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveRecord;
-use yii\helpers\ArrayHelper;
 
 class UpdateUserRole extends Model
 {
@@ -27,6 +26,11 @@ class UpdateUserRole extends Model
      * @var array
      */
     public $roles;
+    /**
+     * 展示的字段
+     * @var string
+     */
+    public $displayAttribute = 'id';
 
     /**
      * @var ActiveRecord
@@ -56,7 +60,7 @@ class UpdateUserRole extends Model
             $this->userRole = [];
         }
 
-        $this->roles = ArrayHelper::map(AuthRole::find()->select(['id', 'name'])->asArray()->all(), 'id', 'name');
+        $this->roles = $user->findAllRoles();
     }
 
     public function rules()
@@ -76,4 +80,23 @@ class UpdateUserRole extends Model
         return ['type' => 'success', 'msg' => '用户角色修改成功'];
     }
 
+    /**
+     * 获取页面展示信息
+     * @return mixed
+     */
+    public function getDisplayInfo()
+    {
+        $attribute = $this->displayAttribute;
+        if ($this->user->hasAttribute($attribute)) {
+            $arr['label'] = $this->user->getAttributeLabel($attribute);
+            $arr['value'] = $this->user->$attribute;
+            if (in_array($arr['label'], ['id', 'ID'])) {
+                $arr['label'] = '用户编号';
+            }
+            return $arr;
+        }
+        $arr['label'] = '用户编号';
+        $arr['value'] = $this->userId;
+        return $arr;
+    }
 }

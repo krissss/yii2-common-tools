@@ -2,10 +2,14 @@
 
 namespace kriss\modules\auth\models;
 
+use kriss\modules\auth\Module;
 use yii\data\ActiveDataProvider;
 
 class AuthRoleSearch extends AuthRole
 {
+    /**
+     * @inheritdoc
+     */
     public function rules() {
         return [
             [['id'], 'integer'],
@@ -13,8 +17,19 @@ class AuthRoleSearch extends AuthRole
         ];
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getQuery() {
+        return (Module::getAuthRoleClass())::find();
+    }
+
+    /**
+     * @param $params
+     * @return ActiveDataProvider
+     */
     public function search($params) {
-        $query = AuthRole::find();
+        $query = $this->getQuery();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

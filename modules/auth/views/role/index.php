@@ -3,9 +3,9 @@
 /* @var $searchModel */
 /* @var $dataProvider */
 
+use kriss\modules\auth\Module;
 use yii\helpers\Html;
 use kriss\modules\auth\tools\AuthValidate;
-use kriss\modules\auth\models\AuthRole;
 
 /** @var \kriss\modules\auth\models\Auth $authClass */
 $authClass = Yii::$app->user->authClass;
@@ -46,7 +46,7 @@ $columns = [
                 return '';
             },
             'update' => function ($url, $model) use ($authClass) {
-                if (AuthValidate::has($authClass::ROLE_UPDATE) && AuthRole::canLoginUserModify($model->id)) {
+                if (AuthValidate::has($authClass::ROLE_UPDATE) && (Module::getAuthRoleClass())::canLoginUserModify($model->id)) {
                     $options = [
                         'data-pjax' => '0',
                         'class' => 'btn btn-default'
@@ -56,7 +56,7 @@ $columns = [
                 return '';
             },
             'delete' => function ($url, $model) use ($authClass) {
-                if (AuthValidate::has($authClass::ROLE_DELETE) && AuthRole::canLoginUserModify($model->id)) {
+                if (AuthValidate::has($authClass::ROLE_DELETE) && (Module::getAuthRoleClass())::canLoginUserModify($model->id)) {
                     $options = [
                         'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                         'data-method' => 'post',

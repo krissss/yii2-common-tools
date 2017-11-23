@@ -29,10 +29,9 @@ class UserRoleUpdateAction extends Action
     public $isRenderAjax = false;
     /**
      * view name
-     * see ajax example under @kriss\modules\auth\examples\views\_update_role.php
      * @var string
      */
-    public $view;
+    public $view = '@kriss/modules/auth/views/user-role/_update_role';
     /**
      * query parameter: user ID
      * @var string

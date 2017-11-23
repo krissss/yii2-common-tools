@@ -3,11 +3,11 @@
 namespace kriss\modules\auth\controllers;
 
 use kriss\modules\auth\models\Auth;
+use kriss\modules\auth\Module;
 use kriss\modules\auth\tools\AuthValidate;
 use Yii;
 use kriss\modules\auth\models\AuthRole;
 use kriss\modules\auth\models\AuthRoleSearch;
-use kriss\modules\auth\models\AuthOperation;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -16,8 +16,6 @@ use yii\filters\VerbFilter;
 
 class RoleController extends Controller
 {
-    const SUPER_ADMIN_ID = 1;
-
     public function behaviors()
     {
         $behaviors = parent::behaviors();
@@ -37,11 +35,12 @@ class RoleController extends Controller
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
         AuthValidate::run($authClass::ROLE_VIEW);
-        /** @var \kriss\modules\auth\components\User $user */
 
         Url::remember();
 
-        $searchModel = new AuthRoleSearch();
+        $class = Module::getAuthRoleSearchClass();
+        /** @var AuthRoleSearch $searchModel */
+        $searchModel = new $class();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -63,7 +62,7 @@ class RoleController extends Controller
         if ($model->operation_list) {
             $arrayOperation = explode(';', $model->operation_list);
             foreach ($arrayOperation as $item) {
-                $strOperation .= AuthOperation::findViewName($item) . ' | ';
+                $strOperation .= (Module::getAuthOperationClass())::findViewName($item) . ' | ';
                 $i++;
                 if ($i % 5 == 0)
                     $strOperation .= "<br>";
@@ -82,17 +81,18 @@ class RoleController extends Controller
         $authClass = Yii::$app->user->authClass;
         AuthValidate::run($authClass::ROLE_CREATE);
 
-        $model = new AuthRole();
+        $class = Module::getAuthRoleClass();
+        /** @var AuthRole $model */
+        $model = new $class();
 
         if ($model->load(Yii::$app->request->post())) {
-            $operations = $this->prepareOperations(Yii::$app->request->post());
+            $operations = $this->prepareOperations($model, Yii::$app->request->post());
             $model->operation_list = implode(';', $operations);
-
             $model->save(false);
             Yii::$app->session->setFlash('success', '创建成功');
             return $this->redirect(Url::previous());
         } else {
-            $operations = AuthOperation::findAllOperations();
+            $operations = (Module::getAuthOperationClass())::findAllOperations();
 
             return $this->render('create_update', [
                 'model' => $model,
@@ -107,21 +107,21 @@ class RoleController extends Controller
         $authClass = Yii::$app->user->authClass;
         AuthValidate::run($authClass::ROLE_UPDATE);
 
-        if(!AuthRole::canLoginUserModify($id)){
+        if (!(Module::getAuthRoleClass())::canLoginUserModify($id)) {
             throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
         }
 
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
-            $operations = $this->prepareOperations(Yii::$app->request->post());
+            $operations = $this->prepareOperations($model, Yii::$app->request->post());
             $model->operation_list = implode(';', $operations);
 
             $model->save(false);
             Yii::$app->session->setFlash('success', '更新成功');
             return $this->redirect(Url::previous());
         } else {
-            $operations = AuthOperation::findAllOperations();
+            $operations = (Module::getAuthOperationClass())::findAllOperations();
 
             //generate selected operations
             $model->_operations = explode(';', $model->operation_list);
@@ -139,7 +139,7 @@ class RoleController extends Controller
         $authClass = Yii::$app->user->authClass;
         AuthValidate::run($authClass::ROLE_DELETE);
 
-        if(!AuthRole::canLoginUserModify($id)){
+        if (!(Module::getAuthRoleClass())::canLoginUserModify($id)) {
             throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
         }
 
@@ -156,7 +156,7 @@ class RoleController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = AuthRole::findOne($id)) !== null) {
+        if (($model = (Module::getAuthRoleClass())::find()->andWhere(['id' => $id])->one()) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -165,12 +165,14 @@ class RoleController extends Controller
 
     /**
      * prepare Operations
+     * @param AuthRole $model
      * @param array $post
      * @return array
      */
-    protected function prepareOperations($post)
+    protected function prepareOperations($model, $post)
     {
-        return (isset($post['AuthRole']['_operations']) &&
-            is_array($post['AuthRole']['_operations'])) ? $post['AuthRole']['_operations'] : [];
+        $formName = $model->formName();
+        return (isset($post[$formName]['_operations']) &&
+            is_array($post[$formName]['_operations'])) ? $post[$formName]['_operations'] : [];
     }
 }

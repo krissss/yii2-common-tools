@@ -51,18 +51,20 @@ class AuthRole extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @param $ids
+     * @return string
+     */
     public static function findName($ids)
     {
-        $models = AuthRole::find()->select('name')->where(['id' => $ids])->asArray()->all();
+        $models = AuthRole::find()->select('name')->andWhere(['id' => $ids])->asArray()->all();
         $nameArr = ArrayHelper::getColumn($models, 'name');
         return implode(',', $nameArr);
     }
 
     /**
-     * check login user can modify auth_role
-     * super admin can not be modify
-     * and
-     * user self can not modify his self role
+     * 检查登录的用户是否可以修改修改角色
+     * 超级管理员和用户自己不能修改
      * @param $roleId
      * @return bool
      */
@@ -72,7 +74,7 @@ class AuthRole extends \yii\db\ActiveRecord
         $user = Yii::$app->user;
         if ($roleId == $user->superAdminId) {
             return false;
-        };
+        }
         $userIdentity = $user->identity;
         $authRole = $user->userAuthRoleAttribute;
         $adminAuthRole = $userIdentity->$authRole;
@@ -80,5 +82,33 @@ class AuthRole extends \yii\db\ActiveRecord
             return false;
         }
         return true;
+    }
+
+    /**
+     * 查询所有的 id 和 name
+     * @param bool $map
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public static function findAllIdName($map = false)
+    {
+        $models = self::find()->select(['id', 'name'])->asArray()->all();
+        if ($map) {
+            $models = ArrayHelper::map($models, 'id', 'name');
+        }
+        return $models;
+    }
+
+    /**
+     * 根据用户角色 id 获取所有的操作权限
+     * 返回值如下：
+     * [
+     *    'roleView', 'roleCreate'
+     * ]
+     * @param $authRoleIds array
+     * @return array
+     */
+    public static function getOperationsArr($authRoleIds)
+    {
+        return ArrayHelper::getColumn(AuthRole::find()->select('operation_list')->andWhere(['id' => $authRoleIds])->asArray()->all(), 'operation_list');
     }
 }
