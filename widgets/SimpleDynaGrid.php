@@ -155,6 +155,12 @@ class SimpleDynaGrid extends Object
     public $dataColumnClass = '\kriss\widgets\DataColumn';
 
     /**
+     * gridView 的 pager 字段
+     * @var array
+     */
+    public $gridPager;
+
+    /**
      * @var string
      */
     private $_pjaxContainerId;
@@ -169,6 +175,17 @@ class SimpleDynaGrid extends Object
         }
         if (!isset($this->dataProvider)) {
             throw new Exception('必须设置 dataProvider');
+        }
+
+        if (!$this->gridPager){
+            $this->gridPager = [
+                'class' => LinkPagerWithSubmit::className(),
+                'firstPageLabel' => '第一页',
+                'lastPageLabel' => '最后一页',
+                'pageSizeLabel' => '每页',
+                'pageLabel' => '当前',
+                'submitButtonLabel' => '确定',
+            ];
         }
 
         if (isset($this->extraToolbar)) {
@@ -239,14 +256,7 @@ class SimpleDynaGrid extends Object
                     'afterOptions' => ['class' => 'text-center'],
                     'footer' => false
                 ],
-                'pager' => [
-                    'class' => LinkPagerWithSubmit::className(),
-                    'firstPageLabel' => '第一页',
-                    'lastPageLabel' => '最后一页',
-                    'pageSizeLabel' => '每页',
-                    'pageLabel' => '当前',
-                    'submitButtonLabel' => '确定',
-                ],
+                'pager' => $this->gridPager,
                 'export' => [
                     'showConfirmAlert' => false,
                     'target' => GridView::TARGET_BLANK,
