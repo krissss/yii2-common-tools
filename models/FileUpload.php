@@ -18,14 +18,19 @@ class FileUpload extends Model
     public $fileLabel = '上传文件';
     /**
      * 最大大小
-     * @var string
+     * @var string|false
      */
-    public $maxSize;
+    public $maxSize = false;
     /**
      * 扩展名，逗号隔开
-     * @var string
+     * @var string|false
      */
-    public $extensions;
+    public $extensions = false;
+    /**
+     * 文件类型
+     * @var string|false
+     */
+    public $mimeTypes = false;
     /**
      * 保存路径
      * @var string
@@ -54,6 +59,9 @@ class FileUpload extends Model
             if ($this->extensions) {
                 $fileRule += ['extensions' => $this->extensions];
             }
+            if ($this->mimeTypes) {
+                $fileRule += ['mimeTypes' => $this->mimeTypes];
+            }
         } else {
             $fileRule = [
                 ['file'], 'each', 'rule' => ['file', 'skipOnEmpty' => false]
@@ -63,6 +71,9 @@ class FileUpload extends Model
             }
             if ($this->extensions) {
                 $fileRule['rule'] += ['extensions' => $this->extensions];
+            }
+            if ($this->mimeTypes) {
+                $fileRule['rule'] += ['mimeTypes' => $this->mimeTypes];
             }
         }
 
