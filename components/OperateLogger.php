@@ -3,9 +3,9 @@
 namespace kriss\components;
 
 use Yii;
-use yii\base\Object;
+use yii\base\Component;
 
-class OperateLogger extends Object
+class OperateLogger extends Component
 {
     /**
      * 记录操作日志

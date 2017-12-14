@@ -10,12 +10,12 @@ namespace kriss\widgets;
 use kartik\dynagrid\DynaGrid;
 use kartik\export\ExportMenu;
 use kartik\grid\GridView;
+use yii\base\Component;
 use yii\base\Exception;
-use yii\base\Object;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
-class SimpleDynaGrid extends Object
+class SimpleDynaGrid extends Component
 {
     /**
      * 必配,id

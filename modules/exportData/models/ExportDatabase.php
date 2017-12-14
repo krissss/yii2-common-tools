@@ -3,12 +3,12 @@
 namespace kriss\modules\exportData\models;
 
 use Yii;
-use yii\base\Object;
+use yii\base\Component;
 use yii\db\ActiveRecord;
 use yii\db\Exception;
 use ZipArchive;
 
-class ExportDatabase extends Object
+class ExportDatabase extends Component
 {
     /**
      * ActiveRecord Class to export namespace

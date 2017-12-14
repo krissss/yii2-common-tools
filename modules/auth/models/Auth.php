@@ -2,9 +2,9 @@
 
 namespace kriss\modules\auth\models;
 
-use yii\base\Object;
+use yii\base\Component;
 
-class Auth extends Object
+class Auth extends Component
 {
     const PERMISSION_ID = 10;
     const ROLE_ID = 20;
