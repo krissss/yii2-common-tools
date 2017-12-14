@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": ">=2.0.11",
+        "yiisoft/yii2": "~2.0.6",
         "dmstr/yii2-adminlte-asset": "^2.5",
         "kartik-v/yii2-dynagrid": "^1.4",
         "kartik-v/yii2-datecontrol": "^1.9"

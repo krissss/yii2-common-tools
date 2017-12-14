@@ -6,7 +6,7 @@ Some usage classes in Yii2 Project for quickly develop
 
 ## use composer
  
-    php composer.phar install kriss/yii2-common-tools -vvv
+    php composer.phar require kriss/yii2-common-tools -vvv
 
 ## use github (use this for newest)
 
