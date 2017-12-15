@@ -20,11 +20,6 @@ class Module extends \yii\base\Module
      */
     public $defaultRoute = 'permission';
     /**
-     * other behaviors
-     * @var array
-     */
-    public $behaviors = [];
-    /**
      * auth operation which to be hidden
      * use id in table auth_operation
      * @var array
@@ -48,29 +43,6 @@ class Module extends \yii\base\Module
      * @var string|AuthRoleSearch
      */
     public $authRoleSearchClass = 'kriss\modules\auth\models\AuthRoleSearch';
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        parent::init();
-        // 检查 authOperationClass 和 authRoleClass
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-
-        foreach ($this->behaviors as $key => $behavior) {
-            $behaviors[$key] = $behavior;
-        }
-
-        return $behaviors;
-    }
 
     /**
      * @return AuthOperation|string
