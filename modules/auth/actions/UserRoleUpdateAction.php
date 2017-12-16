@@ -31,7 +31,7 @@ class UserRoleUpdateAction extends Action
      * view name
      * @var string
      */
-    public $view = '@kriss/modules/auth/views/user-role/_update_role';
+    public $view = '@krissAuth/views/user-role/_update_role';
     /**
      * query parameter: user ID
      * @var string
@@ -40,6 +40,7 @@ class UserRoleUpdateAction extends Action
 
     public function run()
     {
+        Yii::setAlias('@krissAuth', dirname(__DIR__));
         $id = Yii::$app->request->get($this->queryParameter);
         if (!$id) {
             throw new ForbiddenHttpException('need ' . $this->queryParameter . ' parameter');
@@ -65,7 +66,8 @@ class UserRoleUpdateAction extends Action
      * @param $id
      * @throws ForbiddenHttpException
      */
-    protected function checkAuth ($id) {
+    protected function checkAuth($id)
+    {
         if ($this->permissionName) {
             AuthValidate::run($this->permissionName);
         }
