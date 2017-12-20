@@ -9,6 +9,12 @@ class SimpleAjaxForm extends ActiveForm
 {
     public $header;
 
+    /**
+     * lg sm
+     * @var string
+     */
+    public $modalSize;
+
     public $renderCancel = true;
     public $cancelLabel = '取消';
     public $cancelOptions = ['class' => 'btn btn-default'];
@@ -29,9 +35,10 @@ class SimpleAjaxForm extends ActiveForm
     {
         /** @var self $widget */
         $widget = parent::begin($config);
+        $modalSize = $widget->modalSize ? ('modal-' . $widget->modalSize) : '';
         echo <<<HTML
         <div class="modal fade ajax_modal">
-    <div class="modal-dialog">
+    <div class="modal-dialog {$modalSize}">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
