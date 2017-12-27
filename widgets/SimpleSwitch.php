@@ -2,7 +2,7 @@
 
 namespace kriss\widgets;
 
-use kartik\widgets\SwitchInput;
+use kartik\switchinput\SwitchInput;
 
 class SimpleSwitch extends SwitchInput
 {
