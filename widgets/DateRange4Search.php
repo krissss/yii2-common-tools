@@ -4,6 +4,8 @@ namespace kriss\widgets;
 
 class DateRange4Search extends DateRangeBase
 {
+    public $noMarginButton = true;
+
     public $template = <<<HTML
 <div class="col-sm-12 col-md-12">
     {label}

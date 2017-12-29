@@ -4,6 +4,8 @@ namespace kriss\widgets;
 
 class DateRange4Form extends DateRangeBase
 {
+    public $noMarginButton = false;
+
     public $template = '{label}<div class="col-sm-5">{widget}</div>{error}';
 
     public $labelOptions = ['class' => 'control-label col-sm-2'];
