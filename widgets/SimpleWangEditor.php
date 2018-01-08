@@ -4,14 +4,18 @@ namespace kriss\widgets;
 
 use kriss\wangEditor\WangEditorWidget;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 class SimpleWangEditor extends WangEditorWidget
 {
     /**
      * 上传文件路径
-     * @var string
+     * 为 false 时将使用 Url::to(['/upload/wang-editor'])
+     * 否则使用给定的地址。
+     * action 可以 kriss\actions\web\WangEditorUploadAction
+     * @var string|false
      */
-    public $uploadUrl = '/upload/wang-editor';
+    public $uploadUrl = false;
 
     /**
      * 上传文件大小：默认5M
@@ -28,6 +32,11 @@ class SimpleWangEditor extends WangEditorWidget
     public function init()
     {
         parent::init();
+
+        if ($this->uploadUrl === false) {
+            $this->uploadUrl = Url::to(['/upload/wang-editor']);
+        }
+
         $this->setClientJs();
     }
 
