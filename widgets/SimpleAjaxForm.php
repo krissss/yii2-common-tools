@@ -26,7 +26,7 @@ class SimpleAjaxForm extends ActiveForm
     public $options = ['class' => 'form-horizontal'];
 
     public $fieldConfig = [
-        'template' => '{label}<div class="col-sm-10">{input}</div>{error}',
+        'template' => '{label}<div class="col-sm-10">{input}{hint}</div>{error}',
         'labelOptions' => ['class' => 'control-label col-sm-2'],
         'errorOptions' => ['class' => 'help-block col-sm-10 col-sm-offset-2']
     ];

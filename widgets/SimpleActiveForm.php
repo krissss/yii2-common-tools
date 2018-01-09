@@ -30,7 +30,7 @@ class SimpleActiveForm extends ActiveForm
             'class' => 'form-horizontal'
         ];
         $this->fieldConfig = [
-            'template' => '{label}<div class="col-sm-5">{input}</div>{error}',
+            'template' => '{label}<div class="col-sm-5">{input}{hint}</div>{error}',
             'labelOptions' => ['class' => 'control-label col-sm-2'],
             'errorOptions' => ['class' => 'help-block col-sm-5']
         ];
