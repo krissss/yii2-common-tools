@@ -131,11 +131,18 @@ class Fun
     /**
      * 在后台执行 console 下 controller 中的方法
      * @param $yiiCmd
+     * @param $yiiExecFile
+     * @param $phpExecFile
      */
-    public static function runYiiConsoleInBackground($yiiCmd)
+    public static function runYiiConsoleInBackground($yiiCmd, $yiiExecFile = null, $phpExecFile = null)
     {
-        $yiiExecPath = dirname(Yii::getAlias('@console'));
-        $command = 'php ' . $yiiExecPath . DIRECTORY_SEPARATOR . 'yii ' . $yiiCmd;
+        if ($yiiExecFile === null) {
+            $yiiExecFile = dirname(Yii::getAlias('@console')) . DIRECTORY_SEPARATOR . 'yii';
+        }
+        if ($phpExecFile === null) {
+            $phpExecFile = 'php';
+        }
+        $command = implode(' ', [trim($phpExecFile), trim($yiiExecFile), trim($yiiCmd)]);
         static::runCmdInBackground($command);
     }
 }
