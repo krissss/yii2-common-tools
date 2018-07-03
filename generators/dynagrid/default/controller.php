@@ -63,4 +63,18 @@ class <?= $generator->getClassName($generator->controllerClass) ?> extends <?= $
     }
 
 <?php endforeach; ?>
+
+    /**
+     * @param $id
+     * @return CompanyQuestion
+     * @throws NotFoundHttpException
+     */
+    protected function findModel($id)
+    {
+        $model = <?= $generator->getClassName($generator->modelClass) ?>::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException();
+        }
+        return $model;
+    }
 }

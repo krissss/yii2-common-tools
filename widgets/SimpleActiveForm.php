@@ -11,6 +11,15 @@ use kartik\form\ActiveForm;
 
 class SimpleActiveForm extends ActiveForm
 {
+    public $options = [
+        'class' => 'form-horizontal'
+    ];
+    public $fieldConfig = [
+        'template' => '{label}<div class="col-sm-5">{input}{hint}</div>{error}',
+        'labelOptions' => ['class' => 'control-label col-sm-2'],
+        'errorOptions' => ['class' => 'help-block col-sm-5']
+    ];
+
     public $title = '标题';
 
     public $renderReturn = false;
@@ -26,14 +35,6 @@ class SimpleActiveForm extends ActiveForm
 
     public function init()
     {
-        $this->options = [
-            'class' => 'form-horizontal'
-        ];
-        $this->fieldConfig = [
-            'template' => '{label}<div class="col-sm-5">{input}{hint}</div>{error}',
-            'labelOptions' => ['class' => 'control-label col-sm-2'],
-            'errorOptions' => ['class' => 'help-block col-sm-5']
-        ];
         if (!isset($this->returnHref)) {
             $this->returnHref = 'javascript:history.back()';
         }

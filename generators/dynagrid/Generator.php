@@ -9,30 +9,33 @@ use yii\db\Schema;
 use yii\gii\CodeFile;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
+use yii\web\NotFoundHttpException;
 
 class Generator extends \yii\gii\Generator
 {
-    public $controllerClass = 'backend\controllers\XXXController';
+    public $controllerClass = 'backend\controllers\XController';
 
-    public $controllerBaseClass = 'backend\components\{Auth|Base}WebController';
+    public $controllerBaseClass = 'backend\components\AuthWebController';
 
     public $activeDataProviderClass = 'common\components\ActiveDataProvider';
 
-    public $searchModelClass = 'backend\models\XXXSearch';
+    public $searchModelClass = 'backend\models\XSearch';
 
-    public $modelClass = 'common\models\User';
+    public $modelClass = 'common\models\\X';
 
-    public $searchAttributes = 'id,created_at';
+    public $searchAttributes = '';
 
     public $actionIndex = 'index';
 
-    public $title = 'xxx';
+    public $title = 'X管理';
 
-    public $dataColumns = 'id,name';
+    public $dataColumns = '';
 
     public $actionColumns = 'update:更新,view:详情';
 
     public $toolbarActions = 'create:新增';
+
+    public $viewPath = '@app/views';
 
     public $hasCheckboxColumn = false;
 
@@ -46,7 +49,8 @@ class Generator extends \yii\gii\Generator
         return array_merge(parent::rules(), [
             [[
                 'controllerClass', 'controllerBaseClass', 'activeDataProviderClass', 'searchModelClass', 'modelClass',
-                'searchAttributes', 'actionIndex', 'title', 'dataColumns', 'actionColumns', 'toolbarActions'
+                'searchAttributes', 'actionIndex', 'title', 'dataColumns', 'actionColumns', 'toolbarActions',
+                'viewPath',
             ], 'safe'],
             ['hasCheckboxColumn', 'boolean']
         ]);
@@ -59,13 +63,14 @@ class Generator extends \yii\gii\Generator
             'controllerBaseClass' => '控制器继承类, (e.g. <code>backend\controller\AuthWebController</code>)',
             'activeDataProviderClass' => '数据提供器类, (e.g. <code>common\components\ActiveDataProvider</code>)',
             'searchModelClass' => '查询模型类,可以为空, (e.g. <code>backend\models\ArticleSearch</code>)',
-            'modelClass' => '查询模型继承类,必须是 yii\db\ActiveRecord 子类,searchModelClass 为空时无用, (e.g. <code>common\models\Article</code>)',
+            'modelClass' => '模型类,必须是 yii\db\ActiveRecord 子类, (e.g. <code>common\models\Article</code>)',
             'searchAttributes' => '查询的字段, (e.g. <code>id,created_at,title</code>)',
             'actionIndex' => '列表页 action 的id, (e.g. <code>index</code>)',
             'title' => '列表页面的标题, (e.g. <code>文章管理</code>)',
             'dataColumns' => '列表页面的 DataColumn 属性字段, (e.g. <code>id,name</code>)',
             'actionColumns' => '列表页面的 ActionColumn 属性字段,可以为空, (e.g. <code>update:更新,view:详情</code>)',
             'toolbarActions' => '列表页面的 Toolbar 操作,可以为空, (e.g. <code>create:新增</code>)',
+            'viewPath' => '视图地址, (e.g. <code>@app/views</code>)',
             'hasCheckboxColumn' => '是否有复选框',
         ]);
     }
@@ -75,7 +80,12 @@ class Generator extends \yii\gii\Generator
      */
     public function stickyAttributes()
     {
-        return array_merge(parent::stickyAttributes(), ['controllerBaseClass', 'activeDataProviderClass', 'actionIndex']);
+        return array_merge(parent::stickyAttributes(), [
+            'controllerBaseClass',
+            'activeDataProviderClass',
+            'actionIndex',
+            'viewPath'
+        ]);
     }
 
     public function generate()
@@ -112,18 +122,20 @@ class Generator extends \yii\gii\Generator
      */
     public function getControllerUseClasses()
     {
+        $commonClasses = [
+            'Yii',
+            $this->controllerBaseClass,
+            NotFoundHttpException::class,
+            $this->modelClass,
+        ];
         if ($this->searchModelClass) {
-            $useClasses = [
-                'Yii',
-                $this->controllerBaseClass,
+            $useClasses = array_merge($commonClasses, [
                 $this->searchModelClass,
-            ];
+            ]);
         } else {
-            $useClasses = [
-                $this->controllerBaseClass,
+            $useClasses = array_merge($commonClasses, [
                 $this->activeDataProviderClass,
-                $this->modelClass,
-            ];
+            ]);
         }
         natcasesort($useClasses);
         return array_values($useClasses);
@@ -354,7 +366,13 @@ class Generator extends \yii\gii\Generator
      */
     public function getViewFile($action)
     {
-        return Yii::getAlias('@app/views/' . $this->getControllerID() . "/$action.php");
+        if (empty($this->viewPath)) {
+            $viewPath = Yii::getAlias("@app/views");
+        } else {
+            $viewPath = Yii::getAlias(rtrim(str_replace('\\', '/', $this->viewPath), '/'));
+        }
+
+        return "{$viewPath}/{$this->getControllerID()}/{$action}.php";
     }
 
     /**

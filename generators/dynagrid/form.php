@@ -14,4 +14,5 @@ echo $form->field($generator, 'title');
 echo $form->field($generator, 'dataColumns');
 echo $form->field($generator, 'actionColumns');
 echo $form->field($generator, 'toolbarActions');
+echo $form->field($generator, 'viewPath');
 echo $form->field($generator, 'hasCheckboxColumn')->checkbox();

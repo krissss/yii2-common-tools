@@ -74,6 +74,13 @@ class SimpleFileUpload extends InputWidget
      */
     public $allowedFileExtensions = ['jpg', 'png'];
 
+    /**
+     * FileInput 的配置文件
+     * @link http://demos.krajee.com/widget-details/fileinput
+     * @var array
+     */
+    public $fileInputOptions;
+
 
     private $_hiddenInputName;
     private $_uploadName;

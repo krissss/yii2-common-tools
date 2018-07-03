@@ -161,6 +161,13 @@ class SimpleDynaGrid extends Component
     public $gridPager;
 
     /**
+     * 其他额外的 DynaGrid 配置
+     * @link http://demos.krajee.com/dynagrid#dynagrid
+     * @var array
+     */
+    public $otherConfig;
+
+    /**
      * @var string
      */
     private $_pjaxContainerId;
@@ -177,7 +184,7 @@ class SimpleDynaGrid extends Component
             throw new Exception('必须设置 dataProvider');
         }
 
-        if (!$this->gridPager){
+        if (!$this->gridPager) {
             $this->gridPager = [
                 'class' => LinkPagerWithSubmit::className(),
                 'firstPageLabel' => '第一页',
@@ -329,6 +336,9 @@ class SimpleDynaGrid extends Component
         }
         $config['gridOptions']['toolbar'] = $toolbar;
 
+        if ($this->otherConfig) {
+            return ArrayHelper::merge($this->otherConfig, $config);
+        }
         return $config;
     }
 
