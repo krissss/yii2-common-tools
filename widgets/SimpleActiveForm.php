@@ -20,7 +20,15 @@ class SimpleActiveForm extends ActiveForm
         'errorOptions' => ['class' => 'help-block col-sm-5']
     ];
 
-    public $title = '标题';
+    /**
+     * @var string
+     */
+    public $title;
+    /**
+     * 和 title 一样，若 header 有值，以 header 为主
+     * @var string
+     */
+    public $header;
 
     public $renderReturn = false;
     public $returnLabel = '返回';
@@ -69,11 +77,11 @@ class SimpleActiveForm extends ActiveForm
     {
         /** @var self $widget */
         $widget = parent::begin($config);
-        $title = $widget->title;
+        $title = $widget->header ?: $widget->title;
         echo <<<HTML
         <div class="box box-default">
             <div class="box-header with-border">
-                <h3 class="box-title">$title</h3>
+                <h3 class="box-title">{$title}</h3>
             </div>
             <div class="box-body">
 HTML;

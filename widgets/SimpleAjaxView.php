@@ -4,14 +4,13 @@ namespace kriss\widgets;
 
 use yii\base\Widget;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 
-class SimpleAjaxForm extends ActiveForm
+class SimpleAjaxView extends Widget
 {
     /**
      * @var string
      */
-    public $header;
+    public $header = '详情';
     /**
      * lg sm
      * @var string
@@ -21,27 +20,6 @@ class SimpleAjaxForm extends ActiveForm
     public $renderCancel = true;
     public $cancelLabel = '取消';
     public $cancelOptions = ['class' => 'btn btn-default'];
-
-    public $renderSubmit = true;
-    public $submitLabel = '确定';
-    public $submitOptions = ['class' => 'btn btn-primary'];
-
-    public $options = ['class' => 'form-horizontal'];
-
-    public $fieldConfig = [
-        'template' => '{label}<div class="col-sm-10">{input}{hint}</div>{error}',
-        'labelOptions' => ['class' => 'control-label col-sm-2'],
-        'errorOptions' => ['class' => 'help-block col-sm-10 col-sm-offset-2']
-    ];
-
-    public function init()
-    {
-        if (!isset($this->options['id'])) {
-            // 解决 ajax 表单不能验证的问题
-            $this->options['id'] = Widget::$autoIdPrefix . time();
-        }
-        parent::init();
-    }
 
     public static function begin($config = [])
     {
@@ -70,9 +48,6 @@ HTML;
         if ($widget->renderCancel) {
             $widget->cancelOptions['data-dismiss'] = 'modal';
             $buttons[] = Html::button($widget->cancelLabel, $widget->cancelOptions);
-        }
-        if ($widget->renderSubmit) {
-            $buttons[] = Html::submitButton($widget->submitLabel, $widget->submitOptions);
         }
         $footerButton = implode(' ', $buttons);
         echo <<<HTML

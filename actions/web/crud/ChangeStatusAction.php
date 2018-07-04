@@ -1,8 +1,7 @@
 <?php
 
-namespace app\kriss\actions\web\crud;
+namespace kriss\actions\web\crud;
 
-use kriss\actions\web\crud\AbstractAction;
 use kriss\components\MessageAlert;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
@@ -42,11 +41,11 @@ class ChangeStatusAction extends AbstractAction
         $currentStatus = $model->{$this->statusAttribute};
         if (in_array($currentStatus, (array)$this->statusRelation[$status])) {
             $model->{$this->statusAttribute} = $status;
-            $this->doMethodOrCallback($this->changeMethod, $model);
-            MessageAlert::set(['success' => '操作成功']);
+            $result = $this->doMethodOrCallback($this->changeMethod, $model);
+            $this->messageAlert($result, $model);
         } else {
-            MessageAlert::set(['error' => '当前状态下操作失败']);
+            MessageAlert::error('当前状态下操作失败');
         }
-        return $this->actionPreviousRedirect();
+        return $this->redirectPrevious();
     }
 }

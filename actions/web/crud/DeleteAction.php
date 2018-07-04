@@ -2,8 +2,6 @@
 
 namespace kriss\actions\web\crud;
 
-use kriss\components\MessageAlert;
-use kriss\tools\Fun;
 use yii\db\ActiveRecord;
 
 class DeleteAction extends AbstractAction
@@ -12,6 +10,10 @@ class DeleteAction extends AbstractAction
      * @var string|callable
      */
     public $deleteMethod = 'delete';
+    /**
+     * @var string
+     */
+    public $operateMsg = '删除';
 
     public function run($id)
     {
@@ -19,12 +21,8 @@ class DeleteAction extends AbstractAction
         $model = $this->findModel($id);
 
         $result = $this->doMethodOrCallback($this->deleteMethod, $model);
-        if ($result) {
-            MessageAlert::set(['success' => '删除成功！']);
-        } else {
-            MessageAlert::set(['error' => '删除失败：' . Fun::formatModelErrors2String($model->errors)]);
-        }
+        $this->messageAlert($result, $model);
 
-        return $this->actionPreviousRedirect($this->controller);
+        return $this->redirectPrevious();
     }
 }

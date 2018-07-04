@@ -43,10 +43,12 @@ class IndexAction extends Action
                 'dataProvider' => $dataProvider,
             ];
         } elseif ($this->searchModel) {
-            $searchModel = $this->searchModel;
-            $dataProvider = $searchModel->{$this->searchMethod}(Yii::$app->request->get());
+            $searchModel = Yii::createObject($this->searchModel);
+            $searchMethod = $this->searchMethod;
+            $dataProvider = $searchModel->$searchMethod(Yii::$app->request->get());
             $viewParams = [
                 'dataProvider' => $dataProvider,
+                'searchModel' => $searchModel,
             ];
         } else {
             throw new InvalidConfigException('必须配置 dataProvider 或 searchModel');
