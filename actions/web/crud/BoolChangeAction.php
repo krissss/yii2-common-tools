@@ -3,7 +3,6 @@
 namespace kriss\actions\web\crud;
 
 use yii\base\InvalidConfigException;
-use yii\base\Model;
 
 class BoolChangeAction extends AbstractAction
 {
@@ -31,7 +30,6 @@ class BoolChangeAction extends AbstractAction
 
     public function run($id)
     {
-        /** @var Model $model */
         $model = $this->findModel($id);
         $attribute = $this->attribute;
 

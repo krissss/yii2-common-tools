@@ -1,22 +1,25 @@
 <?php
 
-namespace kriss\actions\web\crud;
+namespace kriss\actions\rest\crud;
 
-use kriss\traits\WebControllerTrait;
+use kriss\components\rest\ActiveDataProvider;
 use Yii;
 use yii\base\Action;
 use yii\base\InvalidConfigException;
-use yii\data\ActiveDataProvider;
 
-class IndexAction extends Action
+class ListAction extends Action
 {
-    use WebControllerTrait;
-
     /**
+     * 注意：
+     * 在使用 array 配置时如果要用到 比如： Yii::$app->user->id 时，请使用 callable，
+     * 否则 Yii::$app->user->id 为空
      * @var string|array|callable
      */
     public $dataProvider;
     /**
+     * 注意：
+     * 在使用 array 配置时如果要用到 比如： Yii::$app->user->id 时，请使用 callable，
+     * 否则 Yii::$app->user->id 为空
      * @var string|array|callable
      */
     public $searchModel;
@@ -24,37 +27,22 @@ class IndexAction extends Action
      * @var string|callable
      */
     public $searchMethod = 'search';
-    /**
-     * @var string
-     */
-    public $view = 'index';
 
     public function run()
     {
-        $this->rememberUrl($this->controller);
-
         if ($this->dataProvider) {
             if (is_array($this->dataProvider)) {
                 if (!isset($this->dataProvider['class'])) {
                     $this->dataProvider['class'] = ActiveDataProvider::class;
                 }
             }
-            $dataProvider = Yii::createObject($this->dataProvider);
-            $viewParams = [
-                'dataProvider' => $dataProvider,
-            ];
+            return Yii::createObject($this->dataProvider);
         } elseif ($this->searchModel) {
             $searchModel = Yii::createObject($this->searchModel);
-            $dataProvider = $searchModel->{$this->searchMethod}(Yii::$app->request->get());
-            $viewParams = [
-                'dataProvider' => $dataProvider,
-                'searchModel' => $searchModel,
-            ];
+            return $searchModel->{$this->searchMethod}(Yii::$app->request->get());
         } else {
             throw new InvalidConfigException('必须配置 dataProvider 或 searchModel');
         }
-
-        return $this->controller->render($this->view, $viewParams);
     }
 
 }

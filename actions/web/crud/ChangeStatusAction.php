@@ -4,7 +4,6 @@ namespace kriss\actions\web\crud;
 
 use kriss\components\MessageAlert;
 use yii\base\InvalidConfigException;
-use yii\base\Model;
 
 class ChangeStatusAction extends AbstractAction
 {
@@ -36,7 +35,6 @@ class ChangeStatusAction extends AbstractAction
 
     public function run($id, $status)
     {
-        /** @var Model $model */
         $model = $this->findModel($id);
         $currentStatus = $model->{$this->statusAttribute};
         if (in_array($currentStatus, (array)$this->statusRelation[$status])) {

@@ -2,9 +2,6 @@
 
 namespace kriss\actions\web\crud;
 
-use Yii;
-use yii\base\Model;
-
 class CreateAction extends AbstractCUAction
 {
     /**
@@ -14,8 +11,7 @@ class CreateAction extends AbstractCUAction
 
     public function run()
     {
-        /** @var Model $model */
-        $model = Yii::createObject($this->modelClass);
+        $model = $this->newModel();
 
         return $this->createOrUpdate($model);
     }

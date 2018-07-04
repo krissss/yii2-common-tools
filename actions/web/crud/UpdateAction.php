@@ -2,8 +2,6 @@
 
 namespace kriss\actions\web\crud;
 
-use yii\db\ActiveRecord;
-
 class UpdateAction extends AbstractCUAction
 {
     /**
@@ -17,7 +15,6 @@ class UpdateAction extends AbstractCUAction
 
     public function run($id)
     {
-        /* @var $model ActiveRecord */
         $model = $this->findModel($id);
 
         return $this->createOrUpdate($model);

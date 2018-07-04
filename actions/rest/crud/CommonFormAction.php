@@ -1,6 +1,6 @@
 <?php
 
-namespace kriss\actions\web\crud;
+namespace kriss\actions\rest\crud;
 
 use Yii;
 
@@ -15,13 +15,13 @@ class CommonFormAction extends AbstractAction
     {
         $model = $this->newModel();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->load(Yii::$app->request->post(), '') && $model->validate()) {
             $result = $this->doMethodOrCallback($this->doMethod, $model);
-            $this->messageAlert($result, $model);
+            if ($result !== false) {
+                return $result;
+            }
         }
 
-        return $this->controller->render($this->controller->id, [
-            'model' => $model
-        ]);
+        return $model;
     }
 }

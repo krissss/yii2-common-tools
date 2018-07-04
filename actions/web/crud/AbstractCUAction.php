@@ -14,13 +14,9 @@ abstract class AbstractCUAction extends AbstractAction
      */
     public $isAjax = true;
     /**
-     * @var bool
-     */
-    public $loadDefaultValue = true;
-    /**
      * @var string
      */
-    public $saveMethod = 'save';
+    public $doMethod = 'save';
     /**
      * @var string
      */
@@ -42,14 +38,11 @@ abstract class AbstractCUAction extends AbstractAction
      */
     protected function createOrUpdate($model)
     {
-        $model->setScenario($this->scenario);
-        $this->loadDefaultValue && $model->loadDefaultValues();
-
         if ($model->load(Yii::$app->request->post())) {
 
             $this->beforeValidateCallback && call_user_func($this->beforeValidateCallback, $model);
 
-            $result = ($this->saveMethod === 'save' || $model->validate()) && $this->doMethodOrCallback($this->saveMethod, $model);
+            $result = ($this->doMethod === 'save' || $model->validate()) && $this->doMethodOrCallback($this->doMethod, $model);
             $this->messageAlert($result, $model);
 
             return $this->redirectPrevious();
