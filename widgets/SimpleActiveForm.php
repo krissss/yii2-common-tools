@@ -30,7 +30,7 @@ class SimpleActiveForm extends ActiveForm
      */
     public $header;
 
-    public $renderReturn = false;
+    public $renderReturn = true;
     public $returnLabel = '返回';
     public $returnHref;
     public $returnOptions = ['class' => 'btn btn-default'];
@@ -56,7 +56,7 @@ class SimpleActiveForm extends ActiveForm
     public function renderFooterButtons()
     {
         if ($this->renderReturn) {
-            $btnReturn = Html::a($this->returnLabel, $this->returnHref, $this->returnOptions);
+            $btnReturn = Html::a($this->returnLabel, $this->returnHref ?: 'javascript:window.history.back()', $this->returnOptions);
         }
         if ($this->renderSubmit) {
             $btnSubmit = Html::submitButton($this->submitLabel, $this->submitOptions);

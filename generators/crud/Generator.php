@@ -1,76 +1,81 @@
 <?php
 
-namespace kriss\generators\dynagrid;
+namespace kriss\generators\crud;
 
+use kriss\actions\web\crud\CreateAction;
+use kriss\actions\web\crud\DeleteAction;
+use kriss\actions\web\crud\IndexAction;
+use kriss\actions\web\crud\UpdateAction;
+use kriss\actions\web\crud\ViewAction;
 use Yii;
 use yii\base\Exception;
+use yii\data\ActiveDataProvider;
 use yii\db\ActiveRecord;
 use yii\db\Schema;
 use yii\gii\CodeFile;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
-use yii\web\NotFoundHttpException;
 
 class Generator extends \yii\gii\Generator
 {
-    public $controllerClass = 'backend\controllers\XController';
+    public $modelName = '';
+
+    public $modelLabel = '';
+
+    public $modelPath = '@common/models';
+
+    public $controllerPath = '@backend/controllers';
+
+    public $viewPath = '@app/views';
+
+    public $searchModelPath = '@backend/models';
 
     public $controllerBaseClass = 'backend\components\AuthWebController';
 
-    public $activeDataProviderClass = 'common\components\ActiveDataProvider';
-
-    public $searchModelClass = 'backend\models\XSearch';
-
-    public $modelClass = 'common\models\\X';
-
     public $searchAttributes = '';
 
-    public $actionIndex = 'index';
+    public $hasCreate = true;
+    public $hasUpdate = true;
+    public $hasView = true;
+    public $hasDelete = true;
 
-    public $title = 'X管理';
-
-    public $dataColumns = '';
-
-    public $actionColumns = 'update:更新,view:详情';
-
-    public $toolbarActions = 'create:新增';
-
-    public $viewPath = '@app/views';
+    public $useAjax = true;
 
     public $hasCheckboxColumn = false;
 
     public function getName()
     {
-        return 'kriss Dynagrid Generator';
+        return 'kriss Crud Generator';
     }
 
     public function rules()
     {
         return array_merge(parent::rules(), [
+            [['modelName', 'modelLabel'], 'required'],
             [[
-                'controllerClass', 'controllerBaseClass', 'activeDataProviderClass', 'searchModelClass', 'modelClass',
-                'searchAttributes', 'actionIndex', 'title', 'dataColumns', 'actionColumns', 'toolbarActions',
-                'viewPath',
+                'modelName', 'modelLabel', 'modelPath', 'controllerPath', 'viewPath', 'searchModelPath',
+                'controllerBaseClass', 'searchAttributes',
             ], 'safe'],
-            ['hasCheckboxColumn', 'boolean']
+            [['hasCreate', 'hasUpdate', 'hasView', 'hasDelete', 'useAjax', 'hasCheckboxColumn'], 'boolean']
         ]);
     }
 
     public function hints()
     {
         return array_merge(parent::hints(), [
-            'controllerClass' => '控制器类, (e.g. <code>backend\controllers\ArticleController</code>)',
-            'controllerBaseClass' => '控制器继承类, (e.g. <code>backend\controller\AuthWebController</code>)',
-            'activeDataProviderClass' => '数据提供器类, (e.g. <code>common\components\ActiveDataProvider</code>)',
-            'searchModelClass' => '查询模型类,可以为空, (e.g. <code>backend\models\ArticleSearch</code>)',
-            'modelClass' => '模型类,必须是 yii\db\ActiveRecord 子类, (e.g. <code>common\models\Article</code>)',
-            'searchAttributes' => '查询的字段, (e.g. <code>id,created_at,title</code>)',
-            'actionIndex' => '列表页 action 的id, (e.g. <code>index</code>)',
-            'title' => '列表页面的标题, (e.g. <code>文章管理</code>)',
-            'dataColumns' => '列表页面的 DataColumn 属性字段, (e.g. <code>id,name</code>)',
-            'actionColumns' => '列表页面的 ActionColumn 属性字段,可以为空, (e.g. <code>update:更新,view:详情</code>)',
-            'toolbarActions' => '列表页面的 Toolbar 操作,可以为空, (e.g. <code>create:新增</code>)',
-            'viewPath' => '视图地址, (e.g. <code>@app/views</code>)',
+            'modelName' => '模型类名, (e.g. <code>Article</code>)',
+            'modelLabel' => '模型名称, (e.g. <code>文章</code>)',
+            'modelPath' => '模型文件路劲, (e.g. <code>@common/models</code>)',
+            'controllerPath' => '控制器文件路劲, (e.g. <code>@backend/controllers</code>)',
+            'viewPath' => '视图文件路劲, (e.g. <code>@app/views</code>)',
+            'searchModelPath' => '查询模型文件路劲, (e.g. <code>@backend/models</code>)',
+            'controllerBaseClass' => '基础控制器类, (e.g. <code>yii\web\Controller</code>)',
+            'searchAttributes' => '查询的字段，若该字段为空，则不使用查询模型, (e.g. <code>id,name</code>)',
+            'hasCreate' => '是否有新增',
+            'hasUpdate' => '是否有修改',
+            'hasView' => '是否有详情',
+            'hasDelete' => '是否有删除',
+            'useAjax' => '是否使用 ajax 模式',
             'hasCheckboxColumn' => '是否有复选框',
         ]);
     }
@@ -81,10 +86,11 @@ class Generator extends \yii\gii\Generator
     public function stickyAttributes()
     {
         return array_merge(parent::stickyAttributes(), [
+            'modelPath',
+            'controllerPath',
+            'viewPath',
+            'searchModelPath',
             'controllerBaseClass',
-            'activeDataProviderClass',
-            'actionIndex',
-            'viewPath'
         ]);
     }
 
@@ -93,13 +99,18 @@ class Generator extends \yii\gii\Generator
         $files = [];
 
         $files[] = new CodeFile(
-            $this->getClassFile($this->controllerClass),
+            $this->getClassFile($this->getControllerClass()),
             $this->render('controller.php')
         );
 
-        if (!empty($this->searchModelClass)) {
+        $files[] = new CodeFile(
+            $this->getViewFile('index'),
+            $this->render('views/index.php')
+        );
+
+        if (!empty($this->searchAttributes)) {
             $files[] = new CodeFile(
-                $this->getClassFile($this->searchModelClass),
+                $this->getClassFile($this->getSearchClass()),
                 $this->render('search.php')
             );
             $files[] = new CodeFile(
@@ -108,12 +119,105 @@ class Generator extends \yii\gii\Generator
             );
         }
 
-        $files[] = new CodeFile(
-            $this->getViewFile($this->actionIndex),
-            $this->render('views/index.php', ['action' => $this->actionIndex])
-        );
+        if ($this->hasCreate || $this->hasUpdate) {
+            $viewName = $this->getCreateUpdateViewName();
+            $files[] = new CodeFile(
+                $this->getViewFile($viewName),
+                $this->render('views/' . $viewName . '.php')
+            );
+        }
+
+        if ($this->hasView) {
+            $viewName = $this->getViewViewName();
+            $files[] = new CodeFile(
+                $this->getViewFile($viewName),
+                $this->render('views/' . $viewName . '.php')
+            );
+        }
 
         return $files;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreateUpdateViewName()
+    {
+        return $this->useAjax ? '_create_update' : 'create_update';
+    }
+
+    /**
+     * @return string
+     */
+    public function getViewViewName()
+    {
+        return $this->useAjax ? '_view' : 'view';
+    }
+
+    /**
+     * @var string
+     */
+    private $_modelClass;
+
+    /**
+     * @return string
+     */
+    public function getModelClass()
+    {
+        if ($this->_modelClass) {
+            return $this->_modelClass;
+        }
+        $this->_modelClass = $this->getClassFromPathAndName($this->modelPath, $this->modelName);
+        return $this->_modelClass;
+    }
+
+    /**
+     * @var string
+     */
+    private $_controllerClass;
+
+    /**
+     * @return string
+     */
+    public function getControllerClass()
+    {
+        if ($this->_controllerClass) {
+            return $this->_controllerClass;
+        }
+        $this->_controllerClass = $this->getClassFromPathAndName($this->controllerPath, $this->modelName . 'Controller');
+        return $this->_controllerClass;
+    }
+
+    /**
+     * @var string
+     */
+    private $_searchClass;
+
+    /**
+     * @return string
+     */
+    public function getSearchClass()
+    {
+        if ($this->_searchClass) {
+            return $this->_searchClass;
+        }
+        $this->_searchClass = $this->getClassFromPathAndName($this->searchModelPath, $this->modelName . 'Search');
+        return $this->_searchClass;
+    }
+
+    /**
+     * 从路径和名称获取class
+     * @param $path
+     * @param $name
+     * @return mixed
+     */
+    protected function getClassFromPathAndName($path, $name)
+    {
+        if (substr($path, 0, 1) == '@') {
+            $path = substr($path, 1, strlen($path));
+        }
+        $class = rtrim($path, '/') . '/' . $name;
+        return str_replace('/', '\\', $class);
     }
 
     /**
@@ -122,21 +226,29 @@ class Generator extends \yii\gii\Generator
      */
     public function getControllerUseClasses()
     {
-        $commonClasses = [
+        $useClasses = [
             'Yii',
+            $this->getControllerClass(),
             $this->controllerBaseClass,
-            NotFoundHttpException::class,
-            $this->modelClass,
+            $this->getModelClass(),
+            IndexAction::class,
         ];
-        if ($this->searchModelClass) {
-            $useClasses = array_merge($commonClasses, [
-                $this->searchModelClass,
-            ]);
-        } else {
-            $useClasses = array_merge($commonClasses, [
-                $this->activeDataProviderClass,
-            ]);
+        if ($this->searchAttributes) {
+            $useClasses[] = $this->getSearchClass();
         }
+        if ($this->hasCreate) {
+            $useClasses[] = CreateAction::class;
+        }
+        if ($this->hasUpdate) {
+            $useClasses[] = UpdateAction::class;
+        }
+        if ($this->hasView) {
+            $useClasses[] = ViewAction::class;
+        }
+        if ($this->hasDelete) {
+            $useClasses[] = DeleteAction::class;
+        }
+
         natcasesort($useClasses);
         return array_values($useClasses);
     }
@@ -148,50 +260,11 @@ class Generator extends \yii\gii\Generator
     public function getSearchModelUseClasses()
     {
         $useClasses = [
-            $this->modelClass,
-            $this->activeDataProviderClass
+            $this->getModelClass(),
+            ActiveDataProvider::class,
         ];
         natcasesort($useClasses);
         return array_values($useClasses);
-    }
-
-    /**
-     * index 页面的 data columns
-     * @return array
-     */
-    public function getDataColumns()
-    {
-        return explode(',', $this->dataColumns);
-    }
-
-    /**
-     * index 页面的 action columns
-     * @return array
-     */
-    public function getActionColumns()
-    {
-        $array = [];
-        $temp1 = array_filter(explode(',', $this->actionColumns));
-        foreach ($temp1 as $item) {
-            $temp2 = explode(':', $item);
-            $array[$temp2[0]] = Inflector::camel2id($temp2[1]);
-        }
-        return $array;
-    }
-
-    /**
-     * index 页面的 toolbar 操作
-     * @return array
-     */
-    public function getToolbarActions()
-    {
-        $array = [];
-        $temp1 = array_filter(explode(',', $this->toolbarActions));
-        foreach ($temp1 as $item) {
-            $temp2 = explode(':', $item);
-            $array[$temp2[0]] = Inflector::camel2id($temp2[1]);
-        }
-        return $array;
     }
 
     /**
@@ -303,16 +376,25 @@ class Generator extends \yii\gii\Generator
     }
 
     /**
+     * @var array
+     */
+    private $_columnNames;
+
+    /**
      * 获取表的字段
      * @return array
      * @throws Exception
      */
     public function getColumnNames()
     {
+        if ($this->_columnNames) {
+            return $this->_columnNames;
+        }
         /* @var $class ActiveRecord */
-        $class = $this->modelClass;
+        $class = $this->getModelClass();
         if (is_subclass_of($class, 'yii\db\ActiveRecord')) {
-            return $class::getTableSchema()->getColumnNames();
+            $this->_columnNames = $class::getTableSchema()->getColumnNames();
+            return $this->_columnNames;
         } else {
             throw new Exception('必须是 yii\db\ActiveRecord 的子类');
         }
@@ -355,8 +437,7 @@ class Generator extends \yii\gii\Generator
      */
     public function getControllerID()
     {
-        $name = StringHelper::basename($this->controllerClass);
-        return Inflector::camel2id(substr($name, 0, strlen($name) - 10));
+        return Inflector::camel2id($this->modelName);
     }
 
     /**
@@ -366,7 +447,7 @@ class Generator extends \yii\gii\Generator
      */
     public function getViewFile($action)
     {
-        if (empty($this->viewPath)) {
+        if (!$this->viewPath) {
             $viewPath = Yii::getAlias("@app/views");
         } else {
             $viewPath = Yii::getAlias(rtrim(str_replace('\\', '/', $this->viewPath), '/'));
@@ -382,7 +463,7 @@ class Generator extends \yii\gii\Generator
     public function getTableSchema()
     {
         /* @var $class ActiveRecord */
-        $class = $this->modelClass;
+        $class = $this->getModelClass();
         if (is_subclass_of($class, 'yii\db\ActiveRecord')) {
             return $class::getTableSchema();
         } else {
