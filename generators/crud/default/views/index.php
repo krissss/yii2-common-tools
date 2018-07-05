@@ -8,7 +8,7 @@ echo "<?php\n";
 ?>
 /** @var $this yii\web\View */
 /** @var $dataProvider */
-<?php if(!empty($generator->searchModelClass)): ?>
+<?php if($generator->searchAttributes): ?>
 /** @var $searchModel */
 <?php endif; ?>
 
