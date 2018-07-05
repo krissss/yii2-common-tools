@@ -22,6 +22,7 @@ class ActionColumn extends \kartik\grid\ActionColumn
      * cssClass： 按钮的 class，默认无，在传递比如像 simple_ajax_form 时比较有用
      * options： 按钮的其他样式属性，默认无
      * visible： 可见性，默认 true，可以是 匿名函数 或 bool
+     * value: 默认无，匿名函数，无值时使用 button 按钮样式，在 value 特别复杂时比较有用
      * @see renderButton
      * @var array
      */
@@ -76,6 +77,12 @@ class ActionColumn extends \kartik\grid\ActionColumn
             return '';
         }
 
+        $url = $this->createUrl($button['action'], $model, $key, $index);
+
+        if (isset($button['value']) && $button['value'] instanceof \Closure) {
+            return call_user_func($button['value'], $url, $model, $key, $index);
+        }
+
         $label = isset($button['label']) ? $button['label'] : $button['action'];
         $options = ['class' => 'btn btn-' . (isset($button['type']) ? $button['type'] : 'default')];
         if (isset($button['cssClass'])) {
@@ -84,7 +91,7 @@ class ActionColumn extends \kartik\grid\ActionColumn
         if (isset($button['options'])) {
             $options = array_merge($options, $button['options']);
         }
-        return Html::a($label, $this->createUrl($button['action'], $model, $key, $index), $options);
+        return Html::a($label, $url, $options);
     }
 
     protected function renderButtonGroup($buttons)

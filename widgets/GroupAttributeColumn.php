@@ -3,6 +3,7 @@
 namespace kriss\widgets;
 
 use Yii;
+use yii\base\InvalidConfigException;
 
 class GroupAttributeColumn extends DataColumn
 {
