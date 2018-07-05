@@ -2,6 +2,8 @@
 
 namespace kriss\widgets;
 
+use yii\base\InvalidConfigException;
+use yii\helpers\Html;
 use yii\helpers\Url;
 
 class ToggleColumn extends DataColumn
@@ -22,11 +24,28 @@ class ToggleColumn extends DataColumn
     public $onValue = 1;
     public $offValue = 0;
 
+    // confirm
+    public $onConfirm;
+    public $offConfirm;
+
     // template
-    public $templateWrap = '<a class="toggle-column btn btn-primary btn-sm" data-pjax="0" title="点击切换" href="{url}">{label}</a>';
+    public $templateWrapOptions = [
+        'tag' => 'button',
+        'class' => 'btn btn-primary btn-sm',
+        'title' => '点击切换'
+    ];
+    public $templateWrapOptionsCannotOperate = [
+        'tag' => 'span',
+    ];
     public $templateOn = '<i class="glyphicon glyphicon-ok-circle"></i> {label}';
     public $templateOff = '<i class="glyphicon glyphicon-remove-circle"></i> {label}';
     public $templateLoading = '<i class="glyphicon glyphicon-refresh"></i>';
+
+    /**
+     * 是否可以操作
+     * @var bool|callable
+     */
+    public $canOperate = true;
 
     /**
      * @var string
@@ -35,10 +54,15 @@ class ToggleColumn extends DataColumn
 
     private $_templateOnStr;
     private $_templateOffStr;
+    private $_triggerClass;
 
     public function init()
     {
         parent::init();
+        if (!$this->action) {
+            throw new InvalidConfigException('action 必须配置');
+        }
+        $this->_triggerClass = 'toggle-column-' . $this->attribute;
         $this->generateOnOffLink();
         $this->initFilter();
         $this->registerJs();
@@ -53,6 +77,7 @@ class ToggleColumn extends DataColumn
 
     /**
      * @see \yii\grid\ActionColumn
+     * @inheritdoc
      */
     public function createUrl($action, $model, $key, $index)
     {
@@ -68,35 +93,61 @@ class ToggleColumn extends DataColumn
 
     protected function renderDataCellContent($model, $key, $index)
     {
-        $url = $this->createUrl($this->action, $model, $key, $index);
+        $canOperate = $this->canOperate instanceof \Closure
+            ? call_user_func($this->canOperate, $model, $key, $index)
+            : $this->canOperate;
+
         $value = parent::renderDataCellContent($model, $key, $index);
-        return strtr($this->templateWrap, [
-            '{url}' => $url,
-            '{label}' => (bool)$value ? $this->_templateOnStr : $this->_templateOffStr
-        ]);
+        if ($canOperate) {
+            $url = $this->createUrl($this->action, $model, $key, $index);
+            $options = array_merge($this->templateWrapOptions, [
+                'data-url' => $url,
+                'data-value' => $value,
+                'data-pjax' => '0'
+            ]);
+            Html::addCssClass($options, $this->_triggerClass);
+        } else {
+            $options = $this->templateWrapOptionsCannotOperate;
+        }
+        return Html::tag(
+            isset($options['tag']) ? $options['tag'] : 'button',
+            $value == $this->onValue ? $this->_templateOnStr : $this->_templateOffStr,
+            $options
+        );
     }
 
     protected function registerJs()
     {
         $js = <<<JS
-$('body').on('click', 'a.toggle-column', function(e) {
+$('body').on('click', '.{$this->_triggerClass}', function(e) {
     var loading = '{$this->templateLoading}',
+        onConfirm = '{$this->onConfirm}',
+        offConfirm = '{$this->offConfirm}',
         onLink = '{$this->_templateOnStr}',
         offLink = '{$this->_templateOffStr}',
         onValue = '{$this->onValue}',
         offValue = '{$this->offValue}',
-        _this = $(this);
-    e.preventDefault();
-    var url = _this.attr('href');
+        _this = $(this),
+        currentValue = _this.attr('data-value'),
+        canRequest = true;
+    if (currentValue == onValue && offConfirm) {
+        canRequest = confirm(offConfirm);
+    } else if (currentValue == offValue && onConfirm) {
+        canRequest = confirm(onConfirm);
+    }
+    if (!canRequest) {
+        return;
+    }
+    var url = _this.attr('data-url');
     if (!url) {
         alert('no action');
         return;
     }
     _this.html(loading);
     $.post(url, {'{$this->csrfParam}': $('meta[name="csrf-token"]').attr("content")}, function(data) {
+        _this.attr('data-value', data);
         _this.html(data == onValue ? onLink : (data == offValue ? offLink : '返回结果未知'));
     });
-    return false;
 });
 JS;
         $this->grid->view->registerJs($js);
