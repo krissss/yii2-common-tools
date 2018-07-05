@@ -17,7 +17,7 @@ class Generator extends \yii\gii\Generator
 
     public $controllerBaseClass = 'backend\components\AuthWebController';
 
-    public $activeDataProviderClass = 'common\components\ActiveDataProvider';
+    public $activeDataProviderClass = 'yii\data\ActiveDataProvider';
 
     public $searchModelClass = 'backend\models\XSearch';
 

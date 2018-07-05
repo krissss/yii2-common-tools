@@ -2,6 +2,7 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\tools\Fun;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 
@@ -36,7 +37,7 @@ class ToggleAction extends AbstractAction
         $model->$attribute = $oldValue == $this->onValue ? $this->offValue : ($oldValue == $this->offValue ? $this->onValue : '未知');
         $result = $this->doMethodOrCallback($this->changeMethod, $model);
         if (!$result) {
-            throw new Exception('操作执行错误');
+            throw new Exception('操作执行错误:' . Fun::formatModelErrors2String($model->errors));
         }
 
         return $model->$attribute;
