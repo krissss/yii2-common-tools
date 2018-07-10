@@ -39,8 +39,7 @@ class ChangeStatusAction extends AbstractAction
         $currentStatus = $model->{$this->statusAttribute};
         if (in_array($currentStatus, (array)$this->statusRelation[$status])) {
             $model->{$this->statusAttribute} = $status;
-            $result = $this->doMethodOrCallback($this->changeMethod, $model);
-            $this->messageAlert($result, $model);
+            $this->doMethodOrCallback($this->changeMethod, $model, $model);
         } else {
             MessageAlert::error('当前状态下操作失败');
         }

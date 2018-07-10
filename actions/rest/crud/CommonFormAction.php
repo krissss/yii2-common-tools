@@ -16,7 +16,7 @@ class CommonFormAction extends AbstractAction
         $model = $this->newModel();
 
         if ($model->load(Yii::$app->request->post(), '') && $model->validate()) {
-            $result = $this->doMethodOrCallback($this->doMethod, $model);
+            $result = $this->doMethodOrCallback($this->doMethod, $model, $model);
             if ($result !== false) {
                 return $result;
             }

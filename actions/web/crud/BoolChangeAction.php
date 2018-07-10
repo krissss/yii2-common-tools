@@ -35,8 +35,7 @@ class BoolChangeAction extends AbstractAction
 
         $model->$attribute = !$model->$attribute;
         $this->forceToInt && $model->$attribute = (int)$model->$attribute;
-        $result = $this->doMethodOrCallback($this->changeMethod, $model);
-        $this->messageAlert($result, $model);
+        $this->doMethodOrCallback($this->changeMethod, $model, $model);
 
         return $this->redirectPrevious();
     }

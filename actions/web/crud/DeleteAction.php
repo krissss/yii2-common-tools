@@ -17,8 +17,7 @@ class DeleteAction extends AbstractAction
     {
         $model = $this->findModel($id);
 
-        $result = $this->doMethodOrCallback($this->deleteMethod, $model);
-        $this->messageAlert($result, $model);
+        $this->doMethodOrCallback($this->deleteMethod, $model, $model);
 
         return $this->redirectPrevious();
     }

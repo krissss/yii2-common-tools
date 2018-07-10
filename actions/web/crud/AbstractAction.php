@@ -14,6 +14,23 @@ abstract class AbstractAction extends \kriss\actions\rest\crud\AbstractAction
      * @var string
      */
     public $operateMsg = '操作';
+    /**
+     * 是否显示 flash 消息
+     * @var bool
+     */
+    public $setFlashMsg = true;
+
+    /**
+     * @inheritdoc
+     */
+    protected function doMethodOrCallback($method, $class, ...$parameter)
+    {
+        $result = parent::doMethodOrCallback($method, $class, $parameter);
+        if ($this->setFlashMsg) {
+            $this->messageAlert($result, $class);
+        }
+        return $result;
+    }
 
     /**
      * @inheritdoc

@@ -42,8 +42,7 @@ abstract class AbstractCUAction extends AbstractAction
 
             $this->beforeValidateCallback && call_user_func($this->beforeValidateCallback, $model);
 
-            $result = ($this->doMethod === 'save' || $model->validate()) && $this->doMethodOrCallback($this->doMethod, $model);
-            $this->messageAlert($result, $model);
+            ($this->doMethod === 'save' || $model->validate()) && $this->doMethodOrCallback($this->doMethod, $model, $model);
 
             return $this->redirectPrevious();
         }
