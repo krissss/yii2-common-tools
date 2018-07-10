@@ -25,7 +25,7 @@ abstract class AbstractAction extends \kriss\actions\rest\crud\AbstractAction
      */
     protected function doMethodOrCallback($method, $class, ...$parameter)
     {
-        $result = parent::doMethodOrCallback($method, $class, $parameter);
+        $result = parent::doMethodOrCallback($method, $class, ...$parameter);
         if ($this->setFlashMsg) {
             $this->messageAlert($result, $class);
         }
