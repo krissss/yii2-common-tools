@@ -39,7 +39,12 @@ class ToggleAction extends AbstractAction
         $oldValue = $model->$attribute;
 
         $model->$attribute = $oldValue == $this->onValue ? $this->offValue : ($oldValue == $this->offValue ? $this->onValue : '未知');
-        $result = $this->doMethodOrCallback($this->changeMethod, $model, $model);
+        if ($this->changeMethod == 'save') {
+            // save 不校验数据
+            $result = $this->doMethodOrCallback($this->changeMethod, $model, false);
+        } else {
+            $result = $this->doMethodOrCallback($this->changeMethod, $model, $model);
+        }
         if (!$result) {
             throw new Exception('操作执行错误:' . Fun::formatModelErrors2String($model->errors));
         }

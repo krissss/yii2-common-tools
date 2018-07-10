@@ -35,7 +35,12 @@ class BoolChangeAction extends AbstractAction
 
         $model->$attribute = !$model->$attribute;
         $this->forceToInt && $model->$attribute = (int)$model->$attribute;
-        $this->doMethodOrCallback($this->changeMethod, $model, $model);
+        if ($this->changeMethod == 'save') {
+            // save 不校验数据
+            $this->doMethodOrCallback($this->changeMethod, $model, false);
+        } else {
+            $this->doMethodOrCallback($this->changeMethod, $model, $model);
+        }
 
         return $this->redirectPrevious();
     }
