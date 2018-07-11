@@ -227,9 +227,7 @@ class Generator extends \yii\gii\Generator
     public function getControllerUseClasses()
     {
         $useClasses = [
-            'Yii',
             $this->controllerBaseClass,
-            $this->getModelClass(),
             IndexAction::class,
         ];
         if ($this->searchAttributes) {
@@ -237,18 +235,24 @@ class Generator extends \yii\gii\Generator
         }
         if ($this->hasCreate) {
             $useClasses[] = CreateAction::class;
+            $useClasses[] = $this->getModelClass();
         }
         if ($this->hasUpdate) {
             $useClasses[] = UpdateAction::class;
+            $useClasses[] = $this->getModelClass();
         }
         if ($this->hasView) {
             $useClasses[] = ViewAction::class;
+            $useClasses[] = $this->getModelClass();
         }
         if ($this->hasDelete) {
             $useClasses[] = DeleteAction::class;
+            $useClasses[] = $this->getModelClass();
         }
 
+        array_unique($useClasses);
         natcasesort($useClasses);
+        
         return array_values($useClasses);
     }
 
