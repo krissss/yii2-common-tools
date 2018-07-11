@@ -228,7 +228,6 @@ class Generator extends \yii\gii\Generator
     {
         $useClasses = [
             'Yii',
-            $this->getControllerClass(),
             $this->controllerBaseClass,
             $this->getModelClass(),
             IndexAction::class,
