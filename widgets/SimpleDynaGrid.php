@@ -244,8 +244,10 @@ class SimpleDynaGrid extends Component
                 'id' => 'grid',
                 'dataProvider' => $this->dataProvider,
                 'showPageSummary' => $this->showPageSummary,
+                'responsive' => true,
                 'responsiveWrap' => false, // 小480的屏幕自适应去除
                 'striped' => false,
+                'bordered' => false, // responsive 为 true 时，bordered 为 true 会导致出现水平滚动条
                 'hover' => true,
                 'floatHeader' => $this->floatHeader,
                 'floatHeaderOptions' => [],

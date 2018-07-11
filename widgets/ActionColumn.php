@@ -55,9 +55,9 @@ class ActionColumn extends \kartik\grid\ActionColumn
             }
         }
         if ($this->isGroupWrap) {
-            $html = implode('<div style="height: 5px"></div>', $buttons);
+            $html = implode('<div style="height: 5px"></div>', array_filter($buttons));
         } else {
-            $html = implode(' ', $buttons);
+            $html = implode(' ', array_filter($buttons));
         }
 
         $templateValue = parent::renderDataCellContent($model, $key, $index);
