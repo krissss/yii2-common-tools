@@ -2,6 +2,7 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\AjaxViewTrait;
 use kriss\actions\traits\FlashMessageTrait;
 use kriss\actions\traits\ModelClassActionTrait;
@@ -28,11 +29,11 @@ class ModelOperateAction extends AbstractAction
 
     public function run($id)
     {
-        $this->generateYiiObjectConfig($this->modelClass, [$this->modelIdAttribute => $id]);
+        ActionTools::generateYiiObjectConfig($this->modelClass, [$this->modelIdAttribute => $id]);
         $model = $this->newModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $result = $this->invokeClassMethod($model, $this->doMethod);
+            $result = ActionTools::invokeClassMethod($model, $this->doMethod);
             $this->setFlashMessage($result, $model);
             if ($result !== false || $this->isAjax) {
                 if ($this->successRedirect) {

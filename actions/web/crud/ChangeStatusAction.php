@@ -2,6 +2,7 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\FlashMessageTrait;
 use kriss\actions\traits\ModelClassActionTrait;
 use kriss\components\MessageAlert;
@@ -44,7 +45,7 @@ class ChangeStatusAction extends AbstractAction
         $currentStatus = $model->{$this->statusAttribute};
         if (in_array($currentStatus, (array)$this->statusRelation[$status])) {
             $model->{$this->statusAttribute} = $status;
-            $result = $this->invokeClassMethod($model, $this->changeMethod);
+            $result = ActionTools::invokeClassMethod($model, $this->changeMethod);
             $this->setFlashMessage($result, $model);
         } else {
             MessageAlert::error('当前状态下操作失败');

@@ -2,6 +2,7 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\ModelClassActionTrait;
 use kriss\tools\Fun;
 use yii\base\Exception;
@@ -46,9 +47,9 @@ class ToggleAction extends AbstractAction
         }
         if ($this->changeMethod == 'save') {
             // save 不校验数据
-            $result = $this->invokeClassMethod($model, $this->changeMethod, false);
+            $result = ActionTools::invokeClassMethod($model, $this->changeMethod, false);
         } else {
-            $result = $this->invokeClassMethod($model, $this->changeMethod);
+            $result = ActionTools::invokeClassMethod($model, $this->changeMethod);
         }
         if ($result === false) {
             throw new Exception('操作执行错误:' . Fun::formatModelErrors2String($model->errors));

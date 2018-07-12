@@ -1,12 +1,12 @@
 <?php
 
-namespace kriss\actions\traits;
+namespace kriss\actions\helper;
 
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 
-trait ToolsTrait
+class ActionTools
 {
     /**
      * 调用 $class 的 $method 方法
@@ -16,7 +16,7 @@ trait ToolsTrait
      * @return mixed
      * @throws InvalidConfigException
      */
-    protected function invokeClassMethod($class, $method, ...$parameter)
+    public static function invokeClassMethod($class, $method, ...$parameter)
     {
         if (is_string($method)) {
             $result = call_user_func([$class, $method], ...$parameter);
@@ -34,7 +34,7 @@ trait ToolsTrait
      * @param $defaultClass string
      * @return array
      */
-    protected function mergeDefaultClass(&$config, $defaultClass)
+    public static function mergeDefaultClass(&$config, $defaultClass)
     {
         if (is_array($config) && !isset($config['class'])) {
             $config['class'] = $defaultClass;
@@ -46,7 +46,7 @@ trait ToolsTrait
      * @param $class
      * @param $params
      */
-    protected function generateYiiObjectConfig(&$class, $params)
+    public static function generateYiiObjectConfig(&$class, $params)
     {
         if (is_string($class)) {
             $class = ['class' => $class];
@@ -60,7 +60,7 @@ trait ToolsTrait
      * @param $msg
      * @return Model
      */
-    protected function restValidateError($msg)
+    public static function restValidateError($msg)
     {
         $model = new Model();
         $model->addError('xxx', $msg);

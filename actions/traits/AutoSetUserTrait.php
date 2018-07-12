@@ -2,12 +2,11 @@
 
 namespace kriss\actions\traits;
 
+use kriss\actions\helper\ActionTools;
 use Yii;
 
 trait AutoSetUserTrait
 {
-    use ToolsTrait;
-
     /**
      * @var bool
      */
@@ -24,7 +23,7 @@ trait AutoSetUserTrait
     public function autoMergeUserId(&$class)
     {
         if ($this->autoSetUserId) {
-            $this->generateYiiObjectConfig($class, [$this->autoSetUserIdAttribute => Yii::$app->user->id]);
+            ActionTools::generateYiiObjectConfig($class, [$this->autoSetUserIdAttribute => Yii::$app->user->id]);
         }
     }
 }

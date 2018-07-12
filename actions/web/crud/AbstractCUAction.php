@@ -2,6 +2,7 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\AjaxViewTrait;
 use kriss\actions\traits\FlashMessageTrait;
 use kriss\actions\traits\ModelClassActionTrait;
@@ -42,7 +43,7 @@ abstract class AbstractCUAction extends AbstractAction
             $this->beforeValidateCallback && call_user_func($this->beforeValidateCallback, $model);
 
             if ($this->doMethod === 'save' || $model->validate()) {
-                $result = $this->invokeClassMethod($model, $this->doMethod);
+                $result = ActionTools::invokeClassMethod($model, $this->doMethod);
                 $this->setFlashMessage($result, $model);
             }
 

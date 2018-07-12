@@ -2,6 +2,7 @@
 
 namespace kriss\actions\traits;
 
+use kriss\actions\helper\ActionTools;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
@@ -12,8 +13,6 @@ use yii\web\NotFoundHttpException;
 
 trait ModelClassActionTrait
 {
-    use ToolsTrait;
-
     /**
      * 在使用 array 配置时如果要用到 比如： Yii::$app->user->id 时，请使用 callable，
      * 否则 Yii::$app->user->id 为空，
@@ -100,7 +99,7 @@ trait ModelClassActionTrait
     protected function findModel($id, $controller)
     {
         if ($this->findModel) {
-            $model = $this->invokeClassMethod($controller, $this->findModel, $id);
+            $model = ActionTools::invokeClassMethod($controller, $this->findModel, $id);
         } else {
             if (!$this->findModelCondition) {
                 $model = call_user_func([$this->modelClass, 'findOne'], $id);

@@ -2,6 +2,7 @@
 
 namespace kriss\actions\rest\crud;
 
+use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\AutoSetUserTrait;
 use kriss\components\rest\ActiveDataProvider;
 use Yii;
@@ -33,7 +34,7 @@ class ListAction extends AbstractAction
     public function run()
     {
         if ($this->dataProvider) {
-            $this->mergeDefaultClass($this->dataProvider, ActiveDataProvider::class);
+            ActionTools::mergeDefaultClass($this->dataProvider, ActiveDataProvider::class);
             return Yii::createObject($this->dataProvider);
         } elseif ($this->searchModel) {
             $this->autoMergeUserId($this->searchModel);

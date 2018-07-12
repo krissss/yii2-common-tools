@@ -2,13 +2,11 @@
 
 namespace kriss\actions\rest\crud;
 
-use kriss\actions\traits\ToolsTrait;
+use kriss\actions\helper\ActionTools;
 use Yii;
 
 class BatchOperateAction extends AbstractAction
 {
-    use ToolsTrait;
-
     /**
      * @var string
      */
@@ -27,10 +25,10 @@ class BatchOperateAction extends AbstractAction
     {
         $ids = Yii::$app->request->post($this->idsAttribute);
         if (!$ids) {
-            return $this->restValidateError('ids 必传');
+            return ActionTools::restValidateError('ids 必传');
         }
         $idsArr = array_unique(array_filter(explode($this->explodeBy, $ids)));
 
-        return $this->invokeClassMethod($this->controller, $this->doMethod, $idsArr);
+        return ActionTools::invokeClassMethod($this->controller, $this->doMethod, $idsArr);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace kriss\actions\web\crud;
 
-use kriss\actions\traits\ToolsTrait;
+use kriss\actions\helper\ActionTools;
 use kriss\traits\WebControllerTrait;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -11,7 +11,6 @@ use yii\data\ActiveDataProvider;
 class IndexAction extends AbstractAction
 {
     use WebControllerTrait;
-    use ToolsTrait;
 
     /**
      * @var string|array|callable
@@ -35,7 +34,7 @@ class IndexAction extends AbstractAction
         $this->rememberUrl($this->controller);
 
         if ($this->dataProvider) {
-            $this->mergeDefaultClass($this->dataProvider, ActiveDataProvider::class);
+            ActionTools::mergeDefaultClass($this->dataProvider, ActiveDataProvider::class);
             $dataProvider = Yii::createObject($this->dataProvider);
             $viewParams = [
                 'dataProvider' => $dataProvider,

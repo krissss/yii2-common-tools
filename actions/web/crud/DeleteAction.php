@@ -2,6 +2,7 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\FlashMessageTrait;
 use kriss\actions\traits\ModelClassActionTrait;
 
@@ -23,7 +24,7 @@ class DeleteAction extends AbstractAction
     {
         $model = $this->findModel($id, $this->controller);
 
-        $result = $this->invokeClassMethod($model, $this->deleteMethod, $model);
+        $result = ActionTools::invokeClassMethod($model, $this->deleteMethod, $model);
         $this->setFlashMessage($result, $model);
 
         return $this->redirectPrevious();

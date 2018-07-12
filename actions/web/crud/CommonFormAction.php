@@ -2,6 +2,7 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\AjaxViewTrait;
 use kriss\actions\traits\FlashMessageTrait;
 use kriss\actions\traits\ModelClassActionTrait;
@@ -27,7 +28,7 @@ class CommonFormAction extends AbstractAction
         $model = $this->newModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $result = $this->invokeClassMethod($model, $this->doMethod);
+            $result = ActionTools::invokeClassMethod($model, $this->doMethod);
             $this->setFlashMessage($result, $model);
             if ($result !== false) {
                 if ($this->successRedirect) {

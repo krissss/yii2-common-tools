@@ -2,6 +2,7 @@
 
 namespace kriss\actions\rest\crud;
 
+use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\ModelClassActionTrait;
 use Yii;
 
@@ -39,16 +40,16 @@ class UpdateAction extends AbstractAction
         $request = Yii::$app->request;
         $id = $request->post($this->idAttribute);
         if (!$id) {
-            return $this->restValidateError('id 必须');
+            return ActionTools::restValidateError('id 必须');
         }
 
         $model = $this->findModel($id, $this->controller);
         $isLoadSuccess = $model->load($request->post(), '');
         if ($this->mustLoadPostData && !$isLoadSuccess) {
-            return $this->restValidateError("缺少 {$this->idAttribute} 以外的其他参数");
+            return ActionTools::restValidateError("缺少 {$this->idAttribute} 以外的其他参数");
         }
 
-        $result = $this->invokeClassMethod($model, $this->updateMethod);
+        $result = ActionTools::invokeClassMethod($model, $this->updateMethod);
         if ($result !== false) {
             if ($this->returnModel) {
                 $model->refresh();
