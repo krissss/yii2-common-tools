@@ -7,7 +7,7 @@ use kriss\actions\traits\FlashMessageTrait;
 use kriss\actions\traits\ModelClassActionTrait;
 use Yii;
 
-class CommonFormAction extends AbstractAction
+class ModelOperateAction extends AbstractAction
 {
     use ModelClassActionTrait;
     use FlashMessageTrait;
@@ -21,15 +21,20 @@ class CommonFormAction extends AbstractAction
      * @var string|array
      */
     public $successRedirect;
+    /**
+     * @var string
+     */
+    public $modelIdAttribute = 'id';
 
-    public function run()
+    public function run($id)
     {
+        $this->generateYiiObjectConfig($this->modelClass, [$this->modelIdAttribute => $id]);
         $model = $this->newModel();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $result = $this->invokeClassMethod($model, $this->doMethod);
             $this->setFlashMessage($result, $model);
-            if ($result !== false) {
+            if ($result !== false || $this->isAjax) {
                 if ($this->successRedirect) {
                     return $this->controller->redirect($this->successRedirect);
                 } else {

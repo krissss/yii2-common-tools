@@ -2,13 +2,15 @@
 
 namespace kriss\actions\rest\crud;
 
+use kriss\actions\traits\AutoSetUserTrait;
 use kriss\components\rest\ActiveDataProvider;
 use Yii;
-use yii\base\Action;
 use yii\base\InvalidConfigException;
 
-class ListAction extends Action
+class ListAction extends AbstractAction
 {
+    use AutoSetUserTrait;
+
     /**
      * 注意：
      * 在使用 array 配置时如果要用到 比如： Yii::$app->user->id 时，请使用 callable，
@@ -31,13 +33,10 @@ class ListAction extends Action
     public function run()
     {
         if ($this->dataProvider) {
-            if (is_array($this->dataProvider)) {
-                if (!isset($this->dataProvider['class'])) {
-                    $this->dataProvider['class'] = ActiveDataProvider::class;
-                }
-            }
+            $this->mergeDefaultClass($this->dataProvider, ActiveDataProvider::class);
             return Yii::createObject($this->dataProvider);
         } elseif ($this->searchModel) {
+            $this->autoMergeUserId($this->searchModel);
             $searchModel = Yii::createObject($this->searchModel);
             return $searchModel->{$this->searchMethod}(Yii::$app->request->get());
         } else {

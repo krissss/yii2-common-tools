@@ -2,10 +2,15 @@
 
 namespace kriss\actions\rest\crud;
 
+use kriss\actions\traits\AutoSetUserTrait;
+use kriss\actions\traits\ModelClassActionTrait;
 use Yii;
 
 class CommonFormAction extends AbstractAction
 {
+    use AutoSetUserTrait;
+    use ModelClassActionTrait;
+
     /**
      * @var string
      */
@@ -13,10 +18,11 @@ class CommonFormAction extends AbstractAction
 
     public function run()
     {
+        $this->autoMergeUserId($this->modelClass);
         $model = $this->newModel();
 
         if ($model->load(Yii::$app->request->post(), '') && $model->validate()) {
-            $result = $this->doMethodOrCallback($this->doMethod, $model, $model);
+            $result = $this->invokeClassMethod($model, $this->doMethod);
             if ($result !== false) {
                 return $result;
             }

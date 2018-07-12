@@ -2,11 +2,13 @@
 
 namespace kriss\actions\rest\crud;
 
+use kriss\actions\traits\ModelClassActionTrait;
 use Yii;
-use yii\web\HttpException;
 
 class ModelOperateAction extends AbstractAction
 {
+    use ModelClassActionTrait;
+
     /**
      * @var string
      */
@@ -21,12 +23,12 @@ class ModelOperateAction extends AbstractAction
     {
         $id = Yii::$app->request->post($this->idAttribute);
         if (!$id) {
-            throw new HttpException(422, 'id 必须');
+            return $this->restValidateError('id 必须');
         }
 
-        $model = $this->findModel($id);
-        $result = $this->doMethodOrCallback($this->doMethod, $model, $model);
-        if ($result) {
+        $model = $this->findModel($id, $this->controller);
+        $result = $this->invokeClassMethod($model, $this->doMethod);
+        if ($result !== false) {
             return $result;
         }
         return $model;

@@ -7,15 +7,15 @@ class UpdateAction extends AbstractCUAction
     /**
      * @var string
      */
-    public $operateMsg = '修改';
+    public $view = '_create_update';
     /**
-     * @var string|callable
+     * @var string
      */
-    public $findModel;
+    public $operateMsg = '修改';
 
     public function run($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id, $this->controller);
 
         return $this->createOrUpdate($model);
     }

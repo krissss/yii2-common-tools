@@ -2,6 +2,9 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\actions\traits\AjaxViewTrait;
+use kriss\actions\traits\FlashMessageTrait;
+use kriss\actions\traits\ModelClassActionTrait;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
@@ -9,18 +12,14 @@ use yii\db\ActiveRecord;
 
 abstract class AbstractCUAction extends AbstractAction
 {
-    /**
-     * @var bool
-     */
-    public $isAjax = true;
+    use ModelClassActionTrait;
+    use FlashMessageTrait;
+    use AjaxViewTrait;
+
     /**
      * @var string
      */
     public $doMethod = 'save';
-    /**
-     * @var string
-     */
-    public $view = '_create_update';
     /**
      * @var callable
      */
@@ -42,15 +41,17 @@ abstract class AbstractCUAction extends AbstractAction
 
             $this->beforeValidateCallback && call_user_func($this->beforeValidateCallback, $model);
 
-            ($this->doMethod === 'save' || $model->validate()) && $this->doMethodOrCallback($this->doMethod, $model, $model);
+            if ($this->doMethod === 'save' || $model->validate()) {
+                $result = $this->invokeClassMethod($model, $this->doMethod);
+                $this->setFlashMessage($result, $model);
+            }
 
             return $this->redirectPrevious();
         }
 
         $this->beforeRenderCallback && call_user_func($this->beforeRenderCallback, $model);
 
-        $renderMethod = $this->isAjax ? 'renderAjax' : 'render';
-        return $this->controller->$renderMethod($this->view, [
+        return $this->render($this->controller, [
             'model' => $model
         ]);
     }

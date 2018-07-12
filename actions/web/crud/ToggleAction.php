@@ -2,12 +2,15 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\actions\traits\ModelClassActionTrait;
 use kriss\tools\Fun;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 
 class ToggleAction extends AbstractAction
 {
+    use ModelClassActionTrait;
+
     /**
      * @var string
      */
@@ -16,10 +19,6 @@ class ToggleAction extends AbstractAction
      * @var string|callable
      */
     public $changeMethod = 'save';
-    /**
-     * @var bool
-     */
-    public $setFlashMsg = false;
 
     public $onValue = 1;
     public $offValue = 0;
@@ -34,18 +33,24 @@ class ToggleAction extends AbstractAction
 
     public function run($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id, $this->controller);
         $attribute = $this->attribute;
         $oldValue = $model->$attribute;
 
-        $model->$attribute = $oldValue == $this->onValue ? $this->offValue : ($oldValue == $this->offValue ? $this->onValue : '未知');
+        if ($oldValue == $this->onValue) {
+            $model->$attribute = $this->offValue;
+        } elseif ($oldValue == $this->offValue) {
+            $model->$attribute = $this->onValue;
+        } else {
+            throw new Exception("oldValue: {$oldValue} 不在 [{$this->onValue}, {$this->offValue}] 之间");
+        }
         if ($this->changeMethod == 'save') {
             // save 不校验数据
-            $result = $this->doMethodOrCallback($this->changeMethod, $model, false);
+            $result = $this->invokeClassMethod($model, $this->changeMethod, false);
         } else {
-            $result = $this->doMethodOrCallback($this->changeMethod, $model, $model);
+            $result = $this->invokeClassMethod($model, $this->changeMethod);
         }
-        if (!$result) {
+        if ($result === false) {
             throw new Exception('操作执行错误:' . Fun::formatModelErrors2String($model->errors));
         }
 

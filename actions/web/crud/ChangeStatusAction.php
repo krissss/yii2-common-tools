@@ -2,11 +2,16 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\actions\traits\FlashMessageTrait;
+use kriss\actions\traits\ModelClassActionTrait;
 use kriss\components\MessageAlert;
 use yii\base\InvalidConfigException;
 
 class ChangeStatusAction extends AbstractAction
 {
+    use ModelClassActionTrait;
+    use FlashMessageTrait;
+
     /**
      * 需要改成的状态 => 当前的状态必须是其中一个
      * [
@@ -35,11 +40,12 @@ class ChangeStatusAction extends AbstractAction
 
     public function run($id, $status)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id, $this->controller);
         $currentStatus = $model->{$this->statusAttribute};
         if (in_array($currentStatus, (array)$this->statusRelation[$status])) {
             $model->{$this->statusAttribute} = $status;
-            $this->doMethodOrCallback($this->changeMethod, $model, $model);
+            $result = $this->invokeClassMethod($model, $this->changeMethod);
+            $this->setFlashMessage($result, $model);
         } else {
             MessageAlert::error('当前状态下操作失败');
         }

@@ -2,18 +2,15 @@
 
 namespace kriss\actions\rest\crud;
 
+use kriss\actions\traits\ModelClassActionTrait;
+
 class DetailAction extends AbstractAction
 {
-    /**
-     * @var string
-     */
-    public $beforeRenderCallback;
+    use ModelClassActionTrait;
 
     public function run($id)
     {
-        $model = $this->findModel($id);
-
-        $this->beforeRenderCallback && call_user_func($this->beforeRenderCallback, $model);
+        $model = $this->findModel($id, $this->controller);
 
         return $model;
     }

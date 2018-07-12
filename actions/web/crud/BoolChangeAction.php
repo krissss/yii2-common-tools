@@ -2,10 +2,15 @@
 
 namespace kriss\actions\web\crud;
 
+use kriss\actions\traits\FlashMessageTrait;
+use kriss\actions\traits\ModelClassActionTrait;
 use yii\base\InvalidConfigException;
 
 class BoolChangeAction extends AbstractAction
 {
+    use ModelClassActionTrait;
+    use FlashMessageTrait;
+
     /**
      * @var string
      */
@@ -30,17 +35,18 @@ class BoolChangeAction extends AbstractAction
 
     public function run($id)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($id, $this->controller);
         $attribute = $this->attribute;
 
         $model->$attribute = !$model->$attribute;
         $this->forceToInt && $model->$attribute = (int)$model->$attribute;
         if ($this->changeMethod == 'save') {
             // save 不校验数据
-            $this->doMethodOrCallback($this->changeMethod, $model, false);
+            $result = $this->invokeClassMethod($model, $this->changeMethod, false);
         } else {
-            $this->doMethodOrCallback($this->changeMethod, $model, $model);
+            $result = $this->invokeClassMethod($model, $this->changeMethod);
         }
+        $this->setFlashMessage($result, $model);
 
         return $this->redirectPrevious();
     }
