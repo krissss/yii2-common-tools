@@ -59,6 +59,16 @@ trait ModelClassActionTrait
      * @var string
      */
     public $modelClassPrimaryKey = 'id';
+    /**
+     * 未找到数据的提示信息
+     * @var string
+     */
+    public $msgNoRecord = 'No Record';
+    /**
+     * 找到的数据不属于该用户时的提示信息
+     * @var string
+     */
+    public $msgRecordNotAllowed = 'Record Not Allowed';
 
     /**
      * new 一个 model
@@ -105,11 +115,11 @@ trait ModelClassActionTrait
         }
 
         if (!$model) {
-            throw new NotFoundHttpException('No Record');
+            throw new NotFoundHttpException($this->msgNoRecord);
         }
         if ($this->isFindModelCheckUser) {
             if ($model->{$this->checkUserIdAttribute} != Yii::$app->user->id) {
-                throw new ForbiddenHttpException('Record Not Allowed');
+                throw new ForbiddenHttpException($this->msgRecordNotAllowed);
             }
         }
 
