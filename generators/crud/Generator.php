@@ -250,9 +250,9 @@ class Generator extends \yii\gii\Generator
             $useClasses[] = $this->getModelClass();
         }
 
-        array_unique($useClasses);
+        $useClasses = array_unique($useClasses);
         natcasesort($useClasses);
-        
+
         return array_values($useClasses);
     }
 
