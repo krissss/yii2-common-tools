@@ -3,16 +3,13 @@
 namespace kriss\actions\web\crud;
 
 use kriss\actions\helper\ActionTools;
-use kriss\actions\traits\AjaxViewTrait;
 use kriss\actions\traits\FlashMessageTrait;
 use kriss\actions\traits\ModelClassActionTrait;
-use Yii;
 
 class ModelOperateAction extends AbstractAction
 {
     use ModelClassActionTrait;
     use FlashMessageTrait;
-    use AjaxViewTrait;
 
     /**
      * @var string
@@ -22,30 +19,14 @@ class ModelOperateAction extends AbstractAction
      * @var string|array
      */
     public $successRedirect;
-    /**
-     * @var string
-     */
-    public $modelIdAttribute = 'id';
 
     public function run($id)
     {
-        ActionTools::generateYiiObjectConfig($this->modelClass, [$this->modelIdAttribute => $id]);
-        $model = $this->newModel();
+        $model = $this->findModel($id, $this->controller);
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $result = ActionTools::invokeClassMethod($model, $this->doMethod);
-            $this->setFlashMessage($result, $model);
-            if ($result !== false || $this->isAjax) {
-                if ($this->successRedirect) {
-                    return $this->controller->redirect($this->successRedirect);
-                } else {
-                    return $this->redirectPrevious();
-                }
-            }
-        }
+        $result = ActionTools::invokeClassMethod($model, $this->doMethod);
+        $this->setFlashMessage($result, $model);
 
-        return $this->render($this->controller, [
-            'model' => $model
-        ]);
+        return $this->redirectPrevious();
     }
 }
