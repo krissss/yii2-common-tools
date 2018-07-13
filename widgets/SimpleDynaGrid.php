@@ -314,6 +314,7 @@ class SimpleDynaGrid extends Component
                     'columns' => $fullExportMenuColumns,
                     'target' => ExportMenu::TARGET_BLANK,
                     'pjaxContainerId' => $this->_pjaxContainerId,
+                    'folder' => '@runtime/export',
                     'clearBuffers' => true,
                     'exportConfig' => [
                         ExportMenu::FORMAT_HTML => false,
