@@ -2,6 +2,7 @@
 
 namespace kriss\actions\traits;
 
+use kriss\actions\helper\ActionTools;
 use yii\web\Controller;
 
 /**
@@ -17,8 +18,8 @@ trait AjaxViewTrait
      */
     public function render($controller, $params)
     {
-        $isAjax = isset($this->isAjax) ? $this->isAjax : true;
-        $view = isset($this->view) ? $this->view : $controller->action->id;
+        $isAjax = ActionTools::getTraitProperty($this, 'isAjax', true);
+        $view = ActionTools::getTraitProperty($this, 'view', $controller->action->id);
 
         $renderMethod = $isAjax ? 'renderAjax' : 'render';
         return $controller->$renderMethod($view, $params);

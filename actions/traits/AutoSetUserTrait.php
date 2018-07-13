@@ -17,8 +17,8 @@ trait AutoSetUserTrait
      */
     public function autoMergeUserId(&$class)
     {
-        $autoSetUserId = isset($this->autoSetUserId) ? $this->autoSetUserId : false;
-        $autoSetUserIdAttribute = isset($this->autoSetUserIdAttribute) ? $this->autoSetUserIdAttribute : 'userId';
+        $autoSetUserId = ActionTools::getTraitProperty($this, 'autoSetUserId', false);
+        $autoSetUserIdAttribute = ActionTools::getTraitProperty($this, 'autoSetUserIdAttribute', 'userId');
 
         if ($autoSetUserId) {
             ActionTools::generateYiiObjectConfig($class, [$autoSetUserIdAttribute => Yii::$app->user->id]);

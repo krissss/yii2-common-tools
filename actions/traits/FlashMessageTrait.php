@@ -2,6 +2,7 @@
 
 namespace kriss\actions\traits;
 
+use kriss\actions\helper\ActionTools;
 use kriss\components\MessageAlert;
 use kriss\tools\Fun;
 
@@ -17,8 +18,8 @@ trait FlashMessageTrait
      */
     protected function setFlashMessage($result, $model)
     {
-        $setFlashMsg = isset($this->setFlashMsg) ? $this->setFlashMsg : true;
-        $operateMsg = isset($this->operateMsg) ? $this->operateMsg : '操作';
+        $setFlashMsg = ActionTools::getTraitProperty($this, 'setFlashMsg', true);
+        $operateMsg = ActionTools::getTraitProperty($this, 'operateMsg', '操作');
 
         if ($setFlashMsg) {
             if ($result !== false) {
