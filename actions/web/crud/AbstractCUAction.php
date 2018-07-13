@@ -29,6 +29,14 @@ abstract class AbstractCUAction extends AbstractAction
      * @var callable
      */
     public $beforeRenderCallback;
+    /**
+     * @var bool
+     */
+    public $isAjax = true;
+    /**
+     * @var string
+     */
+    public $view = '_create_update';
 
     /**
      * 新增或修改操作

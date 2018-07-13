@@ -7,10 +7,6 @@ class UpdateAction extends AbstractCUAction
     /**
      * @var string
      */
-    public $view = '_create_update';
-    /**
-     * @var string
-     */
     public $operateMsg = '修改';
 
     public function run($id)

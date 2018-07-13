@@ -15,6 +15,10 @@ class ViewAction extends AbstractAction
      */
     public $beforeRenderCallback;
     /**
+     * @var bool
+     */
+    public $isAjax = true;
+    /**
      * @var string
      */
     public $view = '_view';

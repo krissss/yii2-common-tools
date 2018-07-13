@@ -2,20 +2,25 @@
 
 namespace kriss\actions\traits;
 
+use yii\web\Controller;
+
+/**
+ * @property bool $isAjax 是否通过 ajax 展示 view，默认为 true
+ * @property string $view 视图名，默认为 action 的 id
+ */
 trait AjaxViewTrait
 {
     /**
-     * @var bool
+     * @param $controller Controller
+     * @param $params
+     * @return mixed
      */
-    public $isAjax = true;
-    /**
-     * @var string
-     */
-    public $view;
-
     public function render($controller, $params)
     {
-        $renderMethod = $this->isAjax ? 'renderAjax' : 'render';
-        return $controller->$renderMethod($this->view ?: 'unknown_view', $params);
+        $isAjax = isset($this->isAjax) ? $this->isAjax : true;
+        $view = isset($this->view) ? $this->view : $controller->action->id;
+
+        $renderMethod = $isAjax ? 'renderAjax' : 'render';
+        return $controller->$renderMethod($view, $params);
     }
 }

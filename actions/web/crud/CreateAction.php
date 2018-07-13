@@ -7,10 +7,6 @@ class CreateAction extends AbstractCUAction
     /**
      * @var string
      */
-    public $view = '_create_update';
-    /**
-     * @var string
-     */
     public $operateMsg = '新增';
 
     public function run()

@@ -5,29 +5,26 @@ namespace kriss\actions\traits;
 use kriss\components\MessageAlert;
 use kriss\tools\Fun;
 
+/**
+ * @property bool $setFlashMsg 是否显示 flash 消息，默认为 true
+ * @property string $operateMsg 操作提示，默认为 操作
+ */
 trait FlashMessageTrait
 {
-    /**
-     * @var string
-     */
-    public $operateMsg = '操作';
-    /**
-     * 是否显示 flash 消息
-     * @var bool
-     */
-    public $setFlashMsg = true;
-
     /**
      * @param $result
      * @param $model
      */
     protected function setFlashMessage($result, $model)
     {
-        if ($this->setFlashMsg) {
+        $setFlashMsg = isset($this->setFlashMsg) ? $this->setFlashMsg : true;
+        $operateMsg = isset($this->operateMsg) ? $this->operateMsg : '操作';
+
+        if ($setFlashMsg) {
             if ($result !== false) {
-                MessageAlert::success($this->operateMsg . '成功');
+                MessageAlert::success($operateMsg . '成功');
             } else {
-                MessageAlert::error($this->operateMsg . '失败：' . Fun::formatModelErrors2String($model->errors));
+                MessageAlert::error($operateMsg . '失败：' . Fun::formatModelErrors2String($model->errors));
             }
         }
     }
