@@ -62,7 +62,8 @@ class Auth extends Component
      * @param $key
      * @return mixed
      */
-    public static function getName($key){
+    public static function getName($key)
+    {
         $messages = static::getMessageData();
         return isset($messages[$key]) ? $messages[$key] : $key;
     }

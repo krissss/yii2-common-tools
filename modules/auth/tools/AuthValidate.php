@@ -1,13 +1,13 @@
 <?php
-/**
- * 验证用户是否具有某项权限
- */
 
 namespace kriss\modules\auth\tools;
 
 use Yii;
 use yii\web\ForbiddenHttpException;
 
+/**
+ * 验证用户是否具有某项权限
+ */
 class AuthValidate
 {
     /**
@@ -19,7 +19,9 @@ class AuthValidate
      */
     public static function run($name, $allContain = false)
     {
-        if (!self::has($name, $allContain)) throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+        if (!self::has($name, $allContain)) {
+            throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+        }
     }
 
     /**

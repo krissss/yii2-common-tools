@@ -1,23 +1,19 @@
 <?php
-/**
- * 简单的activeFrom
- * 包含配置等
- */
 
 namespace kriss\widgets;
 
-use yii\helpers\Html;
 use kartik\form\ActiveForm;
+use yii\helpers\Html;
 
 class SimpleActiveForm extends ActiveForm
 {
     public $options = [
-        'class' => 'form-horizontal'
+        'class' => 'form-horizontal',
     ];
     public $fieldConfig = [
         'template' => '{label}<div class="col-sm-5">{input}{hint}</div>{error}',
         'labelOptions' => ['class' => 'control-label col-sm-2'],
-        'errorOptions' => ['class' => 'help-block col-sm-5']
+        'errorOptions' => ['class' => 'help-block col-sm-5'],
     ];
 
     /**
@@ -62,15 +58,19 @@ class SimpleActiveForm extends ActiveForm
             $btnSubmit = Html::submitButton($this->submitLabel, $this->submitOptions);
         }
         $options = [
-            'class' => 'col-sm-offset-2 col-sm-5'
+            'class' => 'col-sm-offset-2 col-sm-5',
         ];
         $options = array_merge($this->btnContainerOptions, $options);
-        return Html::tag('div',
-            Html::tag('div',
+        return Html::tag(
+            'div',
+            Html::tag(
+                'div',
                 (isset($btnReturn) ? $btnReturn : '') . ' ' .
                 (isset($btnSubmit) ? $btnSubmit : ''),
-                isset($options) ? $options : ''),
-            ['class' => 'form-group']);
+                isset($options) ? $options : ''
+            ),
+            ['class' => 'form-group']
+        );
     }
 
     public static function begin($config = [])

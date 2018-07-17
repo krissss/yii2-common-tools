@@ -3,16 +3,16 @@
 namespace kriss\modules\auth\controllers;
 
 use kriss\modules\auth\models\Auth;
+use kriss\modules\auth\models\AuthRole;
+use kriss\modules\auth\models\AuthRoleSearch;
 use kriss\modules\auth\Module;
 use kriss\modules\auth\tools\AuthValidate;
 use Yii;
-use kriss\modules\auth\models\AuthRole;
-use kriss\modules\auth\models\AuthRoleSearch;
+use yii\filters\VerbFilter;
 use yii\helpers\Url;
 use yii\web\Controller;
-use yii\web\NotFoundHttpException;
 use yii\web\ForbiddenHttpException;
-use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
 
 class RoleController extends Controller
 {
@@ -64,8 +64,9 @@ class RoleController extends Controller
             foreach ($arrayOperation as $item) {
                 $strOperation .= (Module::getAuthOperationClass())::findViewName($item) . ' | ';
                 $i++;
-                if ($i % 5 == 0)
+                if ($i % 5 == 0) {
                     $strOperation .= "<br>";
+                }
             }
         }
 

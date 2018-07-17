@@ -5,8 +5,8 @@ namespace kriss\modules\auth\controllers;
 use kriss\modules\auth\models\Auth;
 use kriss\modules\auth\Module;
 use kriss\modules\auth\tools\AuthValidate;
-use yii\web\Controller;
 use Yii;
+use yii\web\Controller;
 
 class PermissionController extends Controller
 {

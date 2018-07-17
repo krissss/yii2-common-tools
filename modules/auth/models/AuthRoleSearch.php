@@ -10,7 +10,8 @@ class AuthRoleSearch extends AuthRole
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['id'], 'integer'],
             [['name', 'description', 'operation_list'], 'safe'],
@@ -20,7 +21,8 @@ class AuthRoleSearch extends AuthRole
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getQuery() {
+    public function getQuery()
+    {
         return (Module::getAuthRoleClass())::find();
     }
 
@@ -28,7 +30,8 @@ class AuthRoleSearch extends AuthRole
      * @param $params
      * @return ActiveDataProvider
      */
-    public function search($params) {
+    public function search($params)
+    {
         $query = $this->getQuery();
 
         $dataProvider = new ActiveDataProvider([

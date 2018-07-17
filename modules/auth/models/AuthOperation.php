@@ -23,7 +23,7 @@ class AuthOperation extends \yii\db\ActiveRecord
     {
         return [
             [['parent_id'], 'integer'],
-            [['name'], 'string', 'max' => 32]
+            [['name'], 'string', 'max' => 32],
         ];
     }
 

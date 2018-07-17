@@ -30,7 +30,7 @@ class ViewAction extends AbstractAction
         $this->beforeRenderCallback && call_user_func($this->beforeRenderCallback, $model);
 
         return $this->render($this->controller, [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 }

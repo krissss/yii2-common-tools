@@ -1,6 +1,7 @@
 <?php
 
 namespace kriss\tools;
+
 /**
  * extend this and cover getKEY() and getIV()
  */

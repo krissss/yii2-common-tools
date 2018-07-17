@@ -1,7 +1,5 @@
 <?php
-/**
- * 视图文件参考 views
- */
+
 namespace kriss\actions\web;
 
 class ErrorAction extends \yii\web\ErrorAction
@@ -17,7 +15,7 @@ class ErrorAction extends \yii\web\ErrorAction
      */
     protected function renderHtmlResponse()
     {
-        if($this->layout){
+        if ($this->layout) {
             $this->controller->layout = $this->layout;
         }
         return parent::renderHtmlResponse();

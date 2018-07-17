@@ -13,5 +13,4 @@ class DateRange4Form extends DateRangeBase
     public $errorOptions = ['class' => 'help-block col-sm-5'];
 
     public $container = ['class' => 'form-group'];
-
 }

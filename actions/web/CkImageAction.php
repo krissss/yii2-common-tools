@@ -1,16 +1,17 @@
 <?php
+
+namespace kriss\actions\web;
+
+use kriss\models\FileUpload;
+use kriss\tools\Fun;
+use Yii;
+use yii\base\Action;
+use yii\base\InvalidConfigException;
+
 /**
  * CKEditor 图片上传的操作
  * @link http://docs.ckeditor.com/#!/guide/dev_file_browser_api
  */
-namespace kriss\actions\web;
-
-use yii\base\InvalidConfigException;
-use kriss\models\FileUpload;
-use yii\base\Action;
-use Yii;
-use kriss\tools\Fun;
-
 class CkImageAction extends Action
 {
     /**
@@ -20,7 +21,7 @@ class CkImageAction extends Action
     public $fileUploadClass = [
         'class' => 'kriss\models\FileUpload',
         'maxSize' => 5242880, // 5M
-        'extensions' => 'jpg,png'
+        'extensions' => 'jpg,png',
     ];
 
     public function run()
@@ -30,7 +31,7 @@ class CkImageAction extends Action
         $cKEditorName = $request->get('CKEditor');
         $fileUploadClass = $this->fileUploadClass;
         $model = Yii::createObject($fileUploadClass);
-        if(!$model instanceof FileUpload){
+        if (!$model instanceof FileUpload) {
             throw new InvalidConfigException('fileUploadClass must be instance of kriss\models\FileUpload');
         }
         if ($fileName = $model->upload('upload', $cKEditorName)) {

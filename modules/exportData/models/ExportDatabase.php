@@ -101,9 +101,9 @@ class ExportDatabase extends Component
         }
 
         $zipFile = $this->fileSavePath . $this->getZipFileName();
-        $zip = new ZipArchive (); // 使用本类，linux需开启zlib，windows需取消php_zip.dll前的注释,php7自动开启
-        if ($zip->open($zipFile, ZipArchive::CREATE) !== TRUE) {
-            exit ('无法打开文件，或者文件创建失败');
+        $zip = new ZipArchive(); // 使用本类，linux需开启zlib，windows需取消php_zip.dll前的注释,php7自动开启
+        if ($zip->open($zipFile, ZipArchive::CREATE) !== true) {
+            exit('无法打开文件，或者文件创建失败');
         }
         foreach ($csvFileArr as $val) {
             $zip->addFile($val, basename($val)); // 第二个参数是放在压缩包中的文件名称，如果文件可能会有重复，就需要注意一下

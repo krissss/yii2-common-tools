@@ -19,7 +19,7 @@ class DatetimeColumn extends DataColumn
      * @var array
      */
     public $emptyValue = [
-        0, '0', null, ''
+        0, '0', null, '',
     ];
     /**
      * 空值显示内容

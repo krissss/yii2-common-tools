@@ -66,7 +66,7 @@ class UpdateUserRole extends Model
     public function rules()
     {
         return [
-            ['userRole', 'safe']
+            ['userRole', 'safe'],
         ];
     }
 

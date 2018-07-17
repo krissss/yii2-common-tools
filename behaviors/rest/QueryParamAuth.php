@@ -15,9 +15,9 @@ class QueryParamAuth extends \yii\filters\auth\QueryParamAuth
      */
     public function authenticate($user, $request, $response)
     {
-        if($request->isPost){
+        if ($request->isPost) {
             $accessToken = $request->post($this->tokenParam);
-        }else{
+        } else {
             $accessToken = $request->get($this->tokenParam);
         }
         if (is_string($accessToken)) {

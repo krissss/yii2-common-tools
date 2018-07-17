@@ -1,4 +1,5 @@
 <?php
+
 /* @var $this yii\web\View */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $generator \kriss\generators\crud\Generator */
@@ -19,5 +20,3 @@ echo $form->field($generator, 'controllerPath');
 echo $form->field($generator, 'viewPath');
 echo $form->field($generator, 'searchModelPath');
 echo $form->field($generator, 'controllerBaseClass');
-
-

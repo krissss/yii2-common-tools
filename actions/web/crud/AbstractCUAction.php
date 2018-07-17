@@ -47,7 +47,6 @@ abstract class AbstractCUAction extends AbstractAction
     protected function createOrUpdate($model)
     {
         if ($model->load(Yii::$app->request->post())) {
-
             $this->beforeValidateCallback && call_user_func($this->beforeValidateCallback, $model);
 
             if ($this->doMethod === 'save' || $model->validate()) {
@@ -61,7 +60,7 @@ abstract class AbstractCUAction extends AbstractAction
         $this->beforeRenderCallback && call_user_func($this->beforeRenderCallback, $model);
 
         return $this->render($this->controller, [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 }

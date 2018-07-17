@@ -32,7 +32,7 @@ class ToggleColumn extends DataColumn
     public $templateWrapOptions = [
         'tag' => 'button',
         'class' => 'btn btn-primary btn-sm',
-        'title' => '点击切换'
+        'title' => '点击切换',
     ];
     public $templateWrapOptionsCannotOperate = [
         'tag' => 'span',
@@ -103,7 +103,7 @@ class ToggleColumn extends DataColumn
             $options = array_merge($this->templateWrapOptions, [
                 'data-url' => $url,
                 'data-value' => $value,
-                'data-pjax' => '0'
+                'data-pjax' => '0',
             ]);
             Html::addCssClass($options, $this->_triggerClass);
         } else {

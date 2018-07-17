@@ -21,7 +21,7 @@ class <?= $generator->getClassName($generator->getControllerClass()) ?> extends 
         // 列表
         $actions['index'] = [
             'class' => IndexAction::class,
-<?php if($generator->searchAttributes): ?>
+<?php if ($generator->searchAttributes): ?>
             'searchModel' => <?= $generator->getClassName($generator->getSearchClass()) ?>::class
 <?php else: ?>
             'dataProvider' => [
@@ -35,7 +35,7 @@ class <?= $generator->getClassName($generator->getControllerClass()) ?> extends 
             ]
 <?php endif; ?>
         ];
-<?php if($generator->hasCreate): ?>
+<?php if ($generator->hasCreate): ?>
         // 新增
         $actions['create'] = [
             'class' => CreateAction::class,
@@ -44,7 +44,7 @@ class <?= $generator->getClassName($generator->getControllerClass()) ?> extends 
             'view' => '<?= $generator->getCreateUpdateViewName() ?>',
         ];
 <?php endif; ?>
-<?php if($generator->hasUpdate): ?>
+<?php if ($generator->hasUpdate): ?>
         // 修改
         $actions['update'] = [
             'class' => UpdateAction::class,
@@ -53,7 +53,7 @@ class <?= $generator->getClassName($generator->getControllerClass()) ?> extends 
             'view' => '<?= $generator->getCreateUpdateViewName() ?>',
         ];
 <?php endif; ?>
-<?php if($generator->hasView): ?>
+<?php if ($generator->hasView): ?>
         // 详情
         $actions['view'] = [
             'class' => ViewAction::class,
@@ -62,7 +62,7 @@ class <?= $generator->getClassName($generator->getControllerClass()) ?> extends 
             'view' => '<?= $generator->getViewViewName() ?>',
         ];
 <?php endif; ?>
-<?php if($generator->hasDelete): ?>
+<?php if ($generator->hasDelete): ?>
         // 删除
         $actions['delete'] = [
             'class' => DeleteAction::class,

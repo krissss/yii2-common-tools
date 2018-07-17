@@ -43,10 +43,9 @@ class TimeUserBehavior extends Behavior
                 BaseActiveRecord::EVENT_BEFORE_UPDATE => [
                     'time' => [$this->updatedAtAttribute],
                     'user' => [$this->updatedByAttribute],
-                ]
+                ],
             ];
         }
-
     }
 
     public function events()

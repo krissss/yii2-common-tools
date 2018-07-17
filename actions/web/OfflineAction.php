@@ -1,7 +1,5 @@
 <?php
-/**
- * 视图文件参考 views
- */
+
 namespace kriss\actions\web;
 
 use Yii;
@@ -82,7 +80,7 @@ class OfflineAction extends Action
         Yii::$app->response->format = $this->ajaxResponseFormat;
         return [
             'code' => $this->httpCode,
-            'msg' => $this->name . ': ' . $this->message
+            'msg' => $this->name . ': ' . $this->message,
         ];
     }
 
@@ -94,7 +92,7 @@ class OfflineAction extends Action
         Yii::$app->response->format = $this->postResponseFormat;
         return [
             'code' => $this->httpCode,
-            'msg' => $this->name . ': ' . $this->message
+            'msg' => $this->name . ': ' . $this->message,
         ];
     }
 

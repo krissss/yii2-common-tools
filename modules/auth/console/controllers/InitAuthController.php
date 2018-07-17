@@ -84,7 +84,7 @@ class InitAuthController extends Controller
     {
         if ($this->superAdminId) {
             return [
-                $this->superAdminId => ['超级管理员', '拥有所有权限', 'all']
+                $this->superAdminId => ['超级管理员', '拥有所有权限', 'all'],
             ];
         }
         return [];

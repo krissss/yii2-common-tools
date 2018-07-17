@@ -1,8 +1,5 @@
 <?php
-/**
- * wangEditor 上传操作
- * @link https://www.kancloud.cn/wangfupeng/wangeditor3/335782
- */
+
 namespace kriss\actions\web;
 
 use kriss\models\FileUpload;
@@ -12,6 +9,10 @@ use yii\base\Action;
 use yii\base\InvalidValueException;
 use yii\web\Response;
 
+/**
+ * wangEditor 上传操作
+ * @link https://www.kancloud.cn/wangfupeng/wangeditor3/335782
+ */
 class WangEditorUploadAction extends Action
 {
     /**
@@ -21,7 +22,7 @@ class WangEditorUploadAction extends Action
     public $fileUploadClass = [
         'class' => 'kriss\models\FileUpload',
         'maxSize' => 5242880, // 5M
-        'extensions' => 'jpg,png'
+        'extensions' => 'jpg,png',
     ];
 
     public function run()
@@ -32,18 +33,18 @@ class WangEditorUploadAction extends Action
         $prefix = urldecode($request->post('prefix'));
         $fileUploadClass = $this->fileUploadClass;
         $model = Yii::createObject($fileUploadClass);
-        if(!$model instanceof FileUpload){
+        if (!$model instanceof FileUpload) {
             throw new InvalidValueException('fileUploadClass must be instance of kriss\models\FileUpload');
         }
         $model->multi = true;
         if ($fileNames = $model->upload($name, $prefix)) {
             return [
                 'errno' => 0,
-                'data' => $fileNames
+                'data' => $fileNames,
             ];
         }
         return [
-            'error' => Fun::formatModelErrors2String($model->errors)
+            'error' => Fun::formatModelErrors2String($model->errors),
         ];
     }
 }

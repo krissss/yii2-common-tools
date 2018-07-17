@@ -9,6 +9,6 @@ class SimpleSwitch extends SwitchInput
     public $containerOptions = [];
 
     public $pluginOptions = [
-        'size' => 'small'
+        'size' => 'small',
     ];
 }

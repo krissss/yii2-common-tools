@@ -93,10 +93,10 @@ class LinkPagerWithSubmit extends \yii\widgets\LinkPager
             $name = $matches[1];
             if ('pageButtons' == $name) {
                 return $this->renderPageButtons();
-            } else if ('customPage' == $name) {
+            } elseif ('customPage' == $name) {
                 $useCustomer = true;
                 return $this->renderCustomPage();
-            } else if ('customPageSize' == $name) {
+            } elseif ('customPageSize' == $name) {
                 $useCustomer = true;
                 return $this->renderCustomPageSize();
             }
@@ -120,12 +120,12 @@ class LinkPagerWithSubmit extends \yii\widgets\LinkPager
             $page = intval($params[$this->pagination->pageParam]);
             if ($page < 1) {
                 $page = 1;
-            } else if ($page > $this->pagination->getPageCount()) {
+            } elseif ($page > $this->pagination->getPageCount()) {
                 $page = $this->pagination->getPageCount();
             }
         }
         $inputOptions = array_merge($this->customGroupInputOptions, [
-            'min' => 1, 'max' => $maxCount, 'step' => 1
+            'min' => 1, 'max' => $maxCount, 'step' => 1,
         ]);
         $input = Html::input('number', $this->_pageInputName, $page, $inputOptions);
         $inputGroupHtml = <<<HTML
@@ -157,7 +157,7 @@ HTML;
             $pageSize = $this->maxPageSize;
         }
         $inputOptions = array_merge($this->customGroupInputOptions, [
-            'min' => $this->minPageSize, 'max' => $this->maxPageSize, 'step' => 1
+            'min' => $this->minPageSize, 'max' => $this->maxPageSize, 'step' => 1,
         ]);
         $input = Html::input('number', $this->_pageSizeInputName, $pageSize, $inputOptions);
         $inputGroupHtml = <<<HTML
@@ -175,11 +175,13 @@ HTML;
     protected function renderCustomButton()
     {
         $buttonOptions = array_merge($this->customButtonOptions, [
-            'id' => $this->_submitButtonId
+            'id' => $this->_submitButtonId,
         ]);
-        $customButtonHtml = Html::tag('div',
-            Html::tag('button', $this->submitButtonLabel, $buttonOptions)
-            , ['class' => 'input-group']);
+        $customButtonHtml = Html::tag(
+            'div',
+            Html::tag('button', $this->submitButtonLabel, $buttonOptions),
+            ['class' => 'input-group']
+        );
         return Html::tag('div', $customButtonHtml, $this->customButtonContainerOptions);
     }
 

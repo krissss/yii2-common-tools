@@ -44,5 +44,4 @@ class ListAction extends AbstractAction
             throw new InvalidConfigException('必须配置 dataProvider 或 searchModel');
         }
     }
-
 }

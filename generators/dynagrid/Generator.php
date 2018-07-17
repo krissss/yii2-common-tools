@@ -52,7 +52,7 @@ class Generator extends \yii\gii\Generator
                 'searchAttributes', 'actionIndex', 'title', 'dataColumns', 'actionColumns', 'toolbarActions',
                 'viewPath',
             ], 'safe'],
-            ['hasCheckboxColumn', 'boolean']
+            ['hasCheckboxColumn', 'boolean'],
         ]);
     }
 
@@ -84,7 +84,7 @@ class Generator extends \yii\gii\Generator
             'controllerBaseClass',
             'activeDataProviderClass',
             'actionIndex',
-            'viewPath'
+            'viewPath',
         ]);
     }
 
@@ -149,7 +149,7 @@ class Generator extends \yii\gii\Generator
     {
         $useClasses = [
             $this->modelClass,
-            $this->activeDataProviderClass
+            $this->activeDataProviderClass,
         ];
         natcasesort($useClasses);
         return array_values($useClasses);

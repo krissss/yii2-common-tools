@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Inflector;
 
 /** @var $this yii\web\View */
@@ -23,7 +24,7 @@ class <?= $generator->getClassName($generator->controllerClass) ?> extends <?= $
     {
         $this->rememberUrl();
 
-<?php if($generator->searchModelClass): ?>
+<?php if ($generator->searchModelClass): ?>
         $searchModel = new <?=$generator->getClassName($generator->searchModelClass)?>();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

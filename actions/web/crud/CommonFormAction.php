@@ -40,7 +40,7 @@ class CommonFormAction extends AbstractAction
         }
 
         return $this->render($this->controller, [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 }

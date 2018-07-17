@@ -10,7 +10,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     public function setPagination($value)
     {
         $value = array_merge([
-            'class' => Pagination::className()
+            'class' => Pagination::className(),
         ], $value);
         parent::setPagination($value);
     }
@@ -21,7 +21,7 @@ class ActiveDataProvider extends \yii\data\ActiveDataProvider
     public function setSort($value)
     {
         $value = array_merge([
-            'class' => Sort::className()
+            'class' => Sort::className(),
         ], $value);
         parent::setSort($value);
     }

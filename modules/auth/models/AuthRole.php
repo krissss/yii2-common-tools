@@ -34,7 +34,7 @@ class AuthRole extends \yii\db\ActiveRecord
             [['name'], 'required'],
             [['name'], 'string', 'max' => 64],
             [['description'], 'string', 'max' => 255],
-            [['operation_list'], 'string']
+            [['operation_list'], 'string'],
         ];
     }
 

@@ -18,7 +18,7 @@ class FileInputUploadAction extends Action
     public $fileUploadClass = [
         'class' => 'kriss\models\FileUpload',
         'maxSize' => 5242880, // 5M
-        'extensions' => 'jpg,png'
+        'extensions' => 'jpg,png',
     ];
 
     public function run()
@@ -36,11 +36,11 @@ class FileInputUploadAction extends Action
         if ($fileNames = $model->upload($name, $prefix)) {
             return [
                 'code' => 200,
-                'filenames' => $fileNames
+                'filenames' => $fileNames,
             ];
         }
         return [
-            'error' => Fun::formatModelErrors2String($model->errors)
+            'error' => Fun::formatModelErrors2String($model->errors),
         ];
     }
 }

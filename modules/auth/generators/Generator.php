@@ -4,8 +4,8 @@ namespace kriss\modules\auth\generators;
 
 use Yii;
 use yii\gii\CodeFile;
-use yii\helpers\StringHelper;
 use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 
 class Generator extends \yii\gii\Generator
 {
@@ -26,7 +26,7 @@ class Generator extends \yii\gii\Generator
     {
         return array_merge(parent::rules(), [
             [['authClass', 'moduleId', 'moduleKey', 'moduleName', 'useModulePrefix', 'childOperations', 'baseClass'], 'required'],
-            ['moduleId', 'number']
+            ['moduleId', 'number'],
         ]);
     }
 
@@ -68,7 +68,7 @@ class Generator extends \yii\gii\Generator
     public function generate()
     {
         return [
-            new CodeFile($this->getAuthFile(), $this->render('Auth.php'))
+            new CodeFile($this->getAuthFile(), $this->render('Auth.php')),
         ];
     }
 

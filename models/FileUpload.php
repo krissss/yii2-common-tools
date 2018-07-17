@@ -2,9 +2,9 @@
 
 namespace kriss\models;
 
+use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
-use Yii;
 
 class FileUpload extends Model
 {
@@ -51,7 +51,7 @@ class FileUpload extends Model
     {
         if (!$this->multi) {
             $fileRule = [
-                ['file'], 'file', 'skipOnEmpty' => false
+                ['file'], 'file', 'skipOnEmpty' => false,
             ];
             if ($this->maxSize) {
                 $fileRule += ['maxSize' => $this->maxSize];
@@ -64,7 +64,7 @@ class FileUpload extends Model
             }
         } else {
             $fileRule = [
-                ['file'], 'each', 'rule' => ['file', 'skipOnEmpty' => false]
+                ['file'], 'each', 'rule' => ['file', 'skipOnEmpty' => false],
             ];
             if ($this->maxSize) {
                 $fileRule['rule'] += ['maxSize' => $this->maxSize];
@@ -78,14 +78,14 @@ class FileUpload extends Model
         }
 
         return [
-            $fileRule
+            $fileRule,
         ];
     }
 
     public function attributes()
     {
         return [
-            'file' => $this->fileLabel
+            'file' => $this->fileLabel,
         ];
     }
 

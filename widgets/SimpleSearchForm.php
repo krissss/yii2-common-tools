@@ -1,13 +1,9 @@
 <?php
-/**
- * 简单的activeFrom
- * 包含配置等
- */
 
 namespace kriss\widgets;
 
-use yii\helpers\Html;
 use kartik\form\ActiveForm;
+use yii\helpers\Html;
 
 class SimpleSearchForm extends ActiveForm
 {
@@ -43,14 +39,14 @@ class SimpleSearchForm extends ActiveForm
             $this->layoutType = self::TYPE_ONE;
         }
         $this->options = [
-            'class' => 'form-horizontal form-col-compact'
+            'class' => 'form-horizontal form-col-compact',
         ];
         if ($this->layoutType == self::TYPE_ONE) {
             $this->fieldConfig = [
                 'template' => '{label}<div class="col-md-9">{input}</div>{error}',
                 'options' => ['class' => 'col-sm-12 col-md-3'],
                 'labelOptions' => ['class' => 'control-label col-md-3'],
-                'errorOptions' => ['class' => 'help-block col-md-offset-3 col-md-9']
+                'errorOptions' => ['class' => 'help-block col-md-offset-3 col-md-9'],
             ];
         }
         parent::init();
@@ -70,16 +66,20 @@ class SimpleSearchForm extends ActiveForm
         }
 
         $options = [
-            'class' => 'col-md-offset-1'
+            'class' => 'col-md-offset-1',
         ];
 
         $options = array_merge($this->btnContainerOptions, $options);
-        return Html::tag('div',
-            Html::tag('div',
+        return Html::tag(
+            'div',
+            Html::tag(
+                'div',
                 (isset($btnReset) ? $btnReset : '') . ' ' .
                 (isset($btnSubmit) ? $btnSubmit : ''),
-                isset($options) ? $options : ''),
-            ['class' => 'col-sm-10']);
+                isset($options) ? $options : ''
+            ),
+            ['class' => 'col-sm-10']
+        );
     }
 
     public static function begin($config = [])
@@ -88,7 +88,7 @@ class SimpleSearchForm extends ActiveForm
         $widget = parent::begin($config);
         $collapsedClass = '';
         $collapsedToolsClass = 'fa-minus';
-        if($widget->isCollapsed === true){
+        if ($widget->isCollapsed === true) {
             $collapsedClass = 'collapsed-box';
             $collapsedToolsClass = 'fa-plus';
         }

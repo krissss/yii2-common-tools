@@ -124,7 +124,7 @@ class Serializer extends \yii\rest\Serializer
     {
         $data = parent::serializeModelErrors($model);
         return [
-            $this->modelErrorsLabel => $data
+            $this->modelErrorsLabel => $data,
         ];
     }
 
@@ -136,7 +136,7 @@ class Serializer extends \yii\rest\Serializer
     {
         $data = parent::serializeModel($model);
         return [
-            $this->modelLabel => $data
+            $this->modelLabel => $data,
         ];
     }
 
@@ -149,7 +149,7 @@ class Serializer extends \yii\rest\Serializer
     {
         $data = static::serializeModels($models);
         return [
-            $this->modelLabel => $data
+            $this->modelLabel => $data,
         ];
     }
 
@@ -163,7 +163,7 @@ class Serializer extends \yii\rest\Serializer
             return parent::serializeDataProvider($dataProvider);
         } else {
             return [
-                'data' => parent::serializeDataProvider($dataProvider)
+                'data' => parent::serializeDataProvider($dataProvider),
             ];
         }
     }

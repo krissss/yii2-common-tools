@@ -52,5 +52,4 @@ class IndexAction extends AbstractAction
 
         return $this->controller->render($this->view, $viewParams);
     }
-
 }

@@ -31,7 +31,7 @@ class SimpleAjaxForm extends ActiveForm
     public $fieldConfig = [
         'template' => '{label}<div class="col-sm-10">{input}{hint}</div>{error}',
         'labelOptions' => ['class' => 'control-label col-sm-2'],
-        'errorOptions' => ['class' => 'help-block col-sm-10 col-sm-offset-2']
+        'errorOptions' => ['class' => 'help-block col-sm-10 col-sm-offset-2'],
     ];
 
     public function init()

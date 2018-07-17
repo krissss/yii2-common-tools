@@ -32,7 +32,7 @@ class m170301_062150_auth extends Migration
                 'operation_list' => $this->text()->comment('权限操作列表'),
             ], $tableOptions . ' COMMENT=\'权限角色表\'');
 
-        if($this->addColumn){
+        if ($this->addColumn) {
             $this->addColumn($this->userTable, $this->authAttribute, $this->string()->comment('角色'));
         }
     }

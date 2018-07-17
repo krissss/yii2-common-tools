@@ -56,9 +56,9 @@ class SimpleCkEditor extends CKEditor
                 ['name' => 'colors', 'groups' => ['colors']],
                 ['name' => 'tools', 'groups' => ['tools']],
                 ['name' => 'others', 'groups' => ['others']],
-                ['name' => 'about', 'groups' => ['about']]
+                ['name' => 'about', 'groups' => ['about']],
             ],
-            'removeButtons' => 'Source,Save,Print,Templates,About,ShowBlocks,Flash,Language'
+            'removeButtons' => 'Source,Save,Print,Templates,About,ShowBlocks,Flash,Language',
         ];
         parent::init();
     }

@@ -171,7 +171,7 @@ JS;
                 $initialPreview[] = $previewUrl;
                 $initialPreviewConfig[] = [
                     'key' => $index,
-                    'width' => '160px'
+                    'width' => '160px',
                 ];
             }
         }
@@ -180,7 +180,7 @@ JS;
             'name' => $uploadName,
             'options' => [
                 'accept' => $this->uploadAcceptMime,
-                'multiple' => $this->multi
+                'multiple' => $this->multi,
             ],
             'pluginOptions' => [
                 'uploadAsync' => true,
@@ -204,7 +204,7 @@ JS;
                 'fileuploaded' => new JsExpression($fileUploadedJs),
                 'filedeleted' => new JsExpression($fileDeletedJs),
                 'filesuccessremove' => new JsExpression($fileSuccessRemoveJs),
-            ]
+            ],
         ]);
     }
 }

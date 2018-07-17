@@ -1,15 +1,16 @@
 <?php
+
+namespace kriss\components;
+
+use yii\helpers\Html;
+use yii\helpers\Json;
+use yii\validators\ValidationAsset;
+use yii\validators\Validator;
+use yii\web\JsExpression;
+
 /**
  * 手机号验证规则
  */
-namespace kriss\components;
-
-use yii\validators\Validator;
-use yii\helpers\Html;
-use yii\web\JsExpression;
-use yii\helpers\Json;
-use yii\validators\ValidationAsset;
-
 class CellphoneValidator extends Validator
 {
     public $pattern;
@@ -38,7 +39,7 @@ class CellphoneValidator extends Validator
         $options = [
             'pattern' => new JsExpression($pattern),
             'not' => $this->not,
-            'message' => $this->message
+            'message' => $this->message,
         ];
         if ($this->skipOnEmpty) {
             $options['skipOnEmpty'] = 1;

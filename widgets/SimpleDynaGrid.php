@@ -1,9 +1,4 @@
 <?php
-/**
- * 简单的列表页显示组件
- * 使用\kartik\dynagrid\DynaGrid
- * 包含配置等
- */
 
 namespace kriss\widgets;
 
@@ -255,7 +250,7 @@ class SimpleDynaGrid extends Component
                 'pjaxSettings' => [
                     'options' => [
                         'id' => $this->_pjaxContainerId,
-                        'enablePushState' => true
+                        'enablePushState' => true,
                     ],
                 ],
                 'panel' => [
@@ -263,7 +258,7 @@ class SimpleDynaGrid extends Component
                     'before' => $this->showTotalSummary ? '{summary}' : '',
                     'after' => '{pager}',
                     'afterOptions' => ['class' => 'text-center'],
-                    'footer' => false
+                    'footer' => false,
                 ],
                 'pager' => $this->gridPager,
                 'export' => [
@@ -272,7 +267,7 @@ class SimpleDynaGrid extends Component
                 ],
                 'exportConfig' => [
                     GridView::EXCEL => true,
-                ]
+                ],
             ],
         ];
 
@@ -333,7 +328,7 @@ class SimpleDynaGrid extends Component
         if ($this->toolbarRefresh === true) {
             array_push($toolbar, [
                 'content' => Html::a($this->toolbarRefreshLabel, $this->toolbarRefreshUrl, [
-                    'class' => $this->toolbarRefreshClass
+                    'class' => $this->toolbarRefreshClass,
                 ]),
             ]);
         }
@@ -354,5 +349,4 @@ class SimpleDynaGrid extends Component
         $config = $this->getConfig();
         echo DynaGrid::widget($config);
     }
-
 }

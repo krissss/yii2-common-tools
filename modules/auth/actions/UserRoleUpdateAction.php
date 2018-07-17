@@ -1,7 +1,4 @@
 <?php
-/**
- * 用户授权的操作
- */
 
 namespace kriss\modules\auth\actions;
 
@@ -11,6 +8,9 @@ use Yii;
 use yii\base\Action;
 use yii\web\ForbiddenHttpException;
 
+/**
+ * 用户授权的操作
+ */
 class UserRoleUpdateAction extends Action
 {
     /**
@@ -49,7 +49,7 @@ class UserRoleUpdateAction extends Action
         $this->checkAuth($id);
 
         $updateUserRole = new UpdateUserRole([
-            'userId' => $id
+            'userId' => $id,
         ]);
 
         if ($updateUserRole->load(Yii::$app->request->post())) {
@@ -85,7 +85,7 @@ class UserRoleUpdateAction extends Action
     protected function renderHtml($model)
     {
         $params = [
-            'model' => $model
+            'model' => $model,
         ];
         if ($this->isRenderAjax) {
             return $this->controller->renderAjax($this->view, $params);

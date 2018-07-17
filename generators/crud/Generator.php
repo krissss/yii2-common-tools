@@ -56,7 +56,7 @@ class Generator extends \yii\gii\Generator
                 'modelName', 'modelLabel', 'modelPath', 'controllerPath', 'viewPath', 'searchModelPath',
                 'controllerBaseClass', 'searchAttributes',
             ], 'safe'],
-            [['hasCreate', 'hasUpdate', 'hasView', 'hasDelete', 'useAjax', 'hasCheckboxColumn'], 'boolean']
+            [['hasCreate', 'hasUpdate', 'hasView', 'hasDelete', 'useAjax', 'hasCheckboxColumn'], 'boolean'],
         ]);
     }
 

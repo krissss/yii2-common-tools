@@ -1,4 +1,11 @@
 <?php
+
+namespace kriss\modules\auth\components;
+
+use kriss\modules\auth\models\AuthRole;
+use Yii;
+use yii\base\InvalidConfigException;
+
 /**
  * 复写权限验证的user
  * 来自于 https://github.com/funson86/yii2-auth
@@ -11,13 +18,6 @@
  *    ],
  * ]
  */
-
-namespace kriss\modules\auth\components;
-
-use kriss\modules\auth\models\AuthRole;
-use Yii;
-use yii\base\InvalidConfigException;
-
 class User extends \yii\web\User
 {
     /**
@@ -91,10 +91,11 @@ class User extends \yii\web\User
             return true;
         }
 
-        if (strpos(";$operations;", ";$permissionName;") === false)
+        if (strpos(";$operations;", ";$permissionName;") === false) {
             return false;
-        else
+        } else {
             return true;
+        }
     }
 
     /**

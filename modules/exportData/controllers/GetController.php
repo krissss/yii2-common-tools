@@ -9,10 +9,11 @@ use yii\base\Controller;
 
 class GetController extends Controller
 {
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $module = Module::getInstance();
         $token = Yii::$app->request->get($module->authTokenParam);
-        if($token === $module->authToken){
+        if ($token === $module->authToken) {
             $exportDatabase = new ExportDatabase([
                 'exportDataNameSpace' => $module->exportDataNameSpace,
                 'exportData' => $module->exportData,

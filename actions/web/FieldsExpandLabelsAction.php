@@ -49,7 +49,7 @@ class FieldsExpandLabelsAction extends Action
             return $this->getFieldsAndExpandLabels($model);
         } catch (Exception $exception) {
             return [
-                'error' => $exception->getMessage()
+                'error' => $exception->getMessage(),
             ];
         }
     }
@@ -100,7 +100,7 @@ class FieldsExpandLabelsAction extends Action
 
         return [
             'fields' => $fields,
-            'expand' => $expand
+            'expand' => $expand,
         ];
     }
 

@@ -13,7 +13,7 @@ class ErrorAction extends \kriss\actions\web\ErrorAction
     {
         return [
             'code' => $this->getExceptionCode(),
-            'msg' => $this->getExceptionName() . ': ' . $this->getExceptionMessage()
+            'msg' => $this->getExceptionName() . ': ' . $this->getExceptionMessage(),
         ];
     }
 }
