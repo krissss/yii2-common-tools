@@ -49,10 +49,11 @@ abstract class AbstractCUAction extends AbstractAction
         if ($model->load(Yii::$app->request->post())) {
             $this->beforeValidateCallback && call_user_func($this->beforeValidateCallback, $model);
 
+            $result = false;
             if ($this->doMethod === 'save' || $model->validate()) {
                 $result = ActionTools::invokeClassMethod($model, $this->doMethod);
-                $this->setFlashMessage($result, $model);
             }
+            $this->setFlashMessage($result, $model);
 
             return $this->redirectPrevious();
         }
