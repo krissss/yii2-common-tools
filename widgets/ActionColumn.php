@@ -3,6 +3,7 @@
 namespace kriss\widgets;
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 class ActionColumn extends \kartik\grid\ActionColumn
 {
@@ -22,6 +23,7 @@ class ActionColumn extends \kartik\grid\ActionColumn
      * cssClass： 按钮的 class，默认无，在传递比如像 simple_ajax_form 时比较有用
      * options： 按钮的其他样式属性，默认无
      * visible： 可见性，默认 true，可以是 匿名函数 或 bool
+     * url: 按钮的点击链接地址，默认使用 action 的地址，会经过 Url::to() 处理，可以是 匿名函数 或 array，在直接跳转相关页面时比较有用
      * value: 默认无，匿名函数，无值时使用 button 按钮样式，在 value 特别复杂时比较有用
      * @see renderButton
      * @var array
@@ -67,6 +69,7 @@ class ActionColumn extends \kartik\grid\ActionColumn
 
     protected function renderButton($button, $model, $key, $index)
     {
+        // visible
         $isVisible = true;
         if (isset($button['visible'])) {
             $isVisible = $button['visible'] instanceof \Closure
@@ -77,20 +80,39 @@ class ActionColumn extends \kartik\grid\ActionColumn
             return '';
         }
 
-        $url = $this->createUrl($button['action'], $model, $key, $index);
+        // url
+        if (!isset($button['url'])) {
+            $url = $this->createUrl($button['action'], $model, $key, $index);
+        } else {
+            if ($button['url'] instanceof \Closure) {
+                $url = call_user_func($button['url'], $model, $key, $index);
+            } else {
+                $url = $button['url'];
+            }
+            $url = Url::to($url);
+        }
 
+        // value
         if (isset($button['value']) && $button['value'] instanceof \Closure) {
             return call_user_func($button['value'], $url, $model, $key, $index);
         }
 
+        // label
         $label = isset($button['label']) ? $button['label'] : $button['action'];
+
+        // type
         $options = ['class' => 'btn btn-' . (isset($button['type']) ? $button['type'] : 'default')];
+
+        // cssClass
         if (isset($button['cssClass'])) {
             Html::addCssClass($options, $button['cssClass']);
         }
+
+        // options
         if (isset($button['options'])) {
             $options = array_merge($options, $button['options']);
         }
+
         return Html::a($label, $url, $options);
     }
 
