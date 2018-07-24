@@ -19,8 +19,12 @@ class CellphoneValidator extends Validator
     public function init()
     {
         parent::init();
-        $this->pattern = '/^1[0-9]{10}$/';
-        $this->message = '手机号不合法';
+        if (!$this->pattern) {
+            $this->pattern = '/^1[0-9]{10}$/';
+        }
+        if (!$this->message) {
+            $this->message = '手机号不合法';
+        }
     }
 
     protected function validateValue($value)
