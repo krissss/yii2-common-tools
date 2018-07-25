@@ -30,7 +30,7 @@ class DeleteAction extends AbstractModelAction
     public function run($id)
     {
         $this->setModel($this->findModel($id, $this->controller));
-        $this->doModelMethod(true);
+        $this->doModelMethod(false);
         return $this->redirectAfterDoMethod();
     }
 }
