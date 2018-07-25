@@ -27,15 +27,24 @@ class ChangeStatusAction extends AbstractAction
      */
     public $statusAttribute = 'status';
     /**
+     * @deprecated
+     * alias of doMethod
      * @var string|callable
      */
-    public $changeMethod = 'save';
+    public $changeMethod;
+    /**
+     * @var string|callable
+     */
+    public $doMethod = 'save';
 
     public function init()
     {
         parent::init();
         if (!$this->statusRelation) {
             throw new InvalidConfigException('必须配置 statusRelation');
+        }
+        if ($this->changeMethod) {
+            $this->doMethod = $this->changeMethod;
         }
     }
 

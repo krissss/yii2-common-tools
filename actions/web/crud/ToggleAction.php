@@ -5,10 +5,11 @@ namespace kriss\actions\web\crud;
 use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\ModelClassActionTrait;
 use kriss\tools\Fun;
+use yii\base\Action;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 
-class ToggleAction extends AbstractAction
+class ToggleAction extends Action
 {
     use ModelClassActionTrait;
 
@@ -17,9 +18,15 @@ class ToggleAction extends AbstractAction
      */
     public $attribute;
     /**
+     * @deprecated
+     * alias of doMethod
      * @var string|callable
      */
-    public $changeMethod = 'save';
+    public $changeMethod;
+    /**
+     * @var string|callable
+     */
+    public $doMethod = 'save';
 
     public $onValue = 1;
     public $offValue = 0;
@@ -29,6 +36,9 @@ class ToggleAction extends AbstractAction
         parent::init();
         if (!$this->attribute) {
             throw new InvalidConfigException('必须配置 attribute');
+        }
+        if ($this->changeMethod) {
+            $this->doMethod = $this->changeMethod;
         }
     }
 

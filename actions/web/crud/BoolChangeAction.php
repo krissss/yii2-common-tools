@@ -7,6 +7,10 @@ use kriss\actions\traits\FlashMessageTrait;
 use kriss\actions\traits\ModelClassActionTrait;
 use yii\base\InvalidConfigException;
 
+/**
+ * @deprecated
+ * @see ModelOperateAction
+ */
 class BoolChangeAction extends AbstractAction
 {
     use ModelClassActionTrait;

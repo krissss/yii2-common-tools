@@ -2,33 +2,15 @@
 
 namespace kriss\actions\web\crud;
 
-use kriss\actions\helper\ActionTools;
-use kriss\actions\traits\AjaxViewTrait;
-use kriss\actions\traits\FlashMessageTrait;
-use kriss\actions\traits\ModelClassActionTrait;
-use Yii;
-use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 
-abstract class AbstractCUAction extends AbstractAction
+abstract class AbstractCUAction extends AbstractModelAction
 {
-    use ModelClassActionTrait;
-    use FlashMessageTrait;
-    use AjaxViewTrait;
-
     /**
      * @var string
      */
     public $doMethod = 'save';
-    /**
-     * @var callable
-     */
-    public $beforeValidateCallback;
-    /**
-     * @var callable
-     */
-    public $beforeRenderCallback;
     /**
      * @var bool
      */
@@ -42,26 +24,14 @@ abstract class AbstractCUAction extends AbstractAction
      * 新增或修改操作
      * @param $model ActiveRecord|Model
      * @return mixed
-     * @throws InvalidConfigException
      */
     protected function createOrUpdate($model)
     {
-        if ($model->load(Yii::$app->request->post())) {
-            $this->beforeValidateCallback && call_user_func($this->beforeValidateCallback, $model);
-
-            $result = false;
-            if ($this->doMethod === 'save' || $model->validate()) {
-                $result = ActionTools::invokeClassMethod($model, $this->doMethod);
-            }
-            $this->setFlashMessage($result, $model);
-
-            return $this->redirectPrevious();
+        $this->setModel($model);
+        if ($this->loadPostData()) {
+            $result = $this->doModelMethod(true);
+            return $this->redirectAfterDoMethod($result);
         }
-
-        $this->beforeRenderCallback && call_user_func($this->beforeRenderCallback, $model);
-
-        return $this->render($this->controller, [
-            'model' => $model,
-        ]);
+        return $this->renderView();
     }
 }

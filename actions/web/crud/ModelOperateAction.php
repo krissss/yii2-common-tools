@@ -2,31 +2,12 @@
 
 namespace kriss\actions\web\crud;
 
-use kriss\actions\helper\ActionTools;
-use kriss\actions\traits\FlashMessageTrait;
-use kriss\actions\traits\ModelClassActionTrait;
-
-class ModelOperateAction extends AbstractAction
+class ModelOperateAction extends AbstractModelAction
 {
-    use ModelClassActionTrait;
-    use FlashMessageTrait;
-
-    /**
-     * @var string
-     */
-    public $doMethod;
-    /**
-     * @var string|array
-     */
-    public $successRedirect;
-
     public function run($id)
     {
-        $model = $this->findModel($id, $this->controller);
-
-        $result = ActionTools::invokeClassMethod($model, $this->doMethod);
-        $this->setFlashMessage($result, $model);
-
+        $this->setModel($this->findModel($id, $this->controller));
+        $this->doModelMethod(true);
         return $this->redirectPrevious();
     }
 }

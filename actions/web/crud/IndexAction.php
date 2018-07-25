@@ -3,15 +3,12 @@
 namespace kriss\actions\web\crud;
 
 use kriss\actions\helper\ActionTools;
-use kriss\traits\WebControllerTrait;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
 
 class IndexAction extends AbstractAction
 {
-    use WebControllerTrait;
-
     /**
      * @var string|array|callable
      */

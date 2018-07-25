@@ -2,35 +2,11 @@
 
 namespace kriss\actions\web\crud;
 
-use kriss\actions\traits\AjaxViewTrait;
-use kriss\actions\traits\ModelClassActionTrait;
-
-class ViewAction extends AbstractAction
+class ViewAction extends AbstractModelAction
 {
-    use ModelClassActionTrait;
-    use AjaxViewTrait;
-
-    /**
-     * @var string
-     */
-    public $beforeRenderCallback;
-    /**
-     * @var bool
-     */
-    public $isAjax = true;
-    /**
-     * @var string
-     */
-    public $view = '_view';
-
     public function run($id)
     {
-        $model = $this->findModel($id, $this->controller);
-
-        $this->beforeRenderCallback && call_user_func($this->beforeRenderCallback, $model);
-
-        return $this->render($this->controller, [
-            'model' => $model,
-        ]);
+        $this->setModel($this->findModel($id, $this->controller));
+        return $this->renderView();
     }
 }
