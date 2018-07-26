@@ -5,11 +5,10 @@ namespace kriss\actions\web\crud;
 use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\ModelClassActionTrait;
 use kriss\tools\Fun;
-use yii\base\Action;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 
-class ToggleAction extends Action
+class ToggleAction extends AbstractAction
 {
     use ModelClassActionTrait;
 
