@@ -54,7 +54,7 @@ class ChangeStatusAction extends AbstractAction
         $currentStatus = $model->{$this->statusAttribute};
         if (in_array($currentStatus, (array)$this->statusRelation[$status])) {
             $model->{$this->statusAttribute} = $status;
-            $result = ActionTools::invokeClassMethod($model, $this->changeMethod);
+            $result = ActionTools::invokeClassMethod($model, $this->doMethod);
             $this->setFlashMessage($result, $model);
         } else {
             MessageAlert::error('当前状态下操作失败');

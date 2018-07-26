@@ -55,11 +55,11 @@ class ToggleAction extends Action
         } else {
             throw new Exception("oldValue: {$oldValue} 不在 [{$this->onValue}, {$this->offValue}] 之间");
         }
-        if ($this->changeMethod == 'save') {
+        if ($this->doMethod == 'save') {
             // save 不校验数据
-            $result = ActionTools::invokeClassMethod($model, $this->changeMethod, false);
+            $result = ActionTools::invokeClassMethod($model, $this->doMethod, false);
         } else {
-            $result = ActionTools::invokeClassMethod($model, $this->changeMethod);
+            $result = ActionTools::invokeClassMethod($model, $this->doMethod);
         }
         if ($result === false) {
             throw new Exception('操作执行错误:' . Fun::formatModelErrors2String($model->errors));

@@ -30,10 +30,23 @@ class UpdateAction extends AbstractAction
      */
     public $mustLoadPostData = true;
     /**
-     * 更新的操作
-     * @var string
+     * @deprecated
+     * alias of doMethod
+     * @var string|callable
      */
-    public $updateMethod = 'save';
+    public $updateMethod;
+    /**
+     * @var string|callable
+     */
+    public $doMethod = 'save';
+
+    public function init()
+    {
+        parent::init();
+        if ($this->updateMethod) {
+            $this->doMethod = $this->updateMethod;
+        }
+    }
 
     public function run()
     {
@@ -49,7 +62,7 @@ class UpdateAction extends AbstractAction
             return ActionTools::restValidateError("缺少 {$this->idAttribute} 以外的其他参数");
         }
 
-        $result = ActionTools::invokeClassMethod($model, $this->updateMethod);
+        $result = ActionTools::invokeClassMethod($model, $this->doMethod);
         if ($result !== false) {
             if ($this->returnModel) {
                 $model->refresh();
