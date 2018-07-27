@@ -44,7 +44,7 @@ class <?= $generator->getClassName($generator->genClass) ?> extends <?= $generat
 <?php foreach ($initData['children'] as $item): ?>
                     ['id' => <?= $item['id'] ?>, 'name' => <?= $item['name'] ?>],
 <?php endforeach; ?>
-                ]
+                ],
             ],
 <?php endforeach; ?>
         ];
