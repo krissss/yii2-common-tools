@@ -2,10 +2,10 @@
 
 namespace kriss\modules\auth\models;
 
-use yii\base\Component;
-
-class Auth extends Component
+class Auth
 {
+    const CAN_PERMISSION_PERMISSION = true;
+
     const PERMISSION_ID = 10;
     const ROLE_ID = 20;
 
@@ -23,7 +23,7 @@ class Auth extends Component
      */
     public static function getMessageData()
     {
-        return [
+        return static::CAN_PERMISSION_PERMISSION ? [
             static::PERMISSION => '权限管理',
             static::PERMISSION_VIEW => '查看权限',
 
@@ -32,7 +32,7 @@ class Auth extends Component
             static::ROLE_CREATE => '新增角色',
             static::ROLE_UPDATE => '修改角色',
             static::ROLE_DELETE => '删除角色',
-        ];
+        ] : [];
     }
 
     /**
@@ -40,7 +40,7 @@ class Auth extends Component
      */
     public static function initData()
     {
-        return [
+        return static::CAN_PERMISSION_PERMISSION ? [
             [
                 'id' => static::PERMISSION_ID, 'name' => static::PERMISSION,
                 'children' => [
@@ -55,7 +55,7 @@ class Auth extends Component
                     ['id' => static::ROLE_ID . 4, 'name' => static::ROLE_DELETE],
                 ],
             ],
-        ];
+        ] : [];
     }
 
     /**
