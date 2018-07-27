@@ -25,7 +25,7 @@ class ToggleAction extends AbstractAction
     /**
      * @var string|callable
      */
-    public $doMethod = 'save';
+    public $doMethod = 'update';
 
     public $onValue = 1;
     public $offValue = 0;
@@ -54,9 +54,12 @@ class ToggleAction extends AbstractAction
         } else {
             throw new Exception("oldValue: {$oldValue} 不在 [{$this->onValue}, {$this->offValue}] 之间");
         }
-        if ($this->doMethod == 'save') {
+        if ($this->doMethod == 'update') {
             // save 不校验数据
-            $result = ActionTools::invokeClassMethod($model, $this->doMethod, false);
+            $result = $model->update(false, [$this->attribute]);
+        } elseif ($this->doMethod == 'save') {
+            // save 不校验数据
+            $result = $model->save(false);
         } else {
             $result = ActionTools::invokeClassMethod($model, $this->doMethod);
         }

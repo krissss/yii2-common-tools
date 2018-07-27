@@ -41,7 +41,7 @@ class BatchOperateAction extends \kriss\actions\rest\crud\BatchOperateAction
         $totalCount = count($idsArr);
         if (is_int($result)) {
             if ($result == $totalCount) {
-                MessageAlert::success("{$this->operateMsg}成功，共处理:{$result}数据");
+                MessageAlert::success("{$this->operateMsg}成功，共处理:{$result}条数据");
             } else {
                 $noSolveCount = $totalCount - $result;
                 MessageAlert::warning("{$this->operateMsg}成功，共处理:{$result}条数据，未处理{$noSolveCount}条数据");
