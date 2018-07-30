@@ -17,14 +17,28 @@ class GroupAttributeColumn extends DataColumn
      * @var array
      */
     public $columns = [];
-
+    /**
+     * @var string
+     */
     public $labelValueSplit = ':';
-
+    /**
+     * @var string
+     */
     public $dataSplit = '<br>';
-
+    /**
+     * @var string
+     */
     public $label = '组合列';
-
+    /**
+     * @var string
+     */
     public $format = 'html';
+    /**
+     * 若某一列为空时显示内容
+     * false 代表不显示
+     * @var false|string
+     */
+    public $emptyValue = false;
 
     protected function renderDataCellContent($model, $key, $index)
     {
@@ -39,6 +53,13 @@ class GroupAttributeColumn extends DataColumn
                 ], $columnConfig));
             }
             $value = $column->renderDataCellContent($model, $key, $index);
+            if ($value == $column->grid->formatter->nullDisplay) {
+                if ($this->emptyValue === false) {
+                    continue;
+                } else {
+                    $value = $this->emptyValue;
+                }
+            }
             $label = $column->getHeaderCellLabel();
             $data[] = implode($this->labelValueSplit, [$label, $value]);
         }
