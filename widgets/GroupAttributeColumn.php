@@ -35,10 +35,10 @@ class GroupAttributeColumn extends DataColumn
     public $format = 'html';
     /**
      * 若某一列为空时显示内容
-     * false 代表不显示
+     * false 代表不显示label和value
      * @var false|string
      */
-    public $emptyValue = false;
+    public $emptyValueShow = false;
 
     protected function renderDataCellContent($model, $key, $index)
     {
@@ -54,10 +54,10 @@ class GroupAttributeColumn extends DataColumn
             }
             $value = $column->renderDataCellContent($model, $key, $index);
             if ($value == $column->grid->formatter->nullDisplay) {
-                if ($this->emptyValue === false) {
+                if ($this->emptyValueShow === false) {
                     continue;
                 } else {
-                    $value = $this->emptyValue;
+                    $value = $this->emptyValueShow;
                 }
             }
             $label = $column->getHeaderCellLabel();
