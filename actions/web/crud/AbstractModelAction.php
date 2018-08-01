@@ -10,7 +10,7 @@ use yii\base\Exception;
 use yii\base\Model;
 use yii\db\BaseActiveRecord;
 
-class AbstractModelAction extends AbstractAction
+abstract class AbstractModelAction extends AbstractAction
 {
     use ModelClassActionTrait;
     use FlashMessageTrait;
