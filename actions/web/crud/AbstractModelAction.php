@@ -87,8 +87,11 @@ abstract class AbstractModelAction extends AbstractAction
         $result = true;
         if ($validate) {
             $this->beforeValidateCallback && call_user_func($this->beforeValidateCallback, $model);
-
-            $result = $model->validate();
+            if ($model->hasErrors()) {
+                $result = false;
+            } else {
+                $result = $model->validate();
+            }
         }
         if ($result) {
             if ($this->doMethod == 'save' && $model instanceof BaseActiveRecord) {
