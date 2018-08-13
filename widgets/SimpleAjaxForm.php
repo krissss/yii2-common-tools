@@ -41,46 +41,51 @@ class SimpleAjaxForm extends ActiveForm
             $this->options['id'] = Widget::$autoIdPrefix . time();
         }
         parent::init();
+
+        $modalSize = $this->modalSize ? ('modal-' . $this->modalSize) : '';
+        echo Html::beginTag('div', ['class' => 'modal fade ajax_modal']);
+        echo Html::beginTag('div', ['class' => "modal-dialog {$modalSize}"]);
+        echo Html::beginTag('div', ['class' => 'modal-content']);
+        ob_flush(); // 将上方的结构输出，form 表单从这个地方开始
+        echo $this->renderHeader();
+        echo Html::beginTag('div', ['class' => 'modal-body']);
     }
 
-    public static function begin($config = [])
+    public function run()
     {
-        /** @var self $widget */
-        $widget = parent::begin($config);
-        $modalSize = $widget->modalSize ? ('modal-' . $widget->modalSize) : '';
-        echo <<<HTML
-        <div class="modal fade ajax_modal">
-    <div class="modal-dialog {$modalSize}">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">{$widget->header}</h4>
-            </div>
-            <div class="modal-body">
-HTML;
-        return $widget;
+        // form 表单囊括 header body footer
+        echo Html::endTag('div'); // modal-body
+        echo $this->renderFooter();
+
+        parent::run();
+
+        echo Html::endTag('div'); // modal-content
+        echo Html::endTag('div'); // modal-dialog
+        echo Html::endTag('div'); // modal
     }
 
-    public static function end()
+    protected function renderHeader()
     {
-        /** @var self $widget */
-        $widget = parent::end();
-        $buttons = [];
-        if ($widget->renderCancel) {
-            $widget->cancelOptions['data-dismiss'] = 'modal';
-            $buttons[] = Html::button($widget->cancelLabel, $widget->cancelOptions);
+        $header = '';
+        if ($this->header || $this->renderCancel) {
+            $cancelButton = $this->renderCancel ? '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' : '';
+            $headerTitle = $this->header ? Html::tag('h4', $this->header, ['class' => 'model-title']) : '';
+            $header = Html::tag('div', $cancelButton . $headerTitle, ['class' => 'modal-header']);
         }
-        if ($widget->renderSubmit) {
-            $buttons[] = Html::submitButton($widget->submitLabel, $widget->submitOptions);
+        return $header;
+    }
+
+    protected function renderFooter()
+    {
+        $buttons = [];
+        if ($this->renderCancel) {
+            $this->cancelOptions['data-dismiss'] = 'modal';
+            $buttons[] = Html::button($this->cancelLabel, $this->cancelOptions);
+        }
+        if ($this->renderSubmit) {
+            $buttons[] = Html::submitButton($this->submitLabel, $this->submitOptions);
         }
         $footerButton = implode(' ', $buttons);
-        echo <<<HTML
-    </div>
-            <div class="modal-footer">
-                {$footerButton}
-            </div>
-HTML;
-        return $widget;
+        return Html::tag('div', $footerButton, ['class' => 'modal-footer']);
     }
 }

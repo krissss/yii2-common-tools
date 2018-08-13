@@ -12,6 +12,8 @@ class SimpleSearchForm extends ActiveForm
     public $layoutType;
     public $method = 'get';
 
+    public $header = '查询';
+
     public $renderReset = true;
     public $restLabel = '重置';
     public $restOptions = ['class' => 'btn btn-default'];
@@ -50,69 +52,62 @@ class SimpleSearchForm extends ActiveForm
             ];
         }
         parent::init();
+
+        $collapsedClass = '';
+        $collapsedToolsClass = 'fa-minus';
+        if ($this->isCollapsed === true) {
+            $collapsedClass = 'collapsed-box';
+            $collapsedToolsClass = 'fa-plus';
+        }
+        echo Html::beginTag('div', ['class' => 'box box-default ' . $collapsedClass]);
+        ob_flush();
+        echo $this->renderHeader($collapsedToolsClass);
+        echo Html::beginTag('div', ['class' => 'box-body']);
+    }
+
+    public function run()
+    {
+        echo $this->renderFooter();
+        echo Html::endTag('div'); // box-body
+
+        parent::run();
+
+        echo Html::endTag('div'); // box
+    }
+
+    protected function renderHeader($collapsedToolsClass) {
+        echo <<<HTML
+<div class="box-header with-border">
+    <h3 class="box-title">{$this->header}</h3>
+    <div class="box-tools pull-right">
+        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa $collapsedToolsClass"></i>
+        </button>
+    </div>
+</div>
+HTML;
+    }
+
+    protected function renderFooter() {
+        $buttons = [];
+        if ($this->renderReset) {
+            $buttons[] = Html::a($this->restLabel, $this->restUrl ?: $this->action, $this->restOptions);
+        }
+        if ($this->renderSubmit) {
+            $buttons[] = Html::submitButton($this->submitLabel, $this->submitOptions);
+        }
+        $footerButton = implode(' ', $buttons);
+        $options = ['class' => 'col-md-offset-1'];
+        $options = array_merge($this->btnContainerOptions, $options);
+        return Html::tag('div', Html::tag('div', $footerButton, $options), ['class' => 'col-sm-10']);
     }
 
     /**
      * 生成表单提交按钮
+     * @deprecated 会自动调用
      * @return string
      */
     public function renderFooterButtons()
     {
-        if ($this->renderReset) {
-            $btnReset = Html::a($this->restLabel, $this->restUrl ?: $this->action, $this->restOptions);
-        }
-        if ($this->renderSubmit) {
-            $btnSubmit = Html::submitButton($this->submitLabel, $this->submitOptions);
-        }
-
-        $options = [
-            'class' => 'col-md-offset-1',
-        ];
-
-        $options = array_merge($this->btnContainerOptions, $options);
-        return Html::tag(
-            'div',
-            Html::tag(
-                'div',
-                (isset($btnReset) ? $btnReset : '') . ' ' .
-                (isset($btnSubmit) ? $btnSubmit : ''),
-                isset($options) ? $options : ''
-            ),
-            ['class' => 'col-sm-10']
-        );
-    }
-
-    public static function begin($config = [])
-    {
-        /** @var self $widget */
-        $widget = parent::begin($config);
-        $collapsedClass = '';
-        $collapsedToolsClass = 'fa-minus';
-        if ($widget->isCollapsed === true) {
-            $collapsedClass = 'collapsed-box';
-            $collapsedToolsClass = 'fa-plus';
-        }
-        echo <<<HTML
-        <div class="box box-default $collapsedClass">
-    <div class="box-header with-border">
-        <h3 class="box-title">查询</h3>
-        <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa $collapsedToolsClass"></i>
-            </button>
-        </div>
-    </div>
-    <div class="box-body">
-HTML;
-        return $widget;
-    }
-
-    public static function end()
-    {
-        $widget = parent::end();
-        echo <<<HTML
-    </div>
-</div>
-HTML;
-        return $widget;
+        return null;
     }
 }

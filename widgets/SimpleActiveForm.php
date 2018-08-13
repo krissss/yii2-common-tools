@@ -17,6 +17,7 @@ class SimpleActiveForm extends ActiveForm
     ];
 
     /**
+     * @deprecated 请使用 header 代替
      * @var string
      */
     public $title;
@@ -43,58 +44,54 @@ class SimpleActiveForm extends ActiveForm
             $this->returnHref = 'javascript:history.back()';
         }
         parent::init();
+
+        echo Html::beginTag('div', ['class' => 'box box-default']);
+        ob_flush();
+        echo $this->renderHeader();
+        echo Html::beginTag('div', ['class' => 'box-body']);
+    }
+
+    public function run()
+    {
+        echo $this->renderFooter();
+        echo Html::endTag('div'); // box-body
+
+        parent::run();
+
+        echo Html::endTag('div'); // box
+    }
+
+    protected function renderHeader()
+    {
+        $title = $this->header ?: $this->title;
+        if ($title) {
+            return Html::tag('div', Html::tag('h3', $title, ['class' => 'box-title']), ['class' => 'box-header with-border']);
+        }
+        return null;
+    }
+
+    protected function renderFooter()
+    {
+        $buttons = [];
+        if ($this->renderReturn) {
+            $buttons[] = Html::a($this->returnLabel, $this->returnHref ?: 'javascript:window.history.back()', $this->returnOptions);
+        }
+        if ($this->renderSubmit) {
+            $buttons[] = Html::submitButton($this->submitLabel, $this->submitOptions);
+        }
+        $footerButton = implode(' ', $buttons);
+        $options = ['class' => 'col-sm-offset-2 col-sm-5'];
+        $options = array_merge($this->btnContainerOptions, $options);
+        return Html::tag('div', Html::tag('div', $footerButton, $options), ['class' => 'form-group']);
     }
 
     /**
      * 生成表单提交按钮
+     * @deprecated 会自动调用
      * @return string
      */
     public function renderFooterButtons()
     {
-        if ($this->renderReturn) {
-            $btnReturn = Html::a($this->returnLabel, $this->returnHref ?: 'javascript:window.history.back()', $this->returnOptions);
-        }
-        if ($this->renderSubmit) {
-            $btnSubmit = Html::submitButton($this->submitLabel, $this->submitOptions);
-        }
-        $options = [
-            'class' => 'col-sm-offset-2 col-sm-5',
-        ];
-        $options = array_merge($this->btnContainerOptions, $options);
-        return Html::tag(
-            'div',
-            Html::tag(
-                'div',
-                (isset($btnReturn) ? $btnReturn : '') . ' ' .
-                (isset($btnSubmit) ? $btnSubmit : ''),
-                isset($options) ? $options : ''
-            ),
-            ['class' => 'form-group']
-        );
-    }
-
-    public static function begin($config = [])
-    {
-        /** @var self $widget */
-        $widget = parent::begin($config);
-        $title = $widget->header ?: $widget->title;
-        echo <<<HTML
-        <div class="box box-default">
-            <div class="box-header with-border">
-                <h3 class="box-title">{$title}</h3>
-            </div>
-            <div class="box-body">
-HTML;
-        return $widget;
-    }
-
-    public static function end()
-    {
-        $widget = parent::end();
-        echo <<<HTML
-    </div>
-</div>
-HTML;
-        return $widget;
+        return null;
     }
 }
