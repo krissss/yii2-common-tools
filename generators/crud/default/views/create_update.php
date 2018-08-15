@@ -30,8 +30,4 @@ $form = <?= $formClass ?>::begin(['header' => $this->title]);
 echo $form->field($model, '<?=$attribute?>');
 <?php endforeach; ?>
 
-<?php if($formClass == 'SimpleActiveForm'): ?>
-echo $form->renderFooterButtons();
-
-<?php endif; ?>
 <?= $formClass ?>::end();
