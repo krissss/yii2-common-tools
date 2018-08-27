@@ -5,15 +5,16 @@ namespace kriss\widgets;
 use kartik\dynagrid\DynaGrid;
 use kartik\export\ExportMenu;
 use kartik\grid\GridView;
-use yii\base\Component;
 use yii\base\Exception;
+use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
-class SimpleDynaGrid extends Component
+class SimpleDynaGrid extends Widget
 {
     /**
-     * 必配,id
+     * 组件 id
+     * 如果需要使用 dynaGrid 的存储，则必须单独定义，否则 key 可能一样
      * @var string
      */
     public $dynaGridId;
@@ -170,7 +171,7 @@ class SimpleDynaGrid extends Component
     public function init()
     {
         if (!isset($this->dynaGridId)) {
-            throw new Exception('必须设置 dynaGridId');
+            $this->dynaGridId = $this->id;
         }
         if (!isset($this->columns)) {
             throw new Exception('必须设置 columns');
@@ -348,5 +349,10 @@ class SimpleDynaGrid extends Component
     {
         $config = $this->getConfig();
         echo DynaGrid::widget($config);
+    }
+
+    public function run()
+    {
+        $this->renderDynaGrid();
     }
 }
