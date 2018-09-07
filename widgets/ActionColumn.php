@@ -9,7 +9,7 @@ class ActionColumn extends \kartik\grid\ActionColumn
 {
     public $header = '操作';
 
-    public $width = null;
+    public $width = 'auto';
 
     public $template = '';
 
