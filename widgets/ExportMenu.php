@@ -9,7 +9,6 @@ use yii\data\BaseDataProvider;
 use yii\grid\ActionColumn;
 use yii\grid\CheckboxColumn;
 use yii\grid\RadioButtonColumn;
-use yii\grid\SerialColumn;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii2tech\csvgrid\CsvGrid;
@@ -21,7 +20,7 @@ class ExportMenu extends Widget
     public $columns = [];
 
     public $skipColumnClass = [
-        ActionColumn::class, CheckboxColumn::class, RadioButtonColumn::class, SerialColumn::class,
+        ActionColumn::class, CheckboxColumn::class, RadioButtonColumn::class,
     ];
 
     public $batchSize = 200;
@@ -106,7 +105,7 @@ class ExportMenu extends Widget
             if (is_array($column) && isset($column['class'])) {
                 $skip = false;
                 foreach ($this->skipColumnClass as $columnClass) {
-                    if (is_subclass_of($column['class'], $columnClass)) {
+                    if (is_a($column['class'], $columnClass, true)) {
                         $skip = true;
                         break;
                     }

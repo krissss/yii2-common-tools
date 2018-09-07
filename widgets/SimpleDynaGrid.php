@@ -3,7 +3,6 @@
 namespace kriss\widgets;
 
 use kartik\dynagrid\DynaGrid;
-use kartik\export\ExportMenu;
 use kartik\grid\GridView;
 use yii\base\Exception;
 use yii\base\Widget;
@@ -64,13 +63,12 @@ class SimpleDynaGrid extends Widget
 
     /**
      * 是否需要导出全部按钮
-     * 注：pjax 会导致导出全部失效
      * @var bool
      */
     public $isExportAll = false;
 
     /**
-     * 导出菜单，必须是 kartik\export\ExportMenu 的子类
+     * 导出菜单，必须是 kriss\widgets\ExportMenu 的子类
      * @var string
      */
     public $exportMenuClass;
@@ -148,7 +146,7 @@ class SimpleDynaGrid extends Widget
      * 必须是 yii\grid\DataColumn 的子类
      * @var string
      */
-    public $dataColumnClass = '\kriss\widgets\DataColumn';
+    public $dataColumnClass = DataColumn::class;
 
     /**
      * gridView 的 pager 字段
@@ -202,23 +200,10 @@ class SimpleDynaGrid extends Widget
         }
 
         if ($this->isExportAll && !$this->exportMenuClass) {
-            $this->exportMenuClass = ExportMenu::className();
+            $this->exportMenuClass = ExportMenu::class;
         }
 
         $this->_pjaxContainerId = 'pjax-' . rand(1000, 9999);
-
-        foreach ($this->columns as &$column) {
-            if (!is_array($column)) {
-                $column = [
-                    'class' => $this->dataColumnClass,
-                    'attribute' => $column,
-                ];
-            } else {
-                if (!isset($column['class'])) {
-                    $column['class'] = $this->dataColumnClass;
-                }
-            }
-        }
     }
 
     /**
@@ -247,19 +232,21 @@ class SimpleDynaGrid extends Widget
                 'hover' => true,
                 'floatHeader' => $this->floatHeader,
                 'floatHeaderOptions' => [],
-                'pjax' => $this->enablePjax, // Pjax 模式下 Export All 有个bug，pjax 更新后点击不能导出数据
+                'pjax' => $this->enablePjax,
                 'pjaxSettings' => [
                     'options' => [
                         'id' => $this->_pjaxContainerId,
                         'enablePushState' => true,
                     ],
                 ],
+                'dataColumnClass' => $this->dataColumnClass,
                 'panel' => [
                     'heading' => false,
                     'before' => $this->showTotalSummary ? '{summary}' : '',
                     'after' => '{pager}',
                     'afterOptions' => ['class' => 'text-center'],
                     'footer' => false,
+                    'summaryOptions' => ['class' => ''],
                 ],
                 'pager' => $this->gridPager,
                 'export' => [
@@ -290,41 +277,19 @@ class SimpleDynaGrid extends Widget
             array_push($toolbar, '{export}');
         }
         if ($this->isExportAll === true) {
-            // 导出全部去除隐藏的列
-            $fullExportMenuColumns = $this->columns;
-            foreach ($fullExportMenuColumns as $key => &$column) {
-                if (isset($column['visible'])) {
-                    unset($column['visible']);
-                }
-                // 去除操作栏
-                if (in_array($column['class'], ['\yii\grid\ActionColumn', '\kartik\grid\ActionColumn'])) {
-                    unset($fullExportMenuColumns[$key]);
-                }
+            if (isset($this->exportMenuConfig['columns'])) {
+                $exportMenuColumns = $this->exportMenuConfig['columns'];
+                unset($this->exportMenuConfig['columns']);
+            } else {
+                $exportMenuColumns = ExportMenuHelper::transColumns($this->columns);
             }
-
-            if ($this->isExportAll) {
-                /** @var ExportMenu $exportMenu */
-                $exportMenu = $this->exportMenuClass;
-                $fullExportMenu = $exportMenu::widget(ArrayHelper::merge([
-                    'dataProvider' => $this->dataProvider,
-                    'columns' => $fullExportMenuColumns,
-                    'target' => ExportMenu::TARGET_BLANK,
-                    'pjaxContainerId' => $this->_pjaxContainerId,
-                    'folder' => '@runtime/export',
-                    'clearBuffers' => true,
-                    'exportConfig' => [
-                        ExportMenu::FORMAT_HTML => false,
-                        ExportMenu::FORMAT_CSV => false,
-                        ExportMenu::FORMAT_PDF => false,
-                        ExportMenu::FORMAT_TEXT => false,
-                    ],
-                    'dropdownOptions' => [
-                        'label' => '导出全部',
-                        'class' => 'btn btn-default',
-                    ],
-                ], $this->exportMenuConfig));
-                array_push($toolbar, $fullExportMenu);
-            }
+            $fullExportMenu = ExportMenu::widget(ArrayHelper::merge([
+                'dataProvider' => $this->dataProvider,
+                'columns' => $exportMenuColumns,
+            ], $this->exportMenuConfig));
+            array_push($toolbar, [
+                'content' => $fullExportMenu,
+            ]);
         }
         if ($this->toolbarRefresh === true) {
             array_push($toolbar, [
