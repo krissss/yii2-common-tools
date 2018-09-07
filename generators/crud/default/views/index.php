@@ -60,10 +60,9 @@ $columns = [
 <?php endif; ?>
 ];
 
-$simpleDynaGrid = new SimpleDynaGrid([
-    'dynaGridId' => 'dynagrid-<?=$generator->getControllerID()?>-index',
-    'columns' => $columns,
+echo SimpleDynaGrid::widget([
     'dataProvider' => $dataProvider,
+    'columns' => $columns,
 <?php if($hasToolbar): ?>
     'extraToolbar' => [
         [
@@ -72,4 +71,3 @@ $simpleDynaGrid = new SimpleDynaGrid([
     ]
 <?php endif; ?>
 ]);
-$simpleDynaGrid->renderDynaGrid();
