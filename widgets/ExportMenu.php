@@ -2,6 +2,7 @@
 
 namespace kriss\widgets;
 
+use app\kriss\widgets\ExportMenuDataColumn;
 use Yii;
 use yii\base\Exception;
 use yii\base\Widget;
@@ -13,6 +14,12 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii2tech\csvgrid\CsvGrid;
 
+/**
+ * $export = ExportMenu::widget([
+ * 'dataProvider' => $dataProvider,
+ * 'columns' => ExportMenuHelper::transColumns($columns),
+ * ]);
+ */
 class ExportMenu extends Widget
 {
     public $dataProvider;
@@ -36,6 +43,9 @@ class ExportMenu extends Widget
     public $exportMenuOptions = ['class' => 'btn btn-primary'];
 
     public $exportPostParam = 'export-menu-export';
+
+    public $dataColumnClass = ExportMenuDataColumn::class;
+
 
     private $triggeredExport = false;
 
@@ -112,6 +122,16 @@ class ExportMenu extends Widget
                 }
                 if ($skip) {
                     continue;
+                }
+            } else {
+                // 替换默认的 yii2tech\csvgrid\DataColumn
+                if (is_string($column)) {
+                    $column = [
+                        'class' => $this->dataColumnClass,
+                        'attribute' => $column,
+                    ];
+                } else {
+                    $column['class'] = $this->dataColumnClass;
                 }
             }
             $columns[] = $column;
