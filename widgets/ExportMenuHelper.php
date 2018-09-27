@@ -5,6 +5,9 @@ namespace kriss\widgets;
 use yii\grid\DataColumn;
 use yii\grid\SerialColumn;
 
+/**
+ * @since 2.1.2
+ */
 class ExportMenuHelper
 {
     public static function transColumns($columns)
@@ -30,6 +33,8 @@ class ExportMenuHelper
                     $result[] = static::transSimpleColumn($column);
                 } elseif (static::isMatchClass($column['class'], SerialColumn::class)) {
                     $result[] = static::transSerialColumn($column);
+                } elseif (static::isMatchClass($column['class'], LinkColumn::class)) {
+                    $result[] = static::transSimpleColumn($column);
                 } elseif (static::isMatchClass($column['class'], DataColumn::class)) {
                     // 此项必须放在最后
                     $result[] = static::transSimpleColumn($column);

@@ -18,6 +18,8 @@ use yii2tech\csvgrid\CsvGrid;
  * 'dataProvider' => $dataProvider,
  * 'columns' => ExportMenuHelper::transColumns($columns),
  * ]);
+ *
+ * @since 2.1.2
  */
 class ExportMenu extends Widget
 {

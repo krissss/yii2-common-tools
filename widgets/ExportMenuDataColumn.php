@@ -2,6 +2,9 @@
 
 namespace kriss\widgets;
 
+/**
+ * @since 2.1.2
+ */
 class ExportMenuDataColumn extends \yii2tech\csvgrid\DataColumn
 {
     public function renderDataCellContent($model, $key, $index)
