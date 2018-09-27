@@ -51,5 +51,4 @@ echo $form->field($model, 'description')->textInput(['maxlength' => 255]);
         </div>
     </div>
 <?php
-echo $form->renderFooterButtons();
-$form->end();
+SimpleActiveForm::end();

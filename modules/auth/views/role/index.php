@@ -4,6 +4,7 @@
 /* @var $dataProvider */
 
 use kriss\modules\auth\Module;
+use kriss\widgets\SimpleDynaGrid;
 use yii\helpers\Html;
 use kriss\modules\auth\tools\AuthValidate;
 
@@ -21,7 +22,8 @@ $columns = [
     /*[
         'attribute' => 'id',
         'hAlign' => 'center',
-    ],*/ [
+    ],*/
+    [
         'attribute' => 'name',
         'hAlign' => 'center',
         'enableSorting' => false,
@@ -71,8 +73,7 @@ $columns = [
     ],
 ];
 
-$simpleDynaGrid = new \kriss\widgets\SimpleDynaGrid([
-    'dynaGridId' => 'dynagrid-auth-role-index',
+echo SimpleDynaGrid::widget([
     'columns' => $columns,
     'dataProvider' => $dataProvider,
     //'searchModel' => $searchModel,
@@ -85,5 +86,3 @@ $simpleDynaGrid = new \kriss\widgets\SimpleDynaGrid([
         ],
     ],
 ]);
-$simpleDynaGrid->renderDynaGrid();
-

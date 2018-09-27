@@ -6,9 +6,9 @@ use Yii;
 use yii\base\Exception;
 use yii\base\Widget;
 use yii\data\BaseDataProvider;
-use yii\grid\ActionColumn;
-use yii\grid\CheckboxColumn;
-use yii\grid\RadioButtonColumn;
+use yii\grid\ActionColumn as YiiActionColumn;
+use yii\grid\CheckboxColumn as YiiCheckboxColumn;
+use yii\grid\RadioButtonColumn as YiiRadioButtonColumn;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii2tech\csvgrid\CsvGrid;
@@ -28,7 +28,7 @@ class ExportMenu extends Widget
     public $columns = [];
 
     public $skipColumnClass = [
-        ActionColumn::class, CheckboxColumn::class, RadioButtonColumn::class,
+        YiiActionColumn::class, YiiCheckboxColumn::class, YiiRadioButtonColumn::class,
     ];
 
     public $batchSize = 200;
