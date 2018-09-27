@@ -1,10 +1,8 @@
 <?php
 
-namespace app\kriss\widgets;
+namespace kriss\widgets;
 
-use yii2tech\csvgrid\DataColumn;
-
-class ExportMenuDataColumn extends DataColumn
+class ExportMenuDataColumn extends \yii2tech\csvgrid\DataColumn
 {
     public function renderDataCellContent($model, $key, $index)
     {

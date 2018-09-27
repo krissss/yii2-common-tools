@@ -2,7 +2,6 @@
 
 namespace kriss\widgets;
 
-use app\kriss\widgets\ExportMenuDataColumn;
 use Yii;
 use yii\base\Exception;
 use yii\base\Widget;
