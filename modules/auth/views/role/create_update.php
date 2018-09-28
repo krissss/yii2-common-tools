@@ -51,4 +51,4 @@ echo $form->field($model, 'description')->textInput(['maxlength' => 255]);
         </div>
     </div>
 <?php
-SimpleActiveForm::end();
+$form->end();

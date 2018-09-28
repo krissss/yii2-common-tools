@@ -60,13 +60,13 @@ class DetailViewAction extends AbstractModelAction
         ]);
 
         if ($this->isAjax) {
-            SimpleAjaxView::begin($this->wrapConfig);
+            $widget = SimpleAjaxView::begin($this->wrapConfig);
             echo $content;
-            SimpleAjaxView::end();
+            $widget->end();
         } else {
-            SimpleBoxView::begin($this->wrapConfig);
+            $widget = SimpleBoxView::begin($this->wrapConfig);
             echo $content;
-            SimpleBoxView::end();
+            $widget->end();
         }
     }
 }

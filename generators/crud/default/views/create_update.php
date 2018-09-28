@@ -30,4 +30,4 @@ $form = <?= $formClass ?>::begin(['header' => $this->title]);
 echo $form->field($model, '<?=$attribute?>');
 <?php endforeach; ?>
 
-<?= $formClass ?>::end();
+$form->end();

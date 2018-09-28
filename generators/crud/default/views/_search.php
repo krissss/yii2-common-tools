@@ -16,4 +16,4 @@ $form = SimpleSearchForm::begin(['action' => ['index']]);
 echo $form->field($model, '<?=$attribute?>');
 <?php endforeach; ?>
 
-SimpleSearchForm::end();
+$form->end();

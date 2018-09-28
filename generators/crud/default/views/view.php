@@ -25,7 +25,7 @@ $this->params['breadcrumbs'] = [
 ];
 <?php endif; ?>
 
-<?= $formClass ?>::begin(['header' => $this->title]);
+$widget = <?= $formClass ?>::begin(['header' => $this->title]);
 
 echo DetailView::widget([
     'model' => $model,
@@ -36,4 +36,4 @@ echo DetailView::widget([
     ]
 ]);
 
-<?= $formClass ?>::end();
+$widget->end();
