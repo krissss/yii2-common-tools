@@ -19,6 +19,14 @@ use yii2tech\csvgrid\CsvGrid;
  * 'columns' => ExportMenuHelper::transColumns($columns),
  * ]);
  *
+ * or
+ *
+ * $export = new ExportMenu([
+ * 'dataProvider' => $dataProvider,
+ * 'columns' => ExportMenuHelper::transColumns($columns),
+ * ]);
+ * $export->doExport();
+ *
  * @since 2.1.2
  */
 class ExportMenu extends Widget
@@ -65,6 +73,15 @@ class ExportMenu extends Widget
             $this->renderExportMenu();
             return;
         }
+        $this->export();
+    }
+
+    /**
+     * export at once
+     * @since 2.1.5
+     */
+    public function doExport()
+    {
         $this->export();
     }
 
