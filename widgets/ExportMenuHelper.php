@@ -27,7 +27,7 @@ class ExportMenuHelper
                 } elseif (static::isMatchClass($column['class'], GroupAttributeColumn::class)) {
                     $columnArr = static::transGroupAttributeColumn($column);
                     foreach ($columnArr as $newColumn) {
-                        $result[] = $newColumn;
+                        $result[] = static::transSimpleColumn($newColumn);
                     }
                 } elseif (static::isMatchClass($column['class'], ImageViewColumn::class)) {
                     $result[] = static::transSimpleColumn($column);

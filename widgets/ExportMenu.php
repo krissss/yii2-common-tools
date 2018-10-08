@@ -4,6 +4,7 @@ namespace kriss\widgets;
 
 use Yii;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\base\Widget;
 use yii\data\BaseDataProvider;
 use yii\grid\ActionColumn as YiiActionColumn;
@@ -144,10 +145,7 @@ class ExportMenu extends Widget
             } else {
                 // 替换默认的 yii2tech\csvgrid\DataColumn
                 if (is_string($column)) {
-                    $column = [
-                        'class' => $this->dataColumnClass,
-                        'attribute' => $column,
-                    ];
+                    $column = $this->createDataColumn($column);
                 } else {
                     $column['class'] = $this->dataColumnClass;
                 }
@@ -155,5 +153,25 @@ class ExportMenu extends Widget
             $columns[] = $column;
         }
         return $columns;
+    }
+
+    /**
+     * @see CsvGrid::createDataColumn()
+     * @param $text
+     * @return array
+     * @throws InvalidConfigException
+     */
+    protected function createDataColumn($text)
+    {
+        if (!preg_match('/^([^:]+)(:(\w*))?(:(.*))?$/', $text, $matches)) {
+            throw new InvalidConfigException('The column must be specified in the format of "attribute", "attribute:format" or "attribute:format:label"');
+        }
+
+        return [
+            'class' => $this->dataColumnClass,
+            'attribute' => $matches[1],
+            'format' => isset($matches[3]) ? $matches[3] : 'raw',
+            'label' => isset($matches[5]) ? $matches[5] : null,
+        ];
     }
 }
