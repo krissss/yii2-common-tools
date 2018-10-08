@@ -45,6 +45,7 @@ class DetailViewAction extends AbstractModelAction
 
     public function run($id, $type = null)
     {
+        ob_start();
         if ($type !== null) {
             if (isset($this->mapAttributes[$type])) {
                 $attributes = $this->mapAttributes[$type];
@@ -68,5 +69,7 @@ class DetailViewAction extends AbstractModelAction
             echo $content;
             $widget->end();
         }
+
+        return ob_get_clean();
     }
 }
