@@ -281,7 +281,7 @@ class SimpleDynaGrid extends Widget
                 $exportMenuColumns = $this->exportMenuConfig['columns'];
                 unset($this->exportMenuConfig['columns']);
             } else {
-                $exportMenuColumns = ExportMenuHelper::transColumns($this->columns);
+                $exportMenuColumns = $this->columns;
             }
             $fullExportMenu = ExportMenu::widget(ArrayHelper::merge([
                 'dataProvider' => $this->dataProvider,

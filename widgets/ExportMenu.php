@@ -17,14 +17,14 @@ use yii2tech\csvgrid\CsvGrid;
 /**
  * $export = ExportMenu::widget([
  * 'dataProvider' => $dataProvider,
- * 'columns' => ExportMenuHelper::transColumns($columns),
+ * 'columns' => $columns,
  * ]);
  *
  * or
  *
  * $export = new ExportMenu([
  * 'dataProvider' => $dataProvider,
- * 'columns' => ExportMenuHelper::transColumns($columns),
+ * 'columns' => $columns,
  * ]);
  * $export->doExport();
  *
@@ -96,7 +96,7 @@ class ExportMenu extends Widget
 
     protected function export()
     {
-        Yii::trace('Export Start', __CLASS__);
+        Yii::debug('Export Start', __CLASS__);
 
         $config = [
             'csvFileConfig' => [
@@ -124,11 +124,12 @@ class ExportMenu extends Widget
             $exportResult->send($this->sendName);
         }
 
-        Yii::trace('Export End', __CLASS__);
+        Yii::debug('Export End', __CLASS__);
     }
 
     protected function getColumns()
     {
+        $this->columns = ExportMenuHelper::transColumns($this->columns);
         $columns = [];
         foreach ($this->columns as $column) {
             if (is_array($column) && isset($column['class'])) {
