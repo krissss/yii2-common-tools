@@ -2,6 +2,8 @@
 
 namespace kriss\components;
 
+use kriss\traits\KrissTranslationTrait;
+use Yii;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\validators\ValidationAsset;
@@ -13,17 +15,20 @@ use yii\web\JsExpression;
  */
 class CellphoneValidator extends Validator
 {
+    use KrissTranslationTrait;
+
     public $pattern;
     public $not = false;
 
     public function init()
     {
+        $this->initKrissI18N();
         parent::init();
         if (!$this->pattern) {
             $this->pattern = '/^1[0-9]{10}$/';
         }
         if (!$this->message) {
-            $this->message = '手机号不合法';
+            $this->message = Yii::t('kriss', '手机号不合法');
         }
     }
 

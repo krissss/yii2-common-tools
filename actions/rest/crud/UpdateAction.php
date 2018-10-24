@@ -4,6 +4,7 @@ namespace kriss\actions\rest\crud;
 
 use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\ModelClassActionTrait;
+use kriss\traits\KrissTranslationTrait;
 use Yii;
 
 class UpdateAction extends AbstractAction
@@ -23,7 +24,7 @@ class UpdateAction extends AbstractAction
      * 在 $returnModel 为 false 时返回的文字
      * @var string
      */
-    public $successMsg = '修改成功';
+    public $successMsg;
     /**
      * 是否必须加载 post 里的数据，为 false 代表 post 里的数据可以为空
      * @var bool
@@ -42,6 +43,10 @@ class UpdateAction extends AbstractAction
 
     public function init()
     {
+        if (!isset($this->successMsg)) {
+            $this->successMsg = Yii::t('kriss', '修改成功');
+        }
+
         parent::init();
         if ($this->updateMethod) {
             $this->doMethod = $this->updateMethod;

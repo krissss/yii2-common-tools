@@ -18,13 +18,4 @@ trait KrissTranslationTrait
             ];
         }
     }
-
-    public function setAttributeLabelTranslation($config = [])
-    {
-        foreach ($config as $attribute => $label) {
-            if (!isset($this->{$attribute})) {
-                $this->{$attribute} = Yii::t('kriss', $label);
-            }
-        }
-    }
 }

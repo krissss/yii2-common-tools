@@ -5,6 +5,7 @@ namespace kriss\actions\web\crud;
 use kriss\actions\helper\ActionTools;
 use kriss\components\MessageAlert;
 use kriss\traits\WebControllerTrait;
+use Yii;
 
 class BatchOperateAction extends \kriss\actions\rest\crud\BatchOperateAction
 {
@@ -21,11 +22,20 @@ class BatchOperateAction extends \kriss\actions\rest\crud\BatchOperateAction
     /**
      * @var string
      */
-    public $operateMsg = '批量操作';
+    public $operateMsg;
     /**
      * @var string|array
      */
     public $successRedirect;
+
+    public function init()
+    {
+        if (!isset($this->operateMsg)) {
+            $this->operateMsg = Yii::t('kriss', '批量操作');
+        }
+
+        parent::init();
+    }
 
     public function run()
     {

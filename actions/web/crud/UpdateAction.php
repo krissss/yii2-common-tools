@@ -2,12 +2,23 @@
 
 namespace kriss\actions\web\crud;
 
+use Yii;
+
 class UpdateAction extends AbstractCUAction
 {
     /**
      * @var string
      */
-    public $operateMsg = '修改';
+    public $operateMsg;
+
+    public function init()
+    {
+        if (!isset($this->operateMsg)) {
+            $this->operateMsg = Yii::t('kriss', '修改');
+        }
+
+        parent::init();
+    }
 
     public function run($id)
     {

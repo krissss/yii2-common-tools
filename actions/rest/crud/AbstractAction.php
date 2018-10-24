@@ -3,17 +3,26 @@
 namespace kriss\actions\rest\crud;
 
 use kriss\actions\helper\ActionTools;
+use kriss\traits\KrissTranslationTrait;
 use yii\base\Action;
 use yii\base\UnknownPropertyException;
 
 abstract class AbstractAction extends Action
 {
+    use KrissTranslationTrait;
+
     private $_unDefinedAttributes = [];
 
     /**
      * @var string|callable
      */
     public $beforeRunCallback;
+
+    public function init()
+    {
+        $this->initKrissI18N();
+        parent::init();
+    }
 
     public function runWithParams($params)
     {

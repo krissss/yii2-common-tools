@@ -6,6 +6,7 @@ use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\FlashMessageTrait;
 use kriss\actions\traits\ModelClassActionTrait;
 use kriss\components\MessageAlert;
+use Yii;
 use yii\base\InvalidConfigException;
 
 class ChangeStatusAction extends AbstractAction
@@ -57,7 +58,7 @@ class ChangeStatusAction extends AbstractAction
             $result = ActionTools::invokeClassMethod($model, $this->doMethod);
             $this->setFlashMessage($result, $model);
         } else {
-            MessageAlert::error('当前状态下操作失败');
+            MessageAlert::error(Yii::t('kriss', '当前状态下操作失败'));
         }
         return $this->redirectPrevious();
     }

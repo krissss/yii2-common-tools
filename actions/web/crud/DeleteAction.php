@@ -2,6 +2,8 @@
 
 namespace kriss\actions\web\crud;
 
+use Yii;
+
 class DeleteAction extends AbstractModelAction
 {
     /**
@@ -17,10 +19,14 @@ class DeleteAction extends AbstractModelAction
     /**
      * @var string
      */
-    public $operateMsg = '删除';
+    public $operateMsg;
 
     public function init()
     {
+        if (!isset($this->operateMsg)) {
+            $this->operateMsg = Yii::t('kriss', '删除');
+        }
+
         parent::init();
         if ($this->deleteMethod) {
             $this->doMethod = $this->deleteMethod;

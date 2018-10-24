@@ -2,6 +2,7 @@
 
 namespace kriss\behaviors\web;
 
+use kriss\traits\KrissTranslationTrait;
 use Yii;
 use yii\base\ActionFilter;
 
@@ -10,6 +11,8 @@ use yii\base\ActionFilter;
  */
 class UserStatusFilter extends ActionFilter
 {
+    use KrissTranslationTrait;
+
     /**
      * 用户状态字段
      * @var string
@@ -24,12 +27,22 @@ class UserStatusFilter extends ActionFilter
      * 拒绝时的错误信息
      * @var string
      */
-    public $errorMessage = '用户状态不允许访问';
+    public $errorMessage;
     /**
      * 拒绝时跳转的界面
      * @var array
      */
     public $redirectUrl = ['/site/login'];
+
+    public function init()
+    {
+        $this->initKrissI18N();
+        if (!isset($this->errorMessage)) {
+            $this->errorMessage = Yii::t('kriss', '用户状态不允许访问');
+        }
+
+        parent::init();
+    }
 
     public function beforeAction($action)
     {
