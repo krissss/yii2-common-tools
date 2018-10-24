@@ -2,12 +2,16 @@
 
 namespace kriss\widgets;
 
+use kriss\traits\KrissTranslationTrait;
+use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 class ToggleColumn extends DataColumn
 {
+    use KrissTranslationTrait;
+
     /**
      * url
      * @see \yii\grid\ActionColumn
@@ -17,10 +21,7 @@ class ToggleColumn extends DataColumn
     public $action;
 
     // toggle data
-    public $items = [
-        1 => '是',
-        0 => '否',
-    ];
+    public $items;
     public $onValue = 1;
     public $offValue = 0;
 
@@ -29,11 +30,7 @@ class ToggleColumn extends DataColumn
     public $offConfirm;
 
     // template
-    public $templateWrapOptions = [
-        'tag' => 'button',
-        'class' => 'btn btn-primary btn-sm',
-        'title' => '点击切换',
-    ];
+    public $templateWrapOptions;
     public $templateWrapOptionsCannotOperate = [
         'tag' => 'span',
     ];
@@ -58,6 +55,21 @@ class ToggleColumn extends DataColumn
 
     public function init()
     {
+        $this->initKrissI18N();
+        if (!isset($this->items)) {
+            $this->items = [
+                1 => Yii::t('kriss', '是'),
+                0 => Yii::t('kriss', '否'),
+            ];
+        }
+        if (!isset($this->templateWrapOptions)) {
+            $this->templateWrapOptions = [
+                'tag' => 'button',
+                'class' => 'btn btn-primary btn-sm',
+                'title' => Yii::t('kriss', '点击切换'),
+            ];
+        }
+
         parent::init();
         if (!$this->action) {
             throw new InvalidConfigException('action 必须配置');
@@ -156,10 +168,10 @@ JS;
     protected function generateOnOffLink()
     {
         $this->_templateOnStr = strtr($this->templateOn, [
-            '{label}' => isset($this->items[$this->onValue]) ? $this->items[$this->onValue] : '未知',
+            '{label}' => isset($this->items[$this->onValue]) ? $this->items[$this->onValue] : Yii::t('kriss', '未知'),
         ]);
         $this->_templateOffStr = strtr($this->templateOff, [
-            '{label}' => isset($this->items[$this->offValue]) ? $this->items[$this->offValue] : '未知',
+            '{label}' => isset($this->items[$this->offValue]) ? $this->items[$this->offValue] : Yii::t('kriss', '未知'),
         ]);
     }
 }

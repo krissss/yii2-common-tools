@@ -3,10 +3,14 @@
 namespace kriss\widgets;
 
 use kartik\form\ActiveForm;
+use kriss\traits\KrissTranslationTrait;
+use Yii;
 use yii\helpers\Html;
 
 class SimpleActiveForm extends ActiveForm
 {
+    use KrissTranslationTrait;
+
     public $options = [
         'class' => 'form-horizontal',
     ];
@@ -28,18 +32,26 @@ class SimpleActiveForm extends ActiveForm
     public $header;
 
     public $renderReturn = true;
-    public $returnLabel = '返回';
+    public $returnLabel;
     public $returnHref;
     public $returnOptions = ['class' => 'btn btn-default'];
 
     public $renderSubmit = true;
-    public $submitLabel = '确定';
+    public $submitLabel;
     public $submitOptions = ['class' => 'btn btn-primary'];
 
     public $btnContainerOptions = [];
 
     public function init()
     {
+        $this->initKrissI18N();
+        if (!isset($this->returnLabel)) {
+            $this->returnLabel = Yii::t('kriss', '返回');
+        }
+        if (!isset($this->submitLabel)) {
+            $this->submitLabel = Yii::t('kriss', '提交');
+        }
+
         if (!isset($this->returnHref)) {
             $this->returnHref = 'javascript:history.back()';
         }

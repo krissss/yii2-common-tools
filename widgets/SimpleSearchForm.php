@@ -3,19 +3,23 @@
 namespace kriss\widgets;
 
 use kartik\form\ActiveForm;
+use kriss\traits\KrissTranslationTrait;
+use Yii;
 use yii\helpers\Html;
 
 class SimpleSearchForm extends ActiveForm
 {
+    use KrissTranslationTrait;
+
     const TYPE_ONE = 'horizontal_label_1';
 
     public $layoutType;
     public $method = 'get';
 
-    public $header = '查询';
+    public $header;
 
     public $renderReset = true;
-    public $restLabel = '重置';
+    public $restLabel;
     public $restOptions = ['class' => 'btn btn-default'];
     /**
      * 默认为 action 地址
@@ -24,7 +28,7 @@ class SimpleSearchForm extends ActiveForm
     public $restUrl;
 
     public $renderSubmit = true;
-    public $submitLabel = '查询';
+    public $submitLabel;
     public $submitOptions = ['class' => 'btn btn-primary'];
 
     public $btnContainerOptions = [];
@@ -37,6 +41,17 @@ class SimpleSearchForm extends ActiveForm
 
     public function init()
     {
+        $this->initKrissI18N();
+        if (!isset($this->header)) {
+            $this->header = Yii::t('kriss', '查询');
+        }
+        if (!isset($this->restLabel)) {
+            $this->restLabel = Yii::t('kriss', '重置');
+        }
+        if (!isset($this->submitLabel)) {
+            $this->submitLabel = Yii::t('kriss', '查询');
+        }
+
         if (!isset($this->layoutType)) {
             $this->layoutType = self::TYPE_ONE;
         }

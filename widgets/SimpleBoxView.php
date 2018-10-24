@@ -2,19 +2,36 @@
 
 namespace kriss\widgets;
 
+use kriss\traits\KrissTranslationTrait;
+use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
 
 class SimpleBoxView extends Widget
 {
+    use KrissTranslationTrait;
+
     /**
      * @var string
      */
-    public $header = '详情';
+    public $header;
 
     public $renderCancel = true;
-    public $cancelLabel = '返回';
+    public $cancelLabel;
     public $cancelOptions = ['class' => 'btn btn-default'];
+
+    public function init()
+    {
+        $this->initKrissI18N();
+        if (!isset($this->header)) {
+            $this->header = Yii::t('kriss', '详情');
+        }
+        if (!isset($this->cancelLabel)) {
+            $this->cancelLabel = Yii::t('kriss', '取消');
+        }
+
+        parent::init();
+    }
 
     public static function begin($config = [])
     {

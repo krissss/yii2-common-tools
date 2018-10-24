@@ -3,10 +3,14 @@
 namespace kriss\widgets;
 
 use kartik\field\FieldRange;
+use kriss\traits\KrissTranslationTrait;
+use Yii;
 use yii\helpers\Html;
 
 class DateRangeBase extends FieldRange
 {
+    use KrissTranslationTrait;
+
     const DISPLAY_TYPE_DATE = DateControl::FORMAT_DATE;
     const DISPLAY_TYPE_DATE_TIME = DateControl::FORMAT_DATETIME;
     const DISPLAY_TYPE_TIME = DateControl::FORMAT_TIME;
@@ -25,7 +29,7 @@ class DateRangeBase extends FieldRange
      * label
      * @var string
      */
-    public $label = '时间区间';
+    public $label;
     /**
      * 日期之间的分隔符
      * @var string
@@ -39,8 +43,13 @@ class DateRangeBase extends FieldRange
 
     public function init()
     {
+        $this->initKrissI18N();
+        if (!isset($this->label)) {
+            $this->label = Yii::t('kriss', '时间区间');
+        }
+
         if (!$this->widgetClass) {
-            $this->widgetClass = DateControl::className();
+            $this->widgetClass = DateControl::class;
             $this->widgetOptions1['type'] = $this->displayType;
             $this->widgetOptions2['type'] = $this->displayType;
         }

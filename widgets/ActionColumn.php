@@ -2,12 +2,16 @@
 
 namespace kriss\widgets;
 
+use kriss\traits\KrissTranslationTrait;
+use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 class ActionColumn extends \kartik\grid\ActionColumn
 {
-    public $header = '操作';
+    use KrissTranslationTrait;
+
+    public $header;
 
     public $width = 'auto';
 
@@ -41,6 +45,16 @@ class ActionColumn extends \kartik\grid\ActionColumn
      * @var bool
      */
     public $isGroupWrap = false;
+
+    public function init()
+    {
+        $this->initKrissI18N();
+        if (!isset($this->header)) {
+            $this->header = Yii::t('kriss', '操作');
+        }
+
+        parent::init();
+    }
 
     protected function renderDataCellContent($model, $key, $index)
     {

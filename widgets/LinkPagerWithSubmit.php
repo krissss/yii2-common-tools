@@ -2,11 +2,14 @@
 
 namespace kriss\widgets;
 
+use kriss\traits\KrissTranslationTrait;
 use Yii;
 use yii\helpers\Html;
 
 class LinkPagerWithSubmit extends \yii\widgets\LinkPager
 {
+    use KrissTranslationTrait;
+
     /**
      * {pageButtons} {customPage} {customPageSize}
      * custom button will be auto generate if `{customPage}` or `{customPageSize}` is exist
@@ -64,6 +67,17 @@ class LinkPagerWithSubmit extends \yii\widgets\LinkPager
 
     public function init()
     {
+        $this->initKrissI18N();
+        if (!isset($this->pageSizeLabel)) {
+            $this->pageSizeLabel = Yii::t('kriss', '每页');
+        }
+        if (!isset($this->pageLabel)) {
+            $this->pageLabel = Yii::t('kriss', '当前');
+        }
+        if (!isset($this->submitButtonLabel)) {
+            $this->submitButtonLabel = Yii::t('kriss', '提交');
+        }
+
         parent::init();
         $this->_submitButtonId = 'submit-button-' . $this->id;
         $this->_pageInputName = 'page-input-' . $this->id;
@@ -130,7 +144,7 @@ class LinkPagerWithSubmit extends \yii\widgets\LinkPager
         $input = Html::input('number', $this->_pageInputName, $page, $inputOptions);
         $inputGroupHtml = <<<HTML
 <div class="input-group" >
-    <span class="input-group-addon">$this->pageLabel</span>
+    <span class="input-group-addon">{$this->pageLabel}</span>
     $input
 </div>
 HTML;
@@ -162,7 +176,7 @@ HTML;
         $input = Html::input('number', $this->_pageSizeInputName, $pageSize, $inputOptions);
         $inputGroupHtml = <<<HTML
 <div class="input-group" >
-    <span class="input-group-addon">$this->pageSizeLabel</span>
+    <span class="input-group-addon">{$this->pageSizeLabel}</span>
     $input
 </div>
 HTML;

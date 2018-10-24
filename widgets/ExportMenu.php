@@ -2,6 +2,7 @@
 
 namespace kriss\widgets;
 
+use kriss\traits\KrissTranslationTrait;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
@@ -32,6 +33,8 @@ use yii2tech\csvgrid\CsvGrid;
  */
 class ExportMenu extends Widget
 {
+    use KrissTranslationTrait;
+
     public $dataProvider;
 
     public $columns = [];
@@ -48,7 +51,7 @@ class ExportMenu extends Widget
 
     public $sendName = 'export.csv';
 
-    public $exportMenuLabel = '导出';
+    public $exportMenuLabel;
 
     public $exportMenuOptions = ['class' => 'btn btn-primary'];
 
@@ -61,6 +64,11 @@ class ExportMenu extends Widget
 
     public function init()
     {
+        $this->initKrissI18N();
+        if (!isset($this->exportMenuLabel)) {
+            $this->exportMenuLabel = Yii::t('kriss', '导出');
+        }
+
         if (!class_exists('yii2tech\csvgrid\CsvGrid')) {
             throw new Exception('must install yii2tech/csv-grid');
         }

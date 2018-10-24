@@ -4,6 +4,8 @@ namespace kriss\widgets;
 
 use kartik\dynagrid\DynaGrid;
 use kartik\grid\GridView;
+use kriss\traits\KrissTranslationTrait;
+use Yii;
 use yii\base\Exception;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
@@ -11,6 +13,8 @@ use yii\helpers\Html;
 
 class SimpleDynaGrid extends Widget
 {
+    use KrissTranslationTrait;
+
     /**
      * 组件 id
      * 如果需要使用 dynaGrid 的存储，则必须单独定义，否则 key 可能一样
@@ -168,6 +172,7 @@ class SimpleDynaGrid extends Widget
 
     public function init()
     {
+        $this->initKrissI18N();
         if (!isset($this->dynaGridId)) {
             $this->dynaGridId = $this->id;
         }
@@ -180,12 +185,9 @@ class SimpleDynaGrid extends Widget
 
         if (!$this->gridPager) {
             $this->gridPager = [
-                'class' => LinkPagerWithSubmit::className(),
-                'firstPageLabel' => '第一页',
-                'lastPageLabel' => '最后一页',
-                'pageSizeLabel' => '每页',
-                'pageLabel' => '当前',
-                'submitButtonLabel' => '确定',
+                'class' => LinkPagerWithSubmit::class,
+                'firstPageLabel' => Yii::t('kriss', '第一页'),
+                'lastPageLabel' => Yii::t('kriss', '最后一页'),
             ];
         }
 

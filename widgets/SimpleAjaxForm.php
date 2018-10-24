@@ -2,12 +2,16 @@
 
 namespace kriss\widgets;
 
+use kriss\traits\KrissTranslationTrait;
+use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 class SimpleAjaxForm extends ActiveForm
 {
+    use KrissTranslationTrait;
+
     /**
      * @var string
      */
@@ -19,11 +23,11 @@ class SimpleAjaxForm extends ActiveForm
     public $modalSize;
 
     public $renderCancel = true;
-    public $cancelLabel = '取消';
+    public $cancelLabel;
     public $cancelOptions = ['class' => 'btn btn-default'];
 
     public $renderSubmit = true;
-    public $submitLabel = '确定';
+    public $submitLabel;
     public $submitOptions = ['class' => 'btn btn-primary'];
 
     public $options = ['class' => 'form-horizontal'];
@@ -36,6 +40,14 @@ class SimpleAjaxForm extends ActiveForm
 
     public function init()
     {
+        $this->initKrissI18N();
+        if (!isset($this->returnLabel)) {
+            $this->returnLabel = Yii::t('kriss', '返回');
+        }
+        if (!isset($this->submitLabel)) {
+            $this->submitLabel = Yii::t('kriss', '提交');
+        }
+
         if (!isset($this->options['id'])) {
             // 解决 ajax 表单不能验证的问题
             $this->options['id'] = Widget::$autoIdPrefix . time();
