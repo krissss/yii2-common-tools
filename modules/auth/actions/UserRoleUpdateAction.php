@@ -74,7 +74,7 @@ class UserRoleUpdateAction extends Action
         /** @var \kriss\modules\auth\components\User $user */
         $user = Yii::$app->user;
         if ($id == $user->superAdminId || $id == $user->id) {
-            throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+            throw new ForbiddenHttpException(Yii::t('kriss', '没有访问权限'));
         }
     }
 

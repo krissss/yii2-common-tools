@@ -90,7 +90,7 @@ class RoleController extends Controller
             $operations = $this->prepareOperations($model, Yii::$app->request->post());
             $model->operation_list = implode(';', $operations);
             $model->save(false);
-            Yii::$app->session->setFlash('success', '创建成功');
+            Yii::$app->session->setFlash('success', Yii::t('kriss', '创建成功'));
             return $this->redirect(Url::previous());
         } else {
             $operations = (Module::getAuthOperationClass())::findAllOperations();
@@ -109,7 +109,7 @@ class RoleController extends Controller
         AuthValidate::run($authClass::ROLE_UPDATE);
 
         if (!(Module::getAuthRoleClass())::canLoginUserModify($id)) {
-            throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+            throw new ForbiddenHttpException(Yii::t('app', Yii::t('kriss', '没有访问权限')));
         }
 
         $model = $this->findModel($id);
@@ -119,7 +119,7 @@ class RoleController extends Controller
             $model->operation_list = implode(';', $operations);
 
             $model->save(false);
-            Yii::$app->session->setFlash('success', '更新成功');
+            Yii::$app->session->setFlash('success', Yii::t('kriss', '更新成功'));
             return $this->redirect(Url::previous());
         } else {
             $operations = (Module::getAuthOperationClass())::findAllOperations();
@@ -141,11 +141,11 @@ class RoleController extends Controller
         AuthValidate::run($authClass::ROLE_DELETE);
 
         if (!(Module::getAuthRoleClass())::canLoginUserModify($id)) {
-            throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+            throw new ForbiddenHttpException(Yii::t('app', Yii::t('kriss', '没有访问权限')));
         }
 
         $this->findModel($id)->delete();
-        Yii::$app->session->setFlash('success', '删除成功');
+        Yii::$app->session->setFlash('success', Yii::t('kriss', '删除成功'));
 
         return $this->redirect(Url::previous());
     }

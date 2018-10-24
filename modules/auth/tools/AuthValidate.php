@@ -20,7 +20,7 @@ class AuthValidate
     public static function run($name, $allContain = false)
     {
         if (!self::has($name, $allContain)) {
-            throw new ForbiddenHttpException(Yii::t('app', 'No Auth'));
+            throw new ForbiddenHttpException(Yii::t('kriss', '没有访问权限'));
         }
     }
 

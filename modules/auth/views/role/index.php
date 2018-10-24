@@ -1,19 +1,21 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $searchModel */
+
 /* @var $dataProvider */
 
+use kriss\modules\auth\models\AuthRole;
 use kriss\modules\auth\Module;
+use kriss\modules\auth\tools\AuthValidate;
 use kriss\widgets\SimpleDynaGrid;
 use yii\helpers\Html;
-use kriss\modules\auth\tools\AuthValidate;
 
 /** @var \kriss\modules\auth\models\Auth $authClass */
 $authClass = Yii::$app->user->authClass;
 
-$this->title = '角色管理';
+$this->title = Yii::t('kriss', '角色管理');
 $this->params['breadcrumbs'] = [
-    '权限管理',
+    Yii::t('kriss', '权限管理'),
     $this->title
 ];
 
@@ -27,9 +29,15 @@ $columns = [
         'attribute' => 'name',
         'hAlign' => 'center',
         'enableSorting' => false,
+        'value' => function (AuthRole $model) {
+            return Yii::t('app', $model->name);
+        },
     ], [
         'attribute' => 'description',
         'enableSorting' => false,
+        'value' => function (AuthRole $model) {
+            return Yii::t('app', $model->description);
+        },
     ], /*[
         'attribute' => 'operation_list',
         'enableSorting' => false,
@@ -37,37 +45,37 @@ $columns = [
     [
         'class' => 'kartik\grid\ActionColumn',
         'width' => '200px',
+        'visibleButtons' => [
+            'view' => AuthValidate::has($authClass::ROLE_VIEW),
+            'update' => function ($model) use ($authClass) {
+                return AuthValidate::has($authClass::ROLE_UPDATE) && (Module::getAuthRoleClass())::canLoginUserModify($model->id);
+            },
+            'delete' => function ($model) use ($authClass) {
+                return AuthValidate::has($authClass::ROLE_DELETE) && (Module::getAuthRoleClass())::canLoginUserModify($model->id);
+            },
+        ],
         'buttons' => [
-            'view' => function ($url) use ($authClass) {
-                if (AuthValidate::has($authClass::ROLE_VIEW)) {
-                    $options = [
-                        'class' => 'btn btn-default'
-                    ];
-                    return Html::a('查看', $url, $options);
-                }
-                return '';
+            'view' => function ($url) {
+                $options = [
+                    'class' => 'btn btn-default'
+                ];
+                return Html::a(Yii::t('kriss', '查看'), $url, $options);
             },
-            'update' => function ($url, $model) use ($authClass) {
-                if (AuthValidate::has($authClass::ROLE_UPDATE) && (Module::getAuthRoleClass())::canLoginUserModify($model->id)) {
-                    $options = [
-                        'data-pjax' => '0',
-                        'class' => 'btn btn-default'
-                    ];
-                    return Html::a('修改', $url, $options);
-                }
-                return '';
+            'update' => function ($url) {
+                $options = [
+                    'data-pjax' => '0',
+                    'class' => 'btn btn-default'
+                ];
+                return Html::a(Yii::t('kriss', '修改'), $url, $options);
             },
-            'delete' => function ($url, $model) use ($authClass) {
-                if (AuthValidate::has($authClass::ROLE_DELETE) && (Module::getAuthRoleClass())::canLoginUserModify($model->id)) {
-                    $options = [
-                        'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                        'data-method' => 'post',
-                        'data-pjax' => '0',
-                        'class' => 'btn btn-danger'
-                    ];
-                    return Html::a('删除', $url, $options);
-                }
-                return '';
+            'delete' => function ($url) {
+                $options = [
+                    'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                    'data-method' => 'post',
+                    'data-pjax' => '0',
+                    'class' => 'btn btn-danger'
+                ];
+                return Html::a(Yii::t('kriss', '删除'), $url, $options);
             }
         ]
     ],
@@ -80,7 +88,7 @@ echo SimpleDynaGrid::widget([
     'extraToolbar' => [
         [
             'content' =>
-                (AuthValidate::has($authClass::ROLE_CREATE) ? Html::a('新增', ['create'], [
+                (AuthValidate::has($authClass::ROLE_CREATE) ? Html::a(Yii::t('kriss', '新增'), ['create'], [
                     'class' => 'btn btn-default',
                 ]) : '')
         ],

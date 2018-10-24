@@ -46,7 +46,7 @@ class UpdateUserRole extends Model
         $userClass = Yii::$app->user->identityClass;
         $this->user = $userClass::find()->andWhere(['id' => $this->userId])->one();
         if (!$this->user) {
-            throw new Exception('用户不存在');
+            throw new Exception(Yii::t('kriss', '用户不存在'));
         }
     }
 
@@ -77,7 +77,7 @@ class UpdateUserRole extends Model
         $authRoleParam = $user->userAuthRoleAttribute;
         $this->user->$authRoleParam = $this->userRole ? implode(',', $this->userRole) : '';
         $this->user->save(false);
-        return ['type' => 'success', 'msg' => '用户角色修改成功'];
+        return ['type' => 'success', 'msg' => Yii::t('kriss', '用户角色修改成功')];
     }
 
     /**
@@ -91,11 +91,11 @@ class UpdateUserRole extends Model
             $arr['label'] = $this->user->getAttributeLabel($attribute);
             $arr['value'] = $this->user->$attribute;
             if (in_array($arr['label'], ['id', 'ID'])) {
-                $arr['label'] = '用户编号';
+                $arr['label'] = Yii::t('kriss', '用户编号');
             }
             return $arr;
         }
-        $arr['label'] = '用户编号';
+        $arr['label'] = Yii::t('kriss', '用户编号');
         $arr['value'] = $this->userId;
         return $arr;
     }

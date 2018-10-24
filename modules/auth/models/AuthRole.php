@@ -44,10 +44,10 @@ class AuthRole extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => '角色名称',
-            'description' => '描述',
-            'operation_list' => '权限列表',
+            'id' => Yii::t('kriss', 'ID'),
+            'name' => Yii::t('kriss', '角色名称'),
+            'description' => Yii::t('kriss', '描述'),
+            'operation_list' => Yii::t('kriss', '权限列表'),
         ];
     }
 

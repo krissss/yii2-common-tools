@@ -2,6 +2,8 @@
 
 namespace kriss\modules\auth\models;
 
+use Yii;
+
 class Auth
 {
     const CAN_PERMISSION_PERMISSION = true;
@@ -65,6 +67,7 @@ class Auth
     public static function getName($key)
     {
         $messages = static::getMessageData();
-        return isset($messages[$key]) ? $messages[$key] : $key;
+        $msg = isset($messages[$key]) ? $messages[$key] : $key;
+        return Yii::t('app', $msg);
     }
 }

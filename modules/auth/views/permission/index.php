@@ -1,9 +1,9 @@
 <?php
 /** @var $operations array */
 
-$this->title = '权限';
+$this->title = Yii::t('kriss', '权限');
 $this->params['breadcrumbs'] = [
-    '权限管理',
+    Yii::t('kriss', '权限管理'),
     $this->title,
 ];
 ?>
@@ -15,16 +15,16 @@ $this->params['breadcrumbs'] = [
         <table class="table table-striped table-bordered">
             <tbody>
             <tr>
-                <th>模块</th>
-                <th>权限</th>
+                <th><?= Yii::t('kriss', '模块') ?></th>
+                <th><?= Yii::t('kriss', '权限') ?></th>
             </tr>
             <?php foreach ($operations as $operation) : ?>
                 <tr>
                     <td width="150px">
-                        <?= Yii::t('app', $operation['name']) ?>
+                        <?= $operation['name'] ?>
                     </td>
                     <td>
-                        <?=implode(' | ',$operation['sub'])?>
+                        <?= implode(' | ', $operation['sub']) ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

@@ -5,12 +5,15 @@ namespace kriss\modules\auth;
 use kriss\modules\auth\models\AuthOperation;
 use kriss\modules\auth\models\AuthRole;
 use kriss\modules\auth\models\AuthRoleSearch;
+use kriss\traits\KrissTranslationTrait;
 
 /**
  * auth module definition class
  */
 class Module extends \yii\base\Module
 {
+    use KrissTranslationTrait;
+
     /**
      * @inheritdoc
      */
@@ -43,6 +46,12 @@ class Module extends \yii\base\Module
      * @var string|AuthRoleSearch
      */
     public $authRoleSearchClass = 'kriss\modules\auth\models\AuthRoleSearch';
+
+    public function init()
+    {
+        $this->initKrissI18N();
+        parent::init();
+    }
 
     /**
      * @return AuthOperation|string

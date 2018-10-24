@@ -30,9 +30,9 @@ class AuthOperation extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'parent_id' => Yii::t('app', 'Parent ID'),
-            'name' => Yii::t('app', 'Name'),
+            'id' => Yii::t('kriss', 'ID'),
+            'parent_id' => Yii::t('kriss', '父ID'),
+            'name' => Yii::t('kriss', '名称'),
         ];
     }
 
@@ -81,7 +81,7 @@ class AuthOperation extends \yii\db\ActiveRecord
     public static function findViewName($name)
     {
         if ($name === 'all') {
-            return '所有';
+            return Yii::t('kriss', '所有');
         }
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;

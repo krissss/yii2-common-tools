@@ -1,15 +1,16 @@
 <?php
 /* @var $this yii\web\View */
 /* @var $model \kriss\modules\auth\models\AuthRole */
+
 /* @var $strOperation string */
 
 use yii\widgets\DetailView;
 
-$this->title = '角色详情';
+$this->title = Yii::t('kriss', '角色详情');
 $this->params['breadcrumbs'] = [
-    '权限管理',
+    Yii::t('kriss', '权限管理'),
     [
-        'label' => '角色管理',
+        'label' => Yii::t('kriss', '角色管理'),
         'url' => ['index'],
     ],
     $this->title,
@@ -23,8 +24,14 @@ $this->params['breadcrumbs'] = [
         <?php
         $attributes = [
             'id',
-            'name',
-            'description',
+            [
+                'attribute' => 'name',
+                'value' => Yii::t('app', $model->name)
+            ],
+            [
+                'attribute' => 'description',
+                'value' => Yii::t('app', $model->description)
+            ],
             [
                 'attribute' => 'operation_list',
                 'value' => $strOperation,

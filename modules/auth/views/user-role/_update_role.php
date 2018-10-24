@@ -25,7 +25,7 @@ $displayInfo = $model->getDisplayInfo();
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">修改用户角色</h4>
+                <h4 class="modal-title"><?= Yii::t('kriss', '修改用户角色') ?></h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -37,8 +37,8 @@ $displayInfo = $model->getDisplayInfo();
                 <?= Html::activeCheckboxList($model, 'userRole', $model->roles); ?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="submit" class="btn btn-primary">确认</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><?= Yii::t('kriss', '取消') ?></button>
+                <button type="submit" class="btn btn-primary"><?= Yii::t('kriss', '提交') ?></button>
             </div>
             <?php $form->end(); ?>
         </div>
