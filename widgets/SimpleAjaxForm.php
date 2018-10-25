@@ -41,8 +41,8 @@ class SimpleAjaxForm extends ActiveForm
     public function init()
     {
         $this->initKrissI18N();
-        if (!isset($this->returnLabel)) {
-            $this->returnLabel = Yii::t('kriss', '返回');
+        if (!isset($this->cancelLabel)) {
+            $this->cancelLabel = Yii::t('kriss', '取消');
         }
         if (!isset($this->submitLabel)) {
             $this->submitLabel = Yii::t('kriss', '提交');
