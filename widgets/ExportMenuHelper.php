@@ -14,6 +14,10 @@ class ExportMenuHelper
     {
         $result = [];
         foreach ($columns as $column) {
+            if (is_string($column)) {
+                $result[] = $column;
+                continue;
+            }
             if (isset($column['class'])) {
                 if (static::isNeedSkip($column['class'])) {
                     continue;
