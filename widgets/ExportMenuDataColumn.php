@@ -12,6 +12,6 @@ class ExportMenuDataColumn extends \yii2tech\csvgrid\DataColumn
         // fix MS excel read error for long number
         // @link https://github.com/yii2tech/csv-grid/issues/23
         $value = parent::renderDataCellContent($model, $key, $index);
-        return is_numeric($value) ? $value . "\t" : $value;
+        return (is_numeric($value) && strlen($value) > 14) ? ($value . "\t") : $value;
     }
 }
