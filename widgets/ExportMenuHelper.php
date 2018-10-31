@@ -128,7 +128,7 @@ class ExportMenuHelper
 
     protected static function transAttribute($column, $newColumn)
     {
-        $args = ['attribute', 'label', 'value'];
+        $args = ['attribute', 'label', 'value', 'format'];
         foreach ($args as $arg) {
             if (isset($column[$arg])) {
                 $newColumn[$arg] = $column[$arg];
