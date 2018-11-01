@@ -42,15 +42,15 @@ class LinkPagerWithSubmit extends \yii\widgets\LinkPager
     /**
      * @var string
      */
-    public $pageSizeLabel = 'Size';
+    public $pageSizeLabel;
     /**
      * @var string
      */
-    public $pageLabel = 'Page';
+    public $pageLabel;
     /**
      * @var string
      */
-    public $submitButtonLabel = 'Submit';
+    public $submitButtonLabel;
 
     /**
      * @var string
