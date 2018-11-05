@@ -75,18 +75,16 @@ class SimpleSearchForm extends ActiveForm
             $collapsedToolsClass = 'fa-plus';
         }
         echo Html::beginTag('div', ['class' => 'box box-default ' . $collapsedClass]);
-        ob_flush();
         echo $this->renderHeader($collapsedToolsClass);
         echo Html::beginTag('div', ['class' => 'box-body']);
+        ob_flush();
     }
 
     public function run()
     {
         echo $this->renderFooter();
-        echo Html::endTag('div'); // box-body
-
         parent::run();
-
+        echo Html::endTag('div'); // box-body
         echo Html::endTag('div'); // box
     }
 
