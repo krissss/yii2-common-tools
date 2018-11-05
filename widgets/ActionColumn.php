@@ -41,10 +41,14 @@ class ActionColumn extends \kartik\grid\ActionColumn
     public $isGroupButton = false;
     /**
      * 是否自动分行
-     * @see
      * @var bool
      */
     public $isGroupWrap = false;
+    /**
+     * 是否通过下拉菜单的方式分组
+     * @var bool
+     */
+    public $isGroupByDropDown = false;
 
     public function init()
     {
@@ -135,7 +139,22 @@ class ActionColumn extends \kartik\grid\ActionColumn
         $buttons = array_filter($buttons);
         if ($buttons) {
             if ($this->isGroupButton) {
-                return Html::tag('div', implode("\n", $buttons), ['class' => 'btn-group']);
+                if (count($buttons) > 1 && $this->isGroupByDropDown) {
+                    $html = [];
+                    $html[] = Html::beginTag('div', ['class' => 'btn-group']);
+                    $html[] = $buttons[0];
+                    unset($buttons[0]);
+                    $html[] = Html::button('<span class="fa fa-caret-down"></span>', ['data-toggle' => 'dropdown', 'class' => 'btn btn-default']);
+                    $html[] = Html::beginTag('ul', ['class' => 'dropdown-menu']);
+                    foreach ($buttons as $button) {
+                        $html[] = Html::tag('li', str_replace('btn btn-', '', $button));
+                    }
+                    $html[] = Html::endTag('ul'); //  ul.dropdown-menu
+                    $html[] = Html::endTag('div'); //  div.btn-group
+                    return implode("\n", $html);
+                } else {
+                    return Html::tag('div', implode("\n", $buttons), ['class' => 'btn-group']);
+                }
             } else {
                 return implode(' ', $buttons);
             }
