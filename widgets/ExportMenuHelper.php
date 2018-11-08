@@ -102,7 +102,7 @@ class ExportMenuHelper
             if (is_array($column) && isset($column['class'])) {
                 $newColumn = [];
                 $newColumn = static::transAttribute($column, $newColumn);
-                $newColumn['label'] .= "(${$column['label']})";
+                $newColumn['label'] .= "({$column['label']})";
                 $column = $newColumn;
             }
             $columnArr[] = $column;
