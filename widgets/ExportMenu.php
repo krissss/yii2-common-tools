@@ -137,7 +137,7 @@ class ExportMenu extends Widget
 
     protected function getColumns()
     {
-        $this->columns = ExportMenuHelper::transColumns($this->columns);
+        $this->columns = ExportMenuHelper::create($this->columns)->trans();
         $columns = [];
         foreach ($this->columns as $column) {
             if (is_array($column) && isset($column['class'])) {

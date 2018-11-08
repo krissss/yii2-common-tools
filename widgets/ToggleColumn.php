@@ -57,10 +57,7 @@ class ToggleColumn extends DataColumn
     {
         $this->initKrissI18N();
         if (!isset($this->items)) {
-            $this->items = [
-                1 => Yii::t('kriss', '是'),
-                0 => Yii::t('kriss', '否'),
-            ];
+            $this->items = static::getDefaultItems();
         }
         if (!isset($this->templateWrapOptions)) {
             $this->templateWrapOptions = [
@@ -173,5 +170,16 @@ JS;
         $this->_templateOffStr = strtr($this->templateOff, [
             '{label}' => isset($this->items[$this->offValue]) ? $this->items[$this->offValue] : Yii::t('kriss', '未知'),
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getDefaultItems()
+    {
+        return [
+            1 => Yii::t('kriss', '是'),
+            0 => Yii::t('kriss', '否'),
+        ];
     }
 }
