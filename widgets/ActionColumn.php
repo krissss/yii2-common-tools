@@ -136,7 +136,8 @@ class ActionColumn extends \kartik\grid\ActionColumn
 
     protected function renderButtonGroup($buttons)
     {
-        $buttons = array_filter($buttons);
+        // 去除空值和键值
+        $buttons = array_values(array_filter($buttons));
         if ($buttons) {
             if ($this->isGroupButton) {
                 if (count($buttons) > 1 && $this->isGroupByDropDown) {
