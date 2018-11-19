@@ -38,6 +38,11 @@ class SimpleSearchForm extends ActiveForm
      * @var bool
      */
     public $isCollapsed = false;
+    /**
+     * 是否在有查询时不折叠, isCollapsed 为 true 时有效
+     * @var bool
+     */
+    public $isUnCollapsedWhenSearch = true;
 
     public function init()
     {
@@ -71,8 +76,10 @@ class SimpleSearchForm extends ActiveForm
         $collapsedClass = '';
         $collapsedToolsClass = 'fa-minus';
         if ($this->isCollapsed === true) {
-            $collapsedClass = 'collapsed-box';
-            $collapsedToolsClass = 'fa-plus';
+            if (!($this->isUnCollapsedWhenSearch && Yii::$app->request->get($this->getSearchInputFlagName()))) {
+                $collapsedClass = 'collapsed-box';
+                $collapsedToolsClass = 'fa-plus';
+            }
         }
         echo Html::beginTag('div', ['class' => 'box box-default ' . $collapsedClass]);
         echo $this->renderHeader($collapsedToolsClass);
@@ -82,13 +89,17 @@ class SimpleSearchForm extends ActiveForm
 
     public function run()
     {
+        if ($this->isCollapsed && $this->isUnCollapsedWhenSearch) {
+            echo Html::hiddenInput($this->getSearchInputFlagName(), 1);
+        }
         echo $this->renderFooter();
         parent::run();
         echo Html::endTag('div'); // box-body
         echo Html::endTag('div'); // box
     }
 
-    protected function renderHeader($collapsedToolsClass) {
+    protected function renderHeader($collapsedToolsClass)
+    {
         echo <<<HTML
 <div class="box-header with-border">
     <h3 class="box-title">{$this->header}</h3>
@@ -100,7 +111,8 @@ class SimpleSearchForm extends ActiveForm
 HTML;
     }
 
-    protected function renderFooter() {
+    protected function renderFooter()
+    {
         $buttons = [];
         if ($this->renderReset) {
             $buttons[] = Html::a($this->restLabel, $this->restUrl ?: $this->action, $this->restOptions);
@@ -122,5 +134,14 @@ HTML;
     public function renderFooterButtons()
     {
         return null;
+    }
+
+    /**
+     * 搜索的标记
+     * @return string
+     */
+    private function getSearchInputFlagName()
+    {
+        return $this->id . 'search';
     }
 }
