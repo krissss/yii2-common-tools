@@ -1,8 +1,10 @@
 <?php
-/** @var $constArr array */
-/** @var $msgArr array */
-/** @var $initDataArr array */
-/** @var $generator \kriss\modules\auth\console\controllers\AuthGeneratorController */
+/**
+ * @var $constArr array
+ * @var $msgArr array
+ * @var $initDataArr array
+ * @var $generator \kriss\modules\auth\console\controllers\AuthGeneratorController
+ */
 
 echo "<?php\n";
 ?>

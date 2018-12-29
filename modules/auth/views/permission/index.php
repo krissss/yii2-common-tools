@@ -1,5 +1,7 @@
 <?php
-/** @var $operations array */
+/**
+ * @var $operations array
+ */
 
 $this->title = Yii::t('kriss', '权限');
 $this->params['breadcrumbs'] = [

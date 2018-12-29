@@ -1,6 +1,8 @@
 <?php
-/** @var $this yii\web\View */
-/** @var $generator \kriss\generators\crud\Generator */
+/**
+ * @var $this yii\web\View
+ * @var $generator \kriss\generators\crud\Generator
+ */
 
 $useClasses = $generator->getControllerUseClasses();
 echo "<?php\n";

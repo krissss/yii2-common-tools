@@ -1,9 +1,10 @@
 <?php
+/**
+ * @var $this yii\web\View
+ * @var $generator \kriss\generators\dynagrid\Generator
+ */
 
 use yii\helpers\Inflector;
-
-/** @var $this yii\web\View */
-/** @var $generator \kriss\generators\dynagrid\Generator */
 
 $useClasses = $generator->getControllerUseClasses();
 $operateActions = $generator->getActionColumns();

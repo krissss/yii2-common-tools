@@ -1,8 +1,9 @@
 <?php
-/* @var $this yii\web\View */
-/* @var $searchModel */
-
-/* @var $dataProvider */
+/**
+ * @var $this yii\web\View
+ * @var $searchModel
+ * @var $dataProvider
+ */
 
 use kriss\modules\auth\models\AuthRole;
 use kriss\modules\auth\Module;

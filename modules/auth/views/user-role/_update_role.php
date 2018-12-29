@@ -1,5 +1,8 @@
 <?php
-/** @var $model \kriss\modules\auth\models\UpdateUserRole */
+/**
+ * @var $this \yii\web\View
+ * @var $model \kriss\modules\auth\models\UpdateUserRole
+ */
 
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;

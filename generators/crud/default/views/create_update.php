@@ -1,6 +1,8 @@
 <?php
-/** @var $this yii\web\View */
-/** @var $generator \kriss\generators\crud\Generator */
+/**
+ * @var $this yii\web\View
+ * @var $generator \kriss\generators\crud\Generator
+ */
 
 if (!isset($formClass)) {
     $formClass = 'SimpleActiveForm';
@@ -8,8 +10,10 @@ if (!isset($formClass)) {
 $attributes = $generator->getColumnNames();
 echo "<?php\n";
 ?>
-/** @var $this yii\web\view */
-/** @var $model <?= $generator->getModelClass() ?> */
+/**
+ * @var $this yii\web\view
+ * @var $model <?= $generator->getModelClass() ?>
+ */
 
 use kriss\widgets\<?= $formClass ?>;
 

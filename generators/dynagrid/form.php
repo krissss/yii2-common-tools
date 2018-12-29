@@ -1,8 +1,9 @@
 <?php
-
-/* @var $this yii\web\View */
-/* @var $form yii\widgets\ActiveForm */
-/* @var $generator \kriss\generators\dynagrid\Generator */
+/**
+ * @var $this yii\web\View
+ * @var $form yii\widgets\ActiveForm
+ * @var $generator \kriss\generators\dynagrid\Generator
+ */
 
 echo $form->field($generator, 'controllerClass');
 echo $form->field($generator, 'controllerBaseClass');

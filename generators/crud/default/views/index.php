@@ -1,16 +1,20 @@
 <?php
-/** @var $this yii\web\View */
-/** @var $generator \kriss\generators\crud\Generator */
+/**
+ * @var $this yii\web\View
+ * @var $generator \kriss\generators\crud\Generator
+ */
 
 $hasActionColumn = $generator->hasView || $generator->hasUpdate || $generator->hasDelete;
 $hasToolbar = $generator->hasCreate;
 echo "<?php\n";
 ?>
-/** @var $this yii\web\View */
-/** @var $dataProvider */
+/**
+ * @var $this yii\web\View
+ * @var $dataProvider
 <?php if($generator->searchAttributes): ?>
-/** @var $searchModel */
+ * @var $searchModel
 <?php endif; ?>
+ */
 
 <?php if($hasActionColumn): ?>
 use kriss\widgets\ActionColumn;

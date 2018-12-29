@@ -1,7 +1,9 @@
 <?php
-/* @var $this yii\web\View */
-/* @var $model \kriss\modules\auth\models\AuthRole */
-/* @var $operations array */
+/**
+ * @var $this yii\web\View
+ * @var $model \kriss\modules\auth\models\AuthRole
+ * @var $operations array
+ */
 
 use kriss\widgets\SimpleActiveForm;
 use yii\helpers\Html;

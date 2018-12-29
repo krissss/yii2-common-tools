@@ -1,8 +1,9 @@
 <?php
-/* @var $this yii\web\View */
-/* @var $model \kriss\modules\auth\models\AuthRole */
-
-/* @var $strOperation string */
+/**
+ * @var $this yii\web\View
+ * @var $model \kriss\modules\auth\models\AuthRole
+ * @var $strOperation string
+ */
 
 use yii\widgets\DetailView;
 

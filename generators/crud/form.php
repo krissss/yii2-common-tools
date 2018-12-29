@@ -1,8 +1,9 @@
 <?php
-
-/* @var $this yii\web\View */
-/* @var $form yii\widgets\ActiveForm */
-/* @var $generator \kriss\generators\crud\Generator */
+/**
+ * @var $this yii\web\View
+ * @var $form yii\widgets\ActiveForm
+ * @var $generator \kriss\generators\crud\Generator
+ */
 
 echo $form->field($generator, 'modelName');
 echo $form->field($generator, 'modelLabel');
