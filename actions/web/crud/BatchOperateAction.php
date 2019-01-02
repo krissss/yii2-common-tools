@@ -30,11 +30,10 @@ class BatchOperateAction extends \kriss\actions\rest\crud\BatchOperateAction
 
     public function init()
     {
+        parent::init();
         if (!isset($this->operateMsg)) {
             $this->operateMsg = Yii::t('kriss', '批量操作');
         }
-
-        parent::init();
     }
 
     public function run()

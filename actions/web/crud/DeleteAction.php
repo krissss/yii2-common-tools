@@ -23,11 +23,10 @@ class DeleteAction extends AbstractModelAction
 
     public function init()
     {
+        parent::init();
         if (!isset($this->operateMsg)) {
             $this->operateMsg = Yii::t('kriss', '删除');
         }
-
-        parent::init();
         if ($this->deleteMethod) {
             $this->doMethod = $this->deleteMethod;
         }

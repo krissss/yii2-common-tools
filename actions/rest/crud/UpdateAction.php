@@ -4,7 +4,6 @@ namespace kriss\actions\rest\crud;
 
 use kriss\actions\helper\ActionTools;
 use kriss\actions\traits\ModelClassActionTrait;
-use kriss\traits\KrissTranslationTrait;
 use Yii;
 
 class UpdateAction extends AbstractAction
@@ -43,11 +42,10 @@ class UpdateAction extends AbstractAction
 
     public function init()
     {
+        parent::init();
         if (!isset($this->successMsg)) {
             $this->successMsg = Yii::t('kriss', '修改成功');
         }
-
-        parent::init();
         if ($this->updateMethod) {
             $this->doMethod = $this->updateMethod;
         }

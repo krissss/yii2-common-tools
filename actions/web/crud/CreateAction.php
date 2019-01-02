@@ -13,11 +13,10 @@ class CreateAction extends AbstractCUAction
 
     public function init()
     {
+        parent::init();
         if (!isset($this->operateMsg)) {
             $this->operateMsg = Yii::t('kriss', '新增');
         }
-
-        parent::init();
     }
 
     public function run()
