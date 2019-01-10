@@ -29,14 +29,26 @@ class RouteScanController extends HelpController
         'route-scan/*',
     ];
 
+    /**
+     * @see guessName()
+     * @var array
+     */
     public $nameMap = [
         'admin' => '管理员管理',
         'create' => '新增',
         'update' => '修改',
         'delete' => '删除',
-        'view' => '查看',
+        'view' => '详情',
+        'detail' => '详情',
         'index' => '列表',
     ];
+    /**
+     * nameMap 中无值时使用
+     * #key# 代表使用原key
+     * @see guessName()
+     * @var string
+     */
+    public $nameMapLost = '#key#';
 
     /**
      * 无法通过 action 扫到的特殊路由
@@ -47,9 +59,7 @@ class RouteScanController extends HelpController
      * ]
      * @var array
      */
-    public $extraRoutes = [
-        'admin/shop-goods' => ['ext-export'],
-    ];
+    public $extraRoutes = [];
 
     public $saveFile = '@common/models/base/auth-config.php';
 
@@ -105,12 +115,12 @@ class RouteScanController extends HelpController
         if (file_exists($saveFile)) {
             $oldConfig = require_once $saveFile;
             foreach ($oldConfig as $prefix => &$prefixData) {
-                if (isset($config[$prefix]) && $prefixData['name']) {
+                if (isset($config[$prefix]) && $prefixData['name'] !== $this->guessName($prefix)) {
                     // 保留旧数据的 name 字段
                     $config[$prefix]['name'] = $prefixData['name'];
                 }
                 foreach ($prefixData['items'] as $action => &$actionData) {
-                    if (isset($config[$prefix], $config[$prefix]['items'][$action]) && $actionData['name']) {
+                    if (isset($config[$prefix], $config[$prefix]['items'][$action]) && $actionData['name'] !== $this->guessName($action)) {
                         // 保留旧数据的 name 字段
                         $config[$prefix]['items'][$action]['name'] = $actionData['name'];
                     }
@@ -161,7 +171,13 @@ PHP;
 
     protected function guessName($name)
     {
-        return isset($this->nameMap[$name]) ? $this->nameMap[$name] : $name;
+        if (isset($this->nameMap[$name])) {
+            return $this->nameMap[$name];
+        }
+        if ($this->nameMapLost == '#key#') {
+            return $name;
+        }
+        return $this->nameMapLost;
     }
 
     /**
