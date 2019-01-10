@@ -45,12 +45,16 @@ migration is ```kriss\modules\auth\migrations\m170301_062150_auth```
 
 you can use it or extend it and config some parameter
 
-# console init
+# console helper
 
-console init is ```kriss\modules\auth\console\controllers\InitAuthController```
+```php
+kriss\modules\auth\console\controllers\InitAuthController // for init auth and role
+kriss\modules\auth\console\controllers\AuthGeneratorController // for generate auth with auth-config.php
+kriss\modules\auth\console\controllers\RouteScanController // for scan all routes and generate file auth-config.php
+```
 
 you can use it or extend it and config some parameter
-    
+
 # visit
 
 permission: http://user-site/auth/permission
