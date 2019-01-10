@@ -55,4 +55,14 @@ class AuthValidate
         }
         return false;
     }
+
+    /**
+     * 检查路由
+     * @param $action
+     * @return bool
+     */
+    public static function checkRoute($action)
+    {
+        return static::has(RouteHelper::normalizeRoute($action));
+    }
 }

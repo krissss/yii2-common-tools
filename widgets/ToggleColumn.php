@@ -102,9 +102,7 @@ class ToggleColumn extends DataColumn
 
     protected function renderDataCellContent($model, $key, $index)
     {
-        $canOperate = $this->canOperate instanceof \Closure
-            ? call_user_func($this->canOperate, $model, $key, $index)
-            : $this->canOperate;
+        $canOperate = $this->checkCanOperate($model, $key, $index);
 
         $value = parent::renderDataCellContent($model, $key, $index);
         if ($canOperate) {
@@ -123,6 +121,19 @@ class ToggleColumn extends DataColumn
             $value == $this->onValue ? $this->_templateOnStr : $this->_templateOffStr,
             $options
         );
+    }
+
+    /**
+     * @param $model
+     * @param $key
+     * @param $index
+     * @return bool|callable|mixed
+     */
+    protected function checkCanOperate($model, $key, $index)
+    {
+        return $this->canOperate instanceof \Closure
+            ? call_user_func($this->canOperate, $model, $key, $index)
+            : $this->canOperate;
     }
 
     protected function registerJs()

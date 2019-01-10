@@ -2,6 +2,8 @@
 
 namespace kriss\modules\auth\tools;
 
+use Yii;
+
 class RouteHelper
 {
     public $routes = [];
@@ -14,6 +16,23 @@ class RouteHelper
     public static function create($routes)
     {
         return new static($routes);
+    }
+
+    public static function normalizeRoute($route)
+    {
+        if ($route === '') {
+            $normalized = '/' . Yii::$app->controller->getRoute();
+        } elseif (strncmp($route, '/', 1) === 0) {
+            $normalized = $route;
+        } elseif (strpos($route, '/') === false) {
+            $normalized = '/' . Yii::$app->controller->getUniqueId() . '/' . $route;
+        } elseif (($mid = Yii::$app->controller->module->getUniqueId()) !== '') {
+            $normalized = '/' . $mid . '/' . $route;
+        } else {
+            $normalized = '/' . $route;
+        }
+
+        return ltrim($normalized, '/');
     }
 
     /**
