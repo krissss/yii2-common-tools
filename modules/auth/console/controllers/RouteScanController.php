@@ -26,6 +26,7 @@ class RouteScanController extends HelpController
         'log-reader/*',
         'auth/*',
         'site/*',
+        'route-scan/*',
     ];
 
     public $nameMap = [
