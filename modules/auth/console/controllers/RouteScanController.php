@@ -84,7 +84,7 @@ class RouteScanController extends HelpController
                     $config[$prefix]['name'] = $prefixData['name'];
                 }
                 foreach ($prefixData['items'] as $action => &$actionData) {
-                    if (isset($config[$prefix]) && isset($config[$prefix]['items'][$action]) && $actionData['name']) {
+                    if (isset($config[$prefix], $config[$prefix]['items'][$action]) && $actionData['name']) {
                         // 保留旧数据的 name 字段
                         $config[$prefix]['items'][$action]['name'] = $actionData['name'];
                     }

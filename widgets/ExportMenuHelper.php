@@ -72,7 +72,7 @@ class ExportMenuHelper
     protected function isNeedSkip($class)
     {
         $skipClassArr = [
-            'kartik\grid\ExpandRowColumn'
+            'kartik\grid\ExpandRowColumn',
         ];
         foreach ($skipClassArr as $className) {
             if ($this->isMatchClass($class, $className)) {

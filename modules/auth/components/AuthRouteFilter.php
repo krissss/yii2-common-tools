@@ -2,8 +2,8 @@
 
 namespace kriss\modules\auth\components;
 
-use kriss\modules\auth\tools\RouteHelper;
 use kriss\modules\auth\tools\AuthValidate;
+use kriss\modules\auth\tools\RouteHelper;
 use yii\base\ActionFilter;
 
 class AuthRouteFilter extends ActionFilter
