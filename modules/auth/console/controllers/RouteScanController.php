@@ -37,6 +37,19 @@ class RouteScanController extends HelpController
         'index' => '列表',
     ];
 
+    /**
+     * 无法通过 action 扫到的特殊路由
+     * 例如 导出
+     * 可以定义为模块下一个不存在的 action 名，例如：
+     * [
+     *   'shop-goods' => ['ext-export'],
+     * ]
+     * @var array
+     */
+    public $extraRoutes = [
+        'admin/shop-goods' => ['ext-export'],
+    ];
+
     public $saveFile = '@common/models/base/auth-config.php';
 
     public function actionIndex($command = null)
@@ -69,8 +82,20 @@ class RouteScanController extends HelpController
                     'is_delete' => false,
                 ];
             }
+            if (isset($this->extraRoutes[$prefix])) {
+                foreach ($this->extraRoutes[$prefix] as $action) {
+                    if (!isset($result[$prefix]['items'][$action])) {
+                        $result[$prefix]['items'][$action] = [
+                            'name' => $this->guessName($action),
+                            'is_delete' => false,
+                        ];
+                    }
+                }
+            }
         }
         $this->saveConfigToFile($result);
+
+        return 'ok';
     }
 
     protected function saveConfigToFile($config)
