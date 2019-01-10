@@ -3,6 +3,7 @@
 namespace kriss\modules\auth\tools;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -64,5 +65,30 @@ class AuthValidate
     public static function checkRoute($action)
     {
         return static::has(RouteHelper::normalizeRoute($action));
+    }
+
+    /**
+     * 过滤菜单
+     * @param array $items item 中的 url 必须为完整路由（即不省略默认action），否则将匹配失败
+     * @return array
+     */
+    public static function filterMenusRecursive($items)
+    {
+        $result = [];
+        foreach ($items as $i => $item) {
+            $url = ArrayHelper::getValue($item, 'url', '#');
+            $allow = is_array($url) ? AuthValidate::checkRoute($url) : true;
+            if (isset($item['items']) && is_array($item['items'])) {
+                $subItems = static::filterMenusRecursive($item['items']);
+                if (count($subItems)) {
+                    $allow = true;
+                }
+                $item['items'] = $subItems;
+            }
+            if ($allow && !($url == '#' && empty($item['items']))) {
+                $result[$i] = $item;
+            }
+        }
+        return $result;
     }
 }

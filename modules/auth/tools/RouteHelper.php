@@ -3,6 +3,7 @@
 namespace kriss\modules\auth\tools;
 
 use Yii;
+use yii\helpers\Url;
 
 class RouteHelper
 {
@@ -20,6 +21,9 @@ class RouteHelper
 
     public static function normalizeRoute($route)
     {
+        if (is_array($route)) {
+            $route = Url::to($route);
+        }
         if ($route === '') {
             $normalized = '/' . Yii::$app->controller->getRoute();
         } elseif (strncmp($route, '/', 1) === 0) {
@@ -31,7 +35,6 @@ class RouteHelper
         } else {
             $normalized = '/' . $route;
         }
-
         return ltrim($normalized, '/');
     }
 
