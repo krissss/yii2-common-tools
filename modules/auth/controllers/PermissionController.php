@@ -14,7 +14,7 @@ class PermissionController extends Controller
     {
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
-        AuthValidate::run($authClass::PERMISSION_VIEW);
+        AuthValidate::run([$authClass::AUTH__PERMISSION, $authClass::AUTH__PERMISSION__INDEX]);
 
         $operations = (Module::getAuthOperationClass())::findAllOperations();
         return $this->render('index', [

@@ -5,6 +5,7 @@
  * @var $operations array
  */
 
+use kriss\modules\auth\models\AuthOperation;
 use kriss\widgets\SimpleActiveForm;
 use yii\helpers\Html;
 
@@ -36,18 +37,23 @@ echo $form->field($model, 'description')->textInput(['maxlength' => 255]);
                     <th><?= Yii::t('kriss', '权限') ?></th>
                 </tr>
                 <?php foreach ($operations as $operation) : ?>
+                    <?php
+                    /** @var AuthOperation $module */
+                    $module = $operation['model'];
+                    /** @var AuthOperation[] $items */
+                    $items = $operation['items'];
+                    $subItems = [];
+                    foreach ($items as $item) {
+                        $subItems[$item->name] = $item->getViewName();
+                    }
+                    ?>
                     <tr>
                         <td width="150px">
-                            <?= Html::checkbox($operation['name'], false, ['label' => $operation['name'], 'id' => $operation['name'], 'suboperation' => implode(',', array_keys($operation['sub']))]) ?>
-                            <?php
-                            $str = '';
-                            foreach ($operation['sub'] as $key => $value) {
-                                $str .= '$("input[value=\'' . $key . '\']").prop("checked", this.checked);';
-                            }
-                            $this->registerJs('$("#' . $operation['name'] . '").click(function() {' . $str . '});');
-                            ?>
+                            <?= Html::activeCheckboxList($model, '_operations', [
+                                $module->name => $module->getViewName()
+                            ], ['data-toggle' => 'checkbox-parent', 'unselect' => null]) ?>
                         </td>
-                        <td><?= Html::activeCheckboxList($model, '_operations', $operation['sub'], ['unselect' => null]) ?></td>
+                        <td><?= Html::activeCheckboxList($model, '_operations', $subItems, ['data-toggle' => 'checkbox-item', 'unselect' => null]) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -56,3 +62,25 @@ echo $form->field($model, 'description')->textInput(['maxlength' => 255]);
     </div>
 <?php
 $form->end();
+
+$js = <<<JS
+function changeSubCheckBox(parentCheck) {
+  parentCheck.parents('td').next('td').find('input[type=checkbox]').prop('checked', parentCheck.prop('checked'));
+}
+var parentEl = $('[data-toggle="checkbox-parent"] input[type=checkbox]');
+var itemEl = $('[data-toggle="checkbox-item"] input[type=checkbox]');
+parentEl.each(function() {
+  if ($(this).prop('checked') === true) {
+    changeSubCheckBox($(this));
+  }
+});
+parentEl.change(function() {
+  changeSubCheckBox($(this));
+});
+itemEl.change(function() {
+  if ($(this).prop('checked') === false) {
+    $(this).parents('td').prev('td').find('input[type=checkbox]').prop('checked', false);
+  }
+});
+JS;
+$this->registerJs($js);

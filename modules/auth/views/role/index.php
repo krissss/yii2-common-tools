@@ -47,12 +47,12 @@ $columns = [
         'class' => 'kartik\grid\ActionColumn',
         'width' => '200px',
         'visibleButtons' => [
-            'view' => AuthValidate::has($authClass::ROLE_VIEW),
+            'view' => AuthValidate::has([$authClass::AUTH__ROLE, $authClass::AUTH__ROLE__VIEW]),
             'update' => function ($model) use ($authClass) {
-                return AuthValidate::has($authClass::ROLE_UPDATE) && (Module::getAuthRoleClass())::canLoginUserModify($model->id);
+                return AuthValidate::has([$authClass::AUTH__ROLE, $authClass::AUTH__ROLE__UPDATE]) && (Module::getAuthRoleClass())::canLoginUserModify($model->id);
             },
             'delete' => function ($model) use ($authClass) {
-                return AuthValidate::has($authClass::ROLE_DELETE) && (Module::getAuthRoleClass())::canLoginUserModify($model->id);
+                return AuthValidate::has([$authClass::AUTH__ROLE, $authClass::AUTH__ROLE__DELETE]) && (Module::getAuthRoleClass())::canLoginUserModify($model->id);
             },
         ],
         'buttons' => [
@@ -89,7 +89,7 @@ echo SimpleDynaGrid::widget([
     'extraToolbar' => [
         [
             'content' =>
-                (AuthValidate::has($authClass::ROLE_CREATE) ? Html::a(Yii::t('kriss', '新增'), ['create'], [
+                (AuthValidate::has([$authClass::AUTH__ROLE, $authClass::AUTH__ROLE__CREATE]) ? Html::a(Yii::t('kriss', '新增'), ['create'], [
                     'class' => 'btn btn-default',
                 ]) : '')
         ],

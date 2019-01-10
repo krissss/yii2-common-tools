@@ -21,7 +21,7 @@ class RoleController extends Controller
         $behaviors = parent::behaviors();
 
         $behaviors['verbs'] = [
-            'class' => VerbFilter::className(),
+            'class' => VerbFilter::class,
             'actions' => [
                 'delete' => ['post'],
             ],
@@ -34,7 +34,7 @@ class RoleController extends Controller
     {
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
-        AuthValidate::run($authClass::ROLE_VIEW);
+        AuthValidate::run([$authClass::AUTH__ROLE, $authClass::AUTH__ROLE__INDEX]);
 
         Url::remember();
 
@@ -53,26 +53,11 @@ class RoleController extends Controller
     {
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
-        AuthValidate::run($authClass::ROLE_VIEW);
-
-        $model = $this->findModel($id);
-
-        $strOperation = '';
-        $i = 0;
-        if ($model->operation_list) {
-            $arrayOperation = explode(';', $model->operation_list);
-            foreach ($arrayOperation as $item) {
-                $strOperation .= (Module::getAuthOperationClass())::findViewName($item) . ' | ';
-                $i++;
-                if ($i % 5 == 0) {
-                    $strOperation .= "<br>";
-                }
-            }
-        }
+        AuthValidate::run([$authClass::AUTH__ROLE, $authClass::AUTH__ROLE__VIEW]);
 
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'strOperation' => $strOperation,
+            'operations' => (Module::getAuthOperationClass())::findAllOperations(),
         ]);
     }
 
@@ -80,7 +65,7 @@ class RoleController extends Controller
     {
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
-        AuthValidate::run($authClass::ROLE_CREATE);
+        AuthValidate::run([$authClass::AUTH__ROLE, $authClass::AUTH__ROLE__CREATE]);
 
         $class = Module::getAuthRoleClass();
         /** @var AuthRole $model */
@@ -106,7 +91,7 @@ class RoleController extends Controller
     {
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
-        AuthValidate::run($authClass::ROLE_UPDATE);
+        AuthValidate::run([$authClass::AUTH__ROLE, $authClass::AUTH__ROLE__UPDATE]);
 
         if (!(Module::getAuthRoleClass())::canLoginUserModify($id)) {
             throw new ForbiddenHttpException(Yii::t('app', Yii::t('kriss', '没有访问权限')));
@@ -138,7 +123,7 @@ class RoleController extends Controller
     {
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
-        AuthValidate::run($authClass::ROLE_DELETE);
+        AuthValidate::run([$authClass::AUTH__ROLE, $authClass::AUTH__ROLE__DELETE]);
 
         if (!(Module::getAuthRoleClass())::canLoginUserModify($id)) {
             throw new ForbiddenHttpException(Yii::t('app', Yii::t('kriss', '没有访问权限')));

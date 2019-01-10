@@ -49,7 +49,10 @@ class AuthOperation extends \yii\db\ActiveRecord
             if (in_array($rootOperation->id, Module::getInstance()->skipAuthOptions)) {
                 continue;
             }
-            $operations[$rootOperation->id]['name'] = $rootOperation->getViewName();
+            $operations[$rootOperation->id] = [
+                'model' => $rootOperation,
+                'items' => [],
+            ];
         }
         /** @var AuthOperation[] $subOperations */
         $subOperations = static::find()->where(['!=', 'parent_id', 0])->all();
@@ -57,7 +60,7 @@ class AuthOperation extends \yii\db\ActiveRecord
             if (in_array($subOperation->id, Module::getInstance()->skipAuthOptions)) {
                 continue;
             }
-            $operations[$subOperation->parent_id]['sub'][$subOperation->name] = $subOperation->getViewName();
+            $operations[$subOperation->parent_id]['items'][] = $subOperation;
         }
         return $operations;
     }

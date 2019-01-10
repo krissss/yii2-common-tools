@@ -24,6 +24,10 @@ class InitAuthController extends Controller
      */
     public $superAdminId = 1;
     /**
+     * @var int
+     */
+    public $superAdminRoleId = 1;
+    /**
      * admin auth_role attribute
      * @var string
      */
@@ -43,6 +47,15 @@ class InitAuthController extends Controller
      * @var AuthOperation
      */
     public $authOperationClass = 'kriss\modules\auth\models\AuthOperation';
+    /**
+     * [
+     *   [role, desc, [permission], roleId (optional)]
+     * ]
+     * @var array
+     */
+    public $initRoles = [
+        ['超级管理员', '拥有所有权限', ['all'], 1],
+    ];
 
     /**
      * delete and create operations and role
@@ -77,19 +90,6 @@ class InitAuthController extends Controller
         }
     }
 
-    /**
-     * @return array
-     */
-    protected function getInitRoles()
-    {
-        if ($this->superAdminId) {
-            return [
-                $this->superAdminId => ['超级管理员', '拥有所有权限', 'all'],
-            ];
-        }
-        return [];
-    }
-
     protected function initAuthOperations()
     {
         $authClass = $this->authClass;
@@ -121,15 +121,17 @@ class InitAuthController extends Controller
         echo "initAuthRole ______________ start\n";
         $authRoleClass = $this->authRoleClass;
         $authRoleClass::deleteAll();
-        $roles = $this->getInitRoles();
+        $roles = $this->initRoles;
         if ($roles) {
-            foreach ($roles as $id => $role) {
+            foreach ($roles as $role) {
                 /** @var AuthRole $model */
                 $model = new $authRoleClass();
-                $model->id = $id;
+                if (isset($role[3])) {
+                    $model->id = isset($role[3]);
+                }
                 $model->name = $role[0];
                 $model->description = $role[1];
-                $model->operation_list = $role[2];
+                $model->operation_list = implode(';', $role[2]);
                 $model->save(false);
             }
         }
@@ -138,7 +140,7 @@ class InitAuthController extends Controller
             $adminClass = $this->adminClass;
             $superAdmin = $adminClass::findOne($this->superAdminId); // 确保该用户为超级管理员
             $authRoleAttribute = $this->authRoleAttribute;
-            $superAdmin->$authRoleAttribute = '1';
+            $superAdmin->$authRoleAttribute = $this->superAdminRoleId;
             $superAdmin->save(false);
         }
 

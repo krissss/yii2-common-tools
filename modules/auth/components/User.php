@@ -42,6 +42,11 @@ class User extends \yii\web\User
      * @var int
      */
     public $superAdminId = 1;
+    /**
+     * 是否检查模块权限，该模式为在route模式下，若用户拥有 admin 模块权限，则可以访问 admin 下所有权限（例如：admin/index, admin/create），以 / 分隔
+     * @var bool
+     */
+    public $checkModulePrefix = true;
 
     private $_operations;
 
@@ -91,11 +96,22 @@ class User extends \yii\web\User
             return true;
         }
 
-        if (strpos(";$operations;", ";$permissionName;") === false) {
-            return false;
-        } else {
+        if (strpos(";$operations;", ";$permissionName;") !== false) {
             return true;
         }
+
+        if ($this->checkModulePrefix) {
+            $arr = explode('/', $permissionName);
+            if (count($arr) >= 2) {
+                unset($arr[count($arr) - 1]);
+                $permissionName = implode('/', $arr);
+                if (strpos(";$operations;", ";$permissionName;") !== false) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

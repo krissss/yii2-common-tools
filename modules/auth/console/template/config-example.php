@@ -1,24 +1,38 @@
 <?php
 
 return [
-    1001 => [
-        'key' => 'module1',
-        'name' => '模块1',
+    'auth/permission' => [
+        'name' => '权限',
         'items' => [
-            ['key' => 'view', 'name' => '查看'],
-            ['key' => 'create', 'name' => '新增'],
-            ['key' => 'update', 'name' => '修改', 'nameFill' => 'prepend'],
-            ['key' => 'delete', 'name' => '删除模块', 'nameFill' => false],
+            'index' => [
+                'name' => '列表',
+                'is_delete' => false,
+            ],
         ],
     ],
-    1002 => [
-        'key' => 'module2',
-        'name' => '模块2',
+    'auth/role' => [
+        'name' => '角色',
         'items' => [
-            ['key' => 'view', 'name' => '查看'],
-            ['key' => 'create', 'name' => '新增'],
-            ['key' => 'update', 'name' => '修改'],
-            ['key' => 'delete', 'name' => '删除'],
+            'create' => [
+                'name' => '新增',
+                'is_delete' => false,
+            ],
+            'delete' => [
+                'name' => '删除',
+                'is_delete' => false,
+            ],
+            'index' => [
+                'name' => '列表',
+                'is_delete' => false,
+            ],
+            'update' => [
+                'name' => '修改',
+                'is_delete' => false,
+            ],
+            'view' => [
+                'name' => '查看',
+                'is_delete' => false,
+            ],
         ],
     ],
 ];
