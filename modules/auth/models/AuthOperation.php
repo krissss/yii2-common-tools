@@ -4,6 +4,7 @@ namespace kriss\modules\auth\models;
 
 use kriss\modules\auth\Module;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "auth_operation".
@@ -67,13 +68,15 @@ class AuthOperation extends \yii\db\ActiveRecord
 
     /**
      * 获得显示用的名字
+     * @param bool $html
      * @return string
      */
-    public function getViewName()
+    public function getViewName($html = true)
     {
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
-        return $authClass::getName($this->name);
+        $name = $authClass::getName($this->name);
+        return $html ? Html::tag('span', $name, ['title' => $this->name]) : $name;
     }
 
     /**

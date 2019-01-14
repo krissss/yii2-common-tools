@@ -51,9 +51,9 @@ echo $form->field($model, 'description')->textInput(['maxlength' => 255]);
                         <td width="150px">
                             <?= Html::activeCheckboxList($model, '_operations', [
                                 $module->name => $module->getViewName()
-                            ], ['data-toggle' => 'checkbox-parent', 'unselect' => null]) ?>
+                            ], ['encode' => false, 'data-toggle' => 'checkbox-parent', 'unselect' => null]) ?>
                         </td>
-                        <td><?= Html::activeCheckboxList($model, '_operations', $subItems, ['data-toggle' => 'checkbox-item', 'unselect' => null]) ?></td>
+                        <td><?= Html::activeCheckboxList($model, '_operations', $subItems, ['encode' => false, 'data-toggle' => 'checkbox-item', 'unselect' => null]) ?></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

@@ -37,9 +37,9 @@ use yii\helpers\Html; ?>
                     <td width="150px">
                         <?= Html::checkboxList('_operations', null, [
                             $module->name => $module->getViewName()
-                        ], ['itemOptions' => ['disabled' => true]]) ?>
+                        ], ['encode' => false, 'itemOptions' => ['disabled' => true]]) ?>
                     </td>
-                    <td><?= Html::checkboxList('_operations', null, $subItems, ['itemOptions' => ['disabled' => true]]) ?></td>
+                    <td><?= Html::checkboxList('_operations', null, $subItems, ['encode' => false, 'itemOptions' => ['disabled' => true]]) ?></td>
                 </tr>
             <?php endforeach; ?>
             </tbody>
