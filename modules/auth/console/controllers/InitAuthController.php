@@ -63,14 +63,17 @@ class InitAuthController extends Controller
      */
     public function actionRestore()
     {
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            $this->initAuthOperations();
-            $this->initAuthRole();
-            $transaction->commit();
-        } catch (Exception $exception) {
-            $transaction->rollBack();
-            throw $exception;
+        $isOk = $this->confirm('delete role?');
+        if ($isOk) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                $this->initAuthOperations();
+                $this->initAuthRole();
+                $transaction->commit();
+            } catch (Exception $exception) {
+                $transaction->rollBack();
+                throw $exception;
+            }
         }
     }
 
