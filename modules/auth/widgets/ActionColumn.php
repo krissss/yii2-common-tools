@@ -11,9 +11,10 @@ class ActionColumn extends \kriss\widgets\ActionColumn
         if (isset($button['action'])) {
             if (!AuthValidate::checkRoute($button['action'])) {
                 unset($button['visible']);
+                $defaultVisible = false;
             }
         }
 
-        return parent::renderButton($button, $model, $key, $index, false);
+        return parent::renderButton($button, $model, $key, $index, $defaultVisible);
     }
 }
