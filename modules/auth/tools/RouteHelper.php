@@ -24,6 +24,9 @@ class RouteHelper
         if (is_array($route)) {
             $route = Url::to($route);
         }
+        if (strpos($route, '?') !== false) {
+            $route = substr($route, 0, strpos($route, '?'));
+        }
         if ($route === '') {
             $normalized = '/' . Yii::$app->controller->getRoute();
         } elseif (strncmp($route, '/', 1) === 0) {

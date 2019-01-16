@@ -76,6 +76,9 @@ class AuthOperation extends \yii\db\ActiveRecord
         /** @var Auth $authClass */
         $authClass = Yii::$app->user->authClass;
         $name = $authClass::getName($this->name);
+        if (Module::getInstance()->showPermissionNameInView) {
+            $name .= "({$this->name})";
+        }
         return $html ? Html::tag('span', $name, ['title' => $this->name]) : $name;
     }
 

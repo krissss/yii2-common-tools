@@ -127,10 +127,10 @@ class SimpleDynaGrid extends Widget
     public $toolbarRefreshLabel = '<i class="glyphicon glyphicon-repeat"></i>';
 
     /**
-     * 刷新 Url
+     * 刷新 Url，默认为当前控制器的 action
      * @var array
      */
-    public $toolbarRefreshUrl = ['index'];
+    public $toolbarRefreshUrl;
 
     /**
      * 刷新 Class
@@ -181,6 +181,9 @@ class SimpleDynaGrid extends Widget
         }
         if (!isset($this->dataProvider)) {
             throw new Exception('必须设置 dataProvider');
+        }
+        if (!$this->toolbarRefreshUrl) {
+            $this->toolbarRefreshUrl = [Yii::$app->controller->action->id];
         }
 
         if (!$this->gridPager) {

@@ -143,6 +143,7 @@ PHP;
         $routeHelper = RouteHelper::create($this->skipRoutes);
         $config = [];
         foreach ($this->getCommands() as $command) {
+            $command = str_replace('\\', '/', $command);
             $result = Yii::$app->createController($command);
             if ($result === false || !($result[0] instanceof Controller)) {
                 continue;

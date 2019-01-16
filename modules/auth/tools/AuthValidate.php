@@ -21,7 +21,7 @@ class AuthValidate
     public static function run($name, $allContain = false)
     {
         if (!self::has($name, $allContain)) {
-            throw new ForbiddenHttpException(Yii::t('kriss', '没有访问权限:' . $name));
+            throw new ForbiddenHttpException(Yii::t('kriss', '没有访问权限:' . implode('、', $name)));
         }
     }
 

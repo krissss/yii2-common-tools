@@ -85,10 +85,10 @@ class ActionColumn extends \kartik\grid\ActionColumn
         return $templateValue . $html;
     }
 
-    protected function renderButton($button, $model, $key, $index)
+    protected function renderButton($button, $model, $key, $index, $defaultVisible = true)
     {
         // visible
-        $isVisible = true;
+        $isVisible = $defaultVisible;
         if (isset($button['visible'])) {
             $isVisible = $button['visible'] instanceof \Closure
                 ? call_user_func($button['visible'], $model, $key, $index)

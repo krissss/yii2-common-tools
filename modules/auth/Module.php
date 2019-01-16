@@ -46,6 +46,11 @@ class Module extends \yii\base\Module
      * @var string|AuthRoleSearch
      */
     public $authRoleSearchClass = 'kriss\modules\auth\models\AuthRoleSearch';
+    /**
+     * 是否将 permission 的原 name 显示在界面上
+     * @var bool
+     */
+    public $showPermissionNameInView = false;
 
     public function init()
     {

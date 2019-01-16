@@ -92,7 +92,7 @@ class User extends \yii\web\User
         }
 
         //super admin
-        if (strpos(";$operations;", 'all')) {
+        if (strpos(";$operations;", ';all;')) {
             return true;
         }
 
