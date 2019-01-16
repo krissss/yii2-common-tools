@@ -127,7 +127,7 @@ class InitAuthController extends Controller
                 /** @var AuthRole $model */
                 $model = new $authRoleClass();
                 if (isset($role[3])) {
-                    $model->id = isset($role[3]);
+                    $model->id = $role[3];
                 }
                 $model->name = $role[0];
                 $model->description = $role[1];
