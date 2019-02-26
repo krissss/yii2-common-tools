@@ -6,6 +6,10 @@ use kriss\wangEditor\WangEditorWidget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
+/**
+ * @deprecated
+ * 使用 kriss/yii2-wang-editor ^2.0 版本
+ */
 class SimpleWangEditor extends WangEditorWidget
 {
     /**

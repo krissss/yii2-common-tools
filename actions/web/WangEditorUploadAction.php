@@ -10,6 +10,9 @@ use yii\base\InvalidValueException;
 use yii\web\Response;
 
 /**
+ * @deprecated
+ * 使用 kriss/yii2-wang-editor ^2.0 版本
+ *
  * wangEditor 上传操作
  * @link https://www.kancloud.cn/wangfupeng/wangeditor3/335782
  */
