@@ -4,6 +4,7 @@ namespace kriss\modules\auth\tools;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -64,7 +65,12 @@ class AuthValidate
      */
     public static function checkRoute($action)
     {
-        return static::has(RouteHelper::normalizeRoute($action));
+        $normalizeRoute = RouteHelper::normalizeRoute($action);
+        if (is_array($action)) {
+            $normalizeRoute = str_replace(ltrim(Url::base(), '/'), '', $normalizeRoute);
+            $normalizeRoute = ltrim($normalizeRoute, '/');
+        }
+        return static::has($normalizeRoute);
     }
 
     /**
