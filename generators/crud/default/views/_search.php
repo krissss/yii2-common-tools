@@ -9,7 +9,8 @@ echo "<?php\n";
 ?>
 /**
  * @var $this yii\web\view
- * @var $model <?= $generator->getModelClass() ?>
+ * @var $model <?= $generator->getSearchClass() ?>
+
  */
 
 use kriss\widgets\SimpleSearchForm;

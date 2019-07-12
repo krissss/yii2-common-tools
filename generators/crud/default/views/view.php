@@ -13,6 +13,7 @@ echo "<?php\n";
 /**
  * @var $this yii\web\view
  * @var $model <?= $generator->getModelClass() ?>
+
  */
 
 use kriss\widgets\<?= $formClass ?>;

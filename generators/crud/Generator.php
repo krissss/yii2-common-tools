@@ -24,13 +24,13 @@ class Generator extends \yii\gii\Generator
 
     public $modelPath = '@common/models';
 
-    public $controllerPath = '@backend/controllers';
+    public $controllerPath = '@admin/controllers';
 
-    public $viewPath = '@app/views';
+    public $viewPath = '@admin/views';
 
-    public $searchModelPath = '@backend/models';
+    public $searchModelPath = '@admin/models';
 
-    public $controllerBaseClass = 'backend\components\AuthWebController';
+    public $controllerBaseClass = 'admin\components\AuthWebController';
 
     public $searchAttributes = '';
 
