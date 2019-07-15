@@ -2,7 +2,6 @@
 
 namespace kriss\widgets;
 
-use kriss\traits\KrissTranslationTrait;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
@@ -10,8 +9,6 @@ use yii\widgets\ActiveForm;
 
 class SimpleAjaxForm extends ActiveForm
 {
-    use KrissTranslationTrait;
-
     /**
      * @var string
      */
@@ -40,7 +37,6 @@ class SimpleAjaxForm extends ActiveForm
 
     public function init()
     {
-        $this->initKrissI18N();
         if (!isset($this->cancelLabel)) {
             $this->cancelLabel = Yii::t('kriss', '取消');
         }
@@ -53,27 +49,29 @@ class SimpleAjaxForm extends ActiveForm
             $this->options['id'] = Widget::$autoIdPrefix . time();
         }
         parent::init();
-
-        $modalSize = $this->modalSize ? ('modal-' . $this->modalSize) : '';
-        echo Html::beginTag('div', ['class' => 'modal fade ajax_modal']);
-        echo Html::beginTag('div', ['class' => "modal-dialog {$modalSize}"]);
-        echo Html::beginTag('div', ['class' => 'modal-content']);
-        ob_flush(); // 将上方的结构输出，form 表单从这个地方开始
-        echo $this->renderHeader();
-        echo Html::beginTag('div', ['class' => 'modal-body']);
     }
 
     public function run()
     {
-        // form 表单囊括 header body footer
-        echo Html::endTag('div'); // modal-body
-        echo $this->renderFooter();
+        $modalSize = $this->modalSize ? ('modal-' . $this->modalSize) : '';
+        $modalHeader = $this->renderHeader();
+        $modalBody = parent::run();
+        $modalFooter = $this->renderFooter();
 
-        parent::run();
-
-        echo Html::endTag('div'); // modal-content
-        echo Html::endTag('div'); // modal-dialog
-        echo Html::endTag('div'); // modal
+        $html = <<<HTML
+<div class="modal fade ajax_modal">
+  <div class="modal-dialog {$modalSize}">
+    <div class="modal-content">
+      {$modalHeader}
+      <div class="modal-body">
+        {$modalBody}
+      </div>
+      {$modalFooter}
+    </div>
+  </div>
+</div>
+HTML;
+        return $html;
     }
 
     protected function renderHeader()

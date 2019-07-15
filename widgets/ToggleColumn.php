@@ -2,7 +2,6 @@
 
 namespace kriss\widgets;
 
-use kriss\traits\KrissTranslationTrait;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\Html;
@@ -10,8 +9,6 @@ use yii\helpers\Url;
 
 class ToggleColumn extends DataColumn
 {
-    use KrissTranslationTrait;
-
     /**
      * url
      * @see \yii\grid\ActionColumn
@@ -55,7 +52,6 @@ class ToggleColumn extends DataColumn
 
     public function init()
     {
-        $this->initKrissI18N();
         if (!isset($this->items)) {
             $this->items = static::getDefaultItems();
         }
@@ -139,7 +135,7 @@ class ToggleColumn extends DataColumn
     protected function registerJs()
     {
         $js = <<<JS
-$('body').on('click', '.{$this->_triggerClass}', function(e) {
+$('body').on('click', '.{$this->_triggerClass}', function() {
     var loading = '{$this->templateLoading}',
         onConfirm = '{$this->onConfirm}',
         offConfirm = '{$this->offConfirm}',

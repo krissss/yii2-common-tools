@@ -3,14 +3,11 @@
 namespace kriss\widgets;
 
 use kartik\form\ActiveForm;
-use kriss\traits\KrissTranslationTrait;
 use Yii;
 use yii\helpers\Html;
 
 class SimpleActiveForm extends ActiveForm
 {
-    use KrissTranslationTrait;
-
     public $options = [
         'class' => 'form-horizontal',
     ];
@@ -44,7 +41,6 @@ class SimpleActiveForm extends ActiveForm
 
     public function init()
     {
-        $this->initKrissI18N();
         if (!isset($this->returnLabel)) {
             $this->returnLabel = Yii::t('kriss', '返回');
         }
@@ -56,21 +52,23 @@ class SimpleActiveForm extends ActiveForm
             $this->returnHref = 'javascript:history.back()';
         }
         parent::init();
-
-        echo Html::beginTag('div', ['class' => 'box box-default']);
-        ob_flush();
-        echo $this->renderHeader();
-        echo Html::beginTag('div', ['class' => 'box-body']);
     }
 
     public function run()
     {
-        echo $this->renderFooter();
-        echo Html::endTag('div'); // box-body
-
-        parent::run();
-
-        echo Html::endTag('div'); // box
+        $header = $this->renderHeader();
+        $content = parent::run();
+        $footer = $this->renderFooter();
+        $html = <<<HTML
+<div class="box box-default">
+    {$header}
+    <div class="box-body">
+        {$content}
+    </div>
+    {$footer}
+</div>
+HTML;
+        return $html;
     }
 
     protected function renderHeader()

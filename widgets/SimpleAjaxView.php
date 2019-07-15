@@ -2,15 +2,12 @@
 
 namespace kriss\widgets;
 
-use kriss\traits\KrissTranslationTrait;
+use app\kriss\widgets\BaseViewWidget;
 use Yii;
-use yii\base\Widget;
 use yii\helpers\Html;
 
-class SimpleAjaxView extends Widget
+class SimpleAjaxView extends BaseViewWidget
 {
-    use KrissTranslationTrait;
-
     /**
      * @var string
      */
@@ -27,7 +24,6 @@ class SimpleAjaxView extends Widget
 
     public function init()
     {
-        $this->initKrissI18N();
         if (!isset($this->header)) {
             $this->header = Yii::t('kriss', '详情');
         }
@@ -38,41 +34,40 @@ class SimpleAjaxView extends Widget
         parent::init();
     }
 
-    public static function begin($config = [])
+    public function run()
     {
-        /** @var self $widget */
-        $widget = parent::begin($config);
-        $modalSize = $widget->modalSize ? ('modal-' . $widget->modalSize) : '';
-        echo <<<HTML
-        <div class="modal fade ajax_modal">
+        $modalSize = $this->modalSize ? ('modal-' . $this->modalSize) : '';
+        $content = parent::run();
+        $footerButton = $this->renderFooter();
+        $html = <<<HTML
+<div class="modal fade ajax_modal">
     <div class="modal-dialog {$modalSize}">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">{$widget->header}</h4>
+                <h4 class="modal-title">{$this->header}</h4>
             </div>
             <div class="modal-body">
-HTML;
-        return $widget;
-    }
-
-    public static function end()
-    {
-        /** @var self $widget */
-        $widget = parent::end();
-        $buttons = [];
-        if ($widget->renderCancel) {
-            $widget->cancelOptions['data-dismiss'] = 'modal';
-            $buttons[] = Html::button($widget->cancelLabel, $widget->cancelOptions);
-        }
-        $footerButton = implode(' ', $buttons);
-        echo <<<HTML
-    </div>
+                {$content}
+            </div>
             <div class="modal-footer">
                 {$footerButton}
             </div>
+        </div>
+    </div>
+</div>
 HTML;
-        return $widget;
+        return $html;
+    }
+
+    protected function renderFooter()
+    {
+        $buttons = [];
+        if ($this->renderCancel) {
+            $this->cancelOptions['data-dismiss'] = 'modal';
+            $buttons[] = Html::button($this->cancelLabel, $this->cancelOptions);
+        }
+        return implode(' ', $buttons);
     }
 }

@@ -2,14 +2,11 @@
 
 namespace kriss\widgets;
 
-use kriss\traits\KrissTranslationTrait;
 use Yii;
 use yii\base\InvalidConfigException;
 
 class GroupAttributeColumn extends DataColumn
 {
-    use KrissTranslationTrait;
-
     /**
      * 'columns' => [
      *      'category.name:text:分组',
@@ -45,7 +42,6 @@ class GroupAttributeColumn extends DataColumn
 
     public function init()
     {
-        $this->initKrissI18N();
         if (!isset($this->label)) {
             $this->label = Yii::t('kriss', '组合列');
         }

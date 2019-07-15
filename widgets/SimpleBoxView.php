@@ -2,15 +2,12 @@
 
 namespace kriss\widgets;
 
-use kriss\traits\KrissTranslationTrait;
+use app\kriss\widgets\BaseViewWidget;
 use Yii;
-use yii\base\Widget;
 use yii\helpers\Html;
 
-class SimpleBoxView extends Widget
+class SimpleBoxView extends BaseViewWidget
 {
-    use KrissTranslationTrait;
-
     /**
      * @var string
      */
@@ -22,7 +19,6 @@ class SimpleBoxView extends Widget
 
     public function init()
     {
-        $this->initKrissI18N();
         if (!isset($this->header)) {
             $this->header = Yii::t('kriss', '详情');
         }
@@ -33,36 +29,32 @@ class SimpleBoxView extends Widget
         parent::init();
     }
 
-    public static function begin($config = [])
+    public function run()
     {
-        /** @var self $widget */
-        $widget = parent::begin($config);
-        echo <<<HTML
-        <div class="box box-default">
-            <div class="box-header with-border">
-                <h3 class="box-title">{$widget->header}</h3>
-            </div>
-            <div class="box-body">
-HTML;
-        return $widget;
-    }
-
-    public static function end()
-    {
-        /** @var self $widget */
-        $widget = parent::end();
-        $buttons = [];
-        if ($widget->renderCancel) {
-            $buttons[] = Html::a($widget->cancelLabel, 'javascript:window.history.back();', $widget->cancelOptions);
-        }
-        $footerButton = implode(' ', $buttons);
-        echo <<<HTML
+        $content = parent::run();
+        $footerButton = $this->renderFooter();
+        $html = <<<HTML
+<div class="box box-default">
+    <div class="box-header with-border">
+        <h3 class="box-title">{$this->header}</h3>
+    </div>
+    <div class="box-body">
+    {$content}
     </div>
     <div class="box-footer">
         {$footerButton}
     </div>
 </div>
 HTML;
-        return $widget;
+        return $html;
+    }
+
+    protected function renderFooter()
+    {
+        $buttons = [];
+        if ($this->renderCancel) {
+            $buttons[] = Html::a($this->cancelLabel, 'javascript:window.history.back();', $this->cancelOptions);
+        }
+        return implode(' ', $buttons);
     }
 }

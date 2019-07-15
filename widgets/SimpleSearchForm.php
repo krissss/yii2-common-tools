@@ -3,14 +3,11 @@
 namespace kriss\widgets;
 
 use kartik\form\ActiveForm;
-use kriss\traits\KrissTranslationTrait;
 use Yii;
 use yii\helpers\Html;
 
 class SimpleSearchForm extends ActiveForm
 {
-    use KrissTranslationTrait;
-
     const TYPE_ONE = 'horizontal_label_1';
 
     public $layoutType;
@@ -46,7 +43,6 @@ class SimpleSearchForm extends ActiveForm
 
     public function init()
     {
-        $this->initKrissI18N();
         if (!isset($this->header)) {
             $this->header = Yii::t('kriss', '查询');
         }
@@ -72,7 +68,10 @@ class SimpleSearchForm extends ActiveForm
             ];
         }
         parent::init();
+    }
 
+    public function run()
+    {
         $collapsedClass = '';
         $collapsedToolsClass = 'fa-minus';
         if ($this->isCollapsed === true) {
@@ -81,26 +80,30 @@ class SimpleSearchForm extends ActiveForm
                 $collapsedToolsClass = 'fa-plus';
             }
         }
-        echo Html::beginTag('div', ['class' => 'box box-default ' . $collapsedClass]);
-        echo $this->renderHeader($collapsedToolsClass);
-        echo Html::beginTag('div', ['class' => 'box-body']);
-        ob_flush();
-    }
 
-    public function run()
-    {
+        // 用于定义是否折叠查询
         if ($this->isCollapsed && $this->isUnCollapsedWhenSearch) {
             echo Html::hiddenInput($this->getSearchInputFlagName(), 1);
         }
-        echo $this->renderFooter();
-        parent::run();
-        echo Html::endTag('div'); // box-body
-        echo Html::endTag('div'); // box
+
+        $header = $this->renderHeader($collapsedToolsClass);
+        $content = parent::run();
+        $footer = $this->renderFooter();
+        $html = <<<HTML
+<div class="box box-default {$collapsedClass}">
+    {$header}
+    <div class="box-body">
+        {$content}
+    </div>
+    {$footer}
+</div>
+HTML;
+        return $html;
     }
 
     protected function renderHeader($collapsedToolsClass)
     {
-        echo <<<HTML
+        return <<<HTML
 <div class="box-header with-border">
     <h3 class="box-title">{$this->header}</h3>
     <div class="box-tools pull-right">
