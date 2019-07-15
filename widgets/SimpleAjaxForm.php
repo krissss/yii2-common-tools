@@ -2,10 +2,10 @@
 
 namespace kriss\widgets;
 
+use kartik\widgets\ActiveForm;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
 
 class SimpleAjaxForm extends ActiveForm
 {
@@ -55,18 +55,26 @@ class SimpleAjaxForm extends ActiveForm
     {
         $modalSize = $this->modalSize ? ('modal-' . $this->modalSize) : '';
         $modalHeader = $this->renderHeader();
-        $modalBody = parent::run();
+        $modalBody = ob_get_clean();
         $modalFooter = $this->renderFooter();
+
+        $beginForm = Html::beginForm($this->action, $this->method, $this->options);
+        if ($this->enableClientScript) {
+            $this->registerClientScript();
+        }
+        $endFrom = Html::endForm();
 
         $html = <<<HTML
 <div class="modal fade ajax_modal">
   <div class="modal-dialog {$modalSize}">
     <div class="modal-content">
+      {$beginForm}
       {$modalHeader}
       <div class="modal-body">
         {$modalBody}
       </div>
       {$modalFooter}
+      {$endFrom}
     </div>
   </div>
 </div>

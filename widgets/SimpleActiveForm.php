@@ -57,15 +57,24 @@ class SimpleActiveForm extends ActiveForm
     public function run()
     {
         $header = $this->renderHeader();
-        $content = parent::run();
+        $content = ob_get_clean();
         $footer = $this->renderFooter();
+
+        $beginForm = Html::beginForm($this->action, $this->method, $this->options);
+        if ($this->enableClientScript) {
+            $this->registerClientScript();
+        }
+        $endFrom = Html::endForm();
+
         $html = <<<HTML
 <div class="box box-default">
+    {$beginForm}
     {$header}
     <div class="box-body">
         {$content}
     </div>
     {$footer}
+    {$endFrom}
 </div>
 HTML;
         return $html;
