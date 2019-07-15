@@ -97,15 +97,15 @@ class SimpleSearchForm extends ActiveForm
         $endFrom = Html::endForm();
 
         $html = <<<HTML
-<div class="box box-default {$collapsedClass}">
-    {$beginForm}
+{$beginForm}
+<div class="box box-default {$collapsedClass}">    
     {$header}
     <div class="box-body">
         {$content}
+        {$footer}
     </div>
-    {$footer}
-    {$endFrom}
 </div>
+{$endFrom}
 HTML;
         return $html;
     }
@@ -116,7 +116,8 @@ HTML;
 <div class="box-header with-border">
     <h3 class="box-title">{$this->header}</h3>
     <div class="box-tools pull-right">
-        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa $collapsedToolsClass"></i>
+        <button type="button" class="btn btn-box-tool" data-widget="collapse">
+            <i class="fa $collapsedToolsClass"></i>
         </button>
     </div>
 </div>

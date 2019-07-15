@@ -72,8 +72,8 @@ class SimpleActiveForm extends ActiveForm
     {$header}
     <div class="box-body">
         {$content}
+        {$footer}
     </div>
-    {$footer}
     {$endFrom}
 </div>
 HTML;

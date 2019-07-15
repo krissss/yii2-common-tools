@@ -2,7 +2,7 @@
 
 namespace kriss\widgets;
 
-use kartik\widgets\ActiveForm;
+use kartik\form\ActiveForm;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
@@ -87,7 +87,7 @@ HTML;
         $header = '';
         if ($this->header || $this->renderCancel) {
             $cancelButton = $this->renderCancel ? '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' : '';
-            $headerTitle = $this->header ? Html::tag('h4', $this->header, ['class' => 'model-title']) : '';
+            $headerTitle = $this->header ? Html::tag('h4', $this->header, ['class' => 'modal-title']) : '';
             $header = Html::tag('div', $cancelButton . $headerTitle, ['class' => 'modal-header']);
         }
         return $header;

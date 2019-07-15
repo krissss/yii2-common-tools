@@ -1,6 +1,6 @@
 <?php
 
-namespace app\kriss\widgets;
+namespace kriss\widgets;
 
 use yii\base\Widget;
 

@@ -2,7 +2,6 @@
 
 namespace kriss\widgets;
 
-use app\kriss\widgets\BaseViewWidget;
 use Yii;
 use yii\helpers\Html;
 
