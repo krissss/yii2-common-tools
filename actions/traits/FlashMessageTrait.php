@@ -26,7 +26,7 @@ trait FlashMessageTrait
             if ($result !== false) {
                 MessageAlert::success($operateMsg . Yii::t('kriss', '成功'));
             } else {
-                MessageAlert::error($operateMsg . Yii::t('kriss', '失败') . Fun::formatModelErrors2String($model->errors));
+                MessageAlert::error($operateMsg . Yii::t('kriss', '失败') . ': ' . Fun::formatModelErrors2String($model->errors));
             }
         }
     }
