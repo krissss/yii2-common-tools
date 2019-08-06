@@ -30,6 +30,13 @@ class ToggleAction extends AbstractAction
     public $onValue = 1;
     public $offValue = 0;
 
+    /**
+     * 当旧数据不等于 on 和 off 的值时，修改为什么值
+     * -1 置为 on 的值，-2 置为 off 的值，-3 报错（切换的值必须在 on 和 off 之间），其他则修改为该值
+     * @var int|string
+     */
+    public $whenOldValueNotMatchedCurrent = -2;
+
     public function init()
     {
         parent::init();
@@ -52,7 +59,15 @@ class ToggleAction extends AbstractAction
         } elseif ($oldValue == $this->offValue) {
             $model->$attribute = $this->onValue;
         } else {
-            throw new Exception("oldValue: {$oldValue} 不在 [{$this->onValue}, {$this->offValue}] 之间");
+            if ($this->whenOldValueNotMatchedCurrent === -1) {
+                $model->$attribute = $this->onValue;
+            } elseif ($this->whenOldValueNotMatchedCurrent === -2) {
+                $model->$attribute = $this->offValue;
+            } elseif ($this->whenOldValueNotMatchedCurrent === -3) {
+                throw new Exception("oldValue: {$oldValue} 不在 [{$this->onValue}, {$this->offValue}] 之间");
+            } else {
+                $model->$attribute = $this->whenOldValueNotMatchedCurrent;
+            }
         }
         if ($this->doMethod == 'update') {
             // save 不校验数据

@@ -50,6 +50,13 @@ class ToggleColumn extends DataColumn
     private $_templateOffStr;
     private $_triggerClass;
 
+    /**
+     * 当当前数据不等于 on 和 off 的值时，显示什么
+     * -1 显示 off 的值，-2 显示 on 的值，其他则修改为该值
+     * @var int|string
+     */
+    public $whenCurrentValueNotMatchedCurrent = -1;
+
     public function init()
     {
         if (!isset($this->items)) {
@@ -112,9 +119,22 @@ class ToggleColumn extends DataColumn
         } else {
             $options = $this->templateWrapOptionsCannotOperate;
         }
+        if ($value == $this->onValue) {
+            $content = $this->_templateOnStr;
+        } elseif ($value == $this->offValue) {
+            $content = $this->_templateOffStr;
+        } else {
+            if ($this->whenCurrentValueNotMatchedCurrent === -1) {
+                $content = $this->_templateOnStr;
+            } elseif ($this->whenCurrentValueNotMatchedCurrent === -2) {
+                $content = $this->_templateOffStr;
+            } else {
+                $content = $this->whenCurrentValueNotMatchedCurrent;
+            }
+        }
         return Html::tag(
             isset($options['tag']) ? $options['tag'] : 'button',
-            $value == $this->onValue ? $this->_templateOnStr : $this->_templateOffStr,
+            $content,
             $options
         );
     }
