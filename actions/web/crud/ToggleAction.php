@@ -35,7 +35,7 @@ class ToggleAction extends AbstractAction
      * -1 置为 on 的值，-2 置为 off 的值，-3 报错（切换的值必须在 on 和 off 之间），其他则修改为该值
      * @var int|string
      */
-    public $whenOldValueNotMatchedCurrent = -2;
+    public $whenOldValueNotMatchedCurrent = -1;
 
     public function init()
     {

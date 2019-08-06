@@ -125,9 +125,9 @@ class ToggleColumn extends DataColumn
             $content = $this->_templateOffStr;
         } else {
             if ($this->whenCurrentValueNotMatchedCurrent === -1) {
-                $content = $this->_templateOnStr;
-            } elseif ($this->whenCurrentValueNotMatchedCurrent === -2) {
                 $content = $this->_templateOffStr;
+            } elseif ($this->whenCurrentValueNotMatchedCurrent === -2) {
+                $content = $this->_templateOnStr;
             } else {
                 $content = $this->whenCurrentValueNotMatchedCurrent;
             }
