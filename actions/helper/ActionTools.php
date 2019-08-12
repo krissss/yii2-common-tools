@@ -2,10 +2,8 @@
 
 namespace kriss\actions\helper;
 
-use kriss\actions\rest\crud\AbstractAction;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
-use yii\base\UnknownPropertyException;
 use yii\helpers\ArrayHelper;
 
 class ActionTools
@@ -67,25 +65,5 @@ class ActionTools
         $model = new Model();
         $model->addError('xxx', $msg);
         return $model;
-    }
-
-    /**
-     * 获取 trait 的属性，不需要定义 trait 的属性，需要配合 rest/AbstractAction 下的 __get __set 实现
-     * @see AbstractAction
-     *
-     * @param $trait
-     * @param $property
-     * @param $defaultValue
-     * @return mixed
-     */
-    public static function getTraitProperty($trait, $property, $defaultValue)
-    {
-        try {
-            $value = $trait->$property;
-        } catch (UnknownPropertyException $e) {
-            return $defaultValue;
-        }
-
-        return $value;
     }
 }
