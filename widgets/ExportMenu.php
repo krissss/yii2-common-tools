@@ -36,9 +36,7 @@ class ExportMenu extends Widget
 
     public $columns = [];
 
-    public $skipColumnClass = [
-        YiiActionColumn::class, YiiCheckboxColumn::class, YiiRadioButtonColumn::class,
-    ];
+    public $skipColumnClass = [];
 
     public $batchSize = 200;
 
@@ -55,6 +53,10 @@ class ExportMenu extends Widget
     public $exportPostParam = 'export-menu-export';
 
     public $dataColumnClass = ExportMenuDataColumn::class;
+    /**
+     * @var string|array
+     */
+    public $exportMenuHelperClass = ExportMenuHelper::class;
 
 
     private $triggeredExport = false;
@@ -64,6 +66,9 @@ class ExportMenu extends Widget
         if (!isset($this->exportMenuLabel)) {
             $this->exportMenuLabel = Yii::t('kriss', '导出');
         }
+        $this->skipColumnClass = array_merge($this->skipColumnClass, [
+            YiiActionColumn::class, YiiCheckboxColumn::class, YiiRadioButtonColumn::class,
+        ]);
 
         if (!class_exists('yii2tech\csvgrid\CsvGrid')) {
             throw new Exception('must install yii2tech/csv-grid');
@@ -133,7 +138,7 @@ class ExportMenu extends Widget
 
     protected function getColumns()
     {
-        $this->columns = ExportMenuHelper::create($this->columns)->trans();
+        $this->transColumns();
         $columns = [];
         foreach ($this->columns as $column) {
             if (is_array($column) && isset($column['class'])) {
@@ -164,11 +169,25 @@ class ExportMenu extends Widget
         return $columns;
     }
 
+    protected function transColumns()
+    {
+        /** @var ExportMenuHelper $helper */
+        if (is_string($this->exportMenuHelperClass)) {
+            $this->exportMenuHelperClass = [
+                'class' => $this->exportMenuHelperClass,
+            ];
+        }
+        $helper = Yii::createObject(array_merge($this->exportMenuHelperClass, [
+            'columns' => $this->columns,
+        ]));
+        $this->columns = $helper->trans();
+    }
+
     /**
-     * @see CsvGrid::createDataColumn()
      * @param $text
      * @return array
      * @throws InvalidConfigException
+     * @see CsvGrid::createDataColumn()
      */
     protected function createDataColumn($text)
     {

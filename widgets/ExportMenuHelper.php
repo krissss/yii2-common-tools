@@ -2,30 +2,56 @@
 
 namespace kriss\widgets;
 
+use kriss\enum\BaseEnum;
+use yii\base\BaseObject;
 use yii\grid\DataColumn;
 use yii\grid\SerialColumn;
 
 /**
  * @since 2.1.2
  */
-class ExportMenuHelper
+class ExportMenuHelper extends BaseObject
 {
+    /**
+     * @var array
+     */
     public $columns;
+    /**
+     * @var array
+     */
+    public $skipColumnClass = [
+        'kartik\grid\ExpandRowColumn'
+    ];
+    /**
+     * 转化的类和方法的映射关系，注意有前后顺序
+     * @var array
+     */
+    public $transMap = [];
+    /**
+     * 默认的转化的类和方法的映射关系，注意有前后顺序
+     * @var array
+     */
+    public $transMapDefault = [
+        ToggleColumn::class => 'transToggleColumn',
+        DatetimeColumn::class => 'transDatetimeColumn',
+        ContentColumn::class => 'transSimpleColumn',
+        GroupAttributeColumn::class => 'transGroupAttributeColumn',
+        ImageViewColumn::class => 'transSimpleColumn',
+        SerialColumn::class => 'transSerialColumn',
+        LinkColumn::class => 'transSimpleColumn',
+        EnumDescriptionColumn::class => 'transEnumColumn'
+    ];
+    /**
+     * @var bool
+     */
+    public $transMapMergeDefault = true;
 
-    public function __construct($columns)
+    public function init()
     {
-        $this->columns = $columns;
-    }
-
-    public static function create($columns)
-    {
-        return new static($columns);
-    }
-
-    public static function transColumns($columns)
-    {
-        $self = static::create($columns);
-        return $self->trans();
+        parent::init();
+        if ($this->transMapMergeDefault) {
+            $this->transMap = array_merge($this->transMapDefault, $this->transMap);
+        }
     }
 
     public function trans()
@@ -36,45 +62,46 @@ class ExportMenuHelper
                 $result[] = $column;
                 continue;
             }
-            if (isset($column['class'])) {
-                if ($this->isNeedSkip($column['class'])) {
-                    continue;
-                }
-                if ($this->isMatchClass($column['class'], ToggleColumn::class)) {
-                    $result[] = $this->transToggleColumn($column);
-                } elseif ($this->isMatchClass($column['class'], DatetimeColumn::class)) {
-                    $result[] = $this->transDatetimeColumn($column);
-                } elseif ($this->isMatchClass($column['class'], ContentColumn::class)) {
-                    $result[] = $this->transSimpleColumn($column);
-                } elseif ($this->isMatchClass($column['class'], GroupAttributeColumn::class)) {
-                    $columnArr = $this->transGroupAttributeColumn($column);
-                    foreach ($columnArr as $newColumn) {
-                        $result[] = is_array($newColumn) ? $this->transSimpleColumn($newColumn) : $newColumn;
-                    }
-                } elseif ($this->isMatchClass($column['class'], ImageViewColumn::class)) {
-                    $result[] = $this->transSimpleColumn($column);
-                } elseif ($this->isMatchClass($column['class'], SerialColumn::class)) {
-                    $result[] = $this->transSerialColumn($column);
-                } elseif ($this->isMatchClass($column['class'], LinkColumn::class)) {
-                    $result[] = $this->transSimpleColumn($column);
-                } elseif ($this->isMatchClass($column['class'], DataColumn::class)) {
-                    // 此项必须放在最后
-                    $result[] = $this->transSimpleColumn($column);
-                }
-            } else {
+            if (!isset($column['class'])) {
                 $column = $this->transSimpleColumn($column);
                 $result[] = $column;
+                continue;
+            }
+            if ($this->isNeedSkip($column['class'])) {
+                continue;
+            }
+            $oneResult = $this->transColumn($column);
+            if ($oneResult !== false) {
+                if (isset($oneResult['attribute']) || isset($oneResult['label'])) {
+                    $result[] = $oneResult;
+                } else {
+                    // 二维数组，例如 GroupAttributeColumn 将返回多个 column
+                    foreach ($oneResult as $item) {
+                        $result[] = $item;
+                    }
+                }
+                continue;
+            }
+            if ($this->isMatchClass($column['class'], DataColumn::class)) {
+                $result[] = $this->transSimpleColumn($column);
             }
         }
         return $result;
     }
 
+    protected function transColumn($column)
+    {
+        foreach ($this->transMap as $className => $method) {
+            if ($this->isMatchClass($column['class'], $className)) {
+                return call_user_func([$this, $method], $column);
+            }
+        }
+        return false;
+    }
+
     protected function isNeedSkip($class)
     {
-        $skipClassArr = [
-            'kartik\grid\ExpandRowColumn',
-        ];
-        foreach ($skipClassArr as $className) {
+        foreach ($this->skipColumnClass as $className) {
             if ($this->isMatchClass($class, $className)) {
                 return true;
             }
@@ -82,14 +109,32 @@ class ExportMenuHelper
         return false;
     }
 
-    protected function transSimpleColumn(array $column)
+    protected function isMatchClass($class, $matchClass)
+    {
+        return is_a($class, $matchClass, true);
+    }
+
+    protected function transAttribute($column, $newColumn)
+    {
+        $args = ['attribute', 'label', 'value', 'format', 'visible'];
+        foreach ($args as $arg) {
+            if (isset($column[$arg])) {
+                $newColumn[$arg] = $column[$arg];
+            }
+        }
+        return $newColumn;
+    }
+
+    // 以下为各种 column 转化的方法
+
+    public function transSimpleColumn(array $column)
     {
         $newColumn = [];
         $newColumn = $this->transAttribute($column, $newColumn);
         return $newColumn;
     }
 
-    protected function transToggleColumn(array $column)
+    public function transToggleColumn(array $column)
     {
         $newColumn = [];
         $newColumn = $this->transAttribute($column, $newColumn);
@@ -101,7 +146,7 @@ class ExportMenuHelper
         return $newColumn;
     }
 
-    protected function transDatetimeColumn(array $column)
+    public function transDatetimeColumn(array $column)
     {
         $newColumn = [];
         $newColumn = $this->transAttribute($column, $newColumn);
@@ -113,7 +158,7 @@ class ExportMenuHelper
         return $newColumn;
     }
 
-    protected function transGroupAttributeColumn(array $column)
+    public function transGroupAttributeColumn(array $column)
     {
         $columnArr = [];
         foreach ($column['columns'] as $column) {
@@ -123,12 +168,12 @@ class ExportMenuHelper
                 $newColumn['label'] .= "({$column['label']})";
                 $column = $newColumn;
             }
-            $columnArr[] = $column;
+            $columnArr[] = $this->transSimpleColumn($column);
         }
         return $columnArr;
     }
 
-    protected function transSerialColumn(array $column)
+    public function transSerialColumn(array $column)
     {
         $newColumn = [
             'class' => \yii2tech\csvgrid\SerialColumn::class,
@@ -139,19 +184,16 @@ class ExportMenuHelper
         return $newColumn;
     }
 
-    protected function isMatchClass($class, $matchClass)
+    public function transEnumColumn(array $column)
     {
-        return is_a($class, $matchClass, true);
-    }
-
-    protected function transAttribute($column, $newColumn)
-    {
-        $args = ['attribute', 'label', 'value', 'format'];
-        foreach ($args as $arg) {
-            if (isset($column[$arg])) {
-                $newColumn[$arg] = $column[$arg];
-            }
-        }
+        $newColumn = [];
+        /** @var BaseEnum $enumClass */
+        $enumClass = $column['enumClass'];
+        $newColumn = $this->transAttribute($column, $newColumn);
+        $attribute = $column['attribute'];
+        $newColumn['value'] = function ($model) use ($enumClass, $attribute) {
+            return $enumClass::getDescription($model->$attribute);
+        };
         return $newColumn;
     }
 
@@ -159,7 +201,7 @@ class ExportMenuHelper
      * @param $column
      * @return array
      */
-    private function getToggleColumnItems($column)
+    protected function getToggleColumnItems($column)
     {
         if (isset($column['items'])) {
             return $column['items'];
