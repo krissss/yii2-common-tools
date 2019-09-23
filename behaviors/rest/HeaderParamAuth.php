@@ -2,13 +2,20 @@
 
 namespace kriss\behaviors\rest;
 
+use yii\web\IdentityInterface;
 use yii\web\Request;
+use yii\web\Response;
+use yii\web\UnauthorizedHttpException;
 use yii\web\User;
 
 class HeaderParamAuth extends \yii\filters\auth\QueryParamAuth
 {
     /**
-     * @inheritDoc
+     * @param $user User
+     * @param $request Request
+     * @param $response Response
+     * @return IdentityInterface|null
+     * @throws UnauthorizedHttpException
      */
     public function authenticate($user, $request, $response)
     {
