@@ -144,6 +144,10 @@ class ExportMenu extends Widget
                         break;
                     }
                 }
+                // visible 为 false 时跳过
+                if (isset($column['visible']) && !$column['visible']) {
+                    $skip = true;
+                }
                 if ($skip) {
                     continue;
                 }
