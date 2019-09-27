@@ -5,6 +5,10 @@ namespace kriss\widgets;
 use dosamigos\ckeditor\CKEditor;
 use yii\helpers\Url;
 
+/**
+ * @deprecated
+ * 使用 kriss/yii2-wang-editor 获取其他代替
+ */
 class SimpleCkEditor extends CKEditor
 {
     /**

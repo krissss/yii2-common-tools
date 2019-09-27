@@ -6,6 +6,10 @@ use kartik\field\FieldRange;
 use Yii;
 use yii\helpers\Html;
 
+/**
+ * @deprecated
+ * 使用 DateTimeRangePicker
+ */
 class DateRangeBase extends FieldRange
 {
     const DISPLAY_TYPE_DATE = DateControl::FORMAT_DATE;

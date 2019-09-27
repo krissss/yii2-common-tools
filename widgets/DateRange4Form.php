@@ -2,6 +2,10 @@
 
 namespace kriss\widgets;
 
+/**
+ * @deprecated
+ * 使用 DateTimeRangePicker
+ */
 class DateRange4Form extends DateRangeBase
 {
     public $noMarginButton = false;
