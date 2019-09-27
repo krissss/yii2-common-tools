@@ -10,7 +10,7 @@ class DateControl extends \kartik\datecontrol\DateControl
 {
     public function initConfig()
     {
-        $this->_module = Config::initModule(Module::classname());
+        $this->_module = Config::initModule(Module::class);
         if (!isset($this->autoWidget)) {
             $this->autoWidget = $this->_module->autoWidget;
         }
