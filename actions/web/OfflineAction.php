@@ -30,6 +30,10 @@ class OfflineAction extends Action
     /**
      * @var string
      */
+    public $logo = '';
+    /**
+     * @var string
+     */
     public $ajaxResponseFormat = Response::FORMAT_JSON;
     /**
      * @var string
@@ -107,6 +111,7 @@ class OfflineAction extends Action
         return $this->controller->render($this->view ?: $this->id, [
             'name' => $this->name,
             'message' => $this->message,
+            'logo' => $this->logo,
         ]);
     }
 }

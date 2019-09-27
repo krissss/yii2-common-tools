@@ -8,6 +8,10 @@ class ErrorAction extends \yii\web\ErrorAction
      * @var string
      */
     public $layout;
+    /**
+     * @var string
+     */
+    public $logo = '';
 
     /**
      * 调整：添加可以配置 layout
@@ -19,5 +23,15 @@ class ErrorAction extends \yii\web\ErrorAction
             $this->controller->layout = $this->layout;
         }
         return parent::renderHtmlResponse();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getViewRenderParams()
+    {
+        return array_merge(parent::getViewRenderParams(), [
+            'logo' => $this->logo,
+        ]);
     }
 }
