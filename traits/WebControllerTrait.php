@@ -54,7 +54,7 @@ trait WebControllerTrait
     public function renderAjax($view, $params = [])
     {
         // fix form validate
-        Widget::$autoIdPrefix = Fun::generateRandString(random_int(4, 6));
+        Widget::$autoIdPrefix = str_replace(['-', '_'], ['A', 'B'], Fun::generateRandString(random_int(4, 6)));
         return parent::renderAjax($view, $params);
     }
 }
