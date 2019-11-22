@@ -101,6 +101,11 @@ class AuthRole extends \yii\db\ActiveRecord
     }
 
     /**
+     * @var bool|array
+     */
+    private static $roleOperationList = false;
+
+    /**
      * 根据用户角色 id 获取所有的操作权限
      * 返回值如下：
      * [
@@ -111,10 +116,13 @@ class AuthRole extends \yii\db\ActiveRecord
      */
     public static function getOperationsArr($authRoleIds)
     {
-        $authRoleIds = array_filter($authRoleIds);
-        if (!$authRoleIds) {
-            return [];
+        if (static::$roleOperationList === false) {
+            $authRoleIds = array_filter($authRoleIds);
+            if (!$authRoleIds) {
+                return [];
+            }
+            static::$roleOperationList = ArrayHelper::getColumn(static::find()->select('operation_list')->andWhere(['id' => $authRoleIds])->asArray()->all(), 'operation_list');
         }
-        return ArrayHelper::getColumn(static::find()->select('operation_list')->andWhere(['id' => $authRoleIds])->asArray()->all(), 'operation_list');
+        return static::$roleOperationList;
     }
 }
