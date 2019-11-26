@@ -173,18 +173,20 @@ class ExportMenuHelper extends BaseObject
     public function transGroupAttributeColumn(array $column)
     {
         $columnArr = [];
-        foreach ($column['columns'] as $column) {
-            if (is_array($column)) {
-                if (isset($column['class'])) {
-                    $newColumn = [];
-                    $newColumn = $this->transAttribute($column, $newColumn);
-                    $newColumn['label'] .= "({$column['label']})";
-                    $column = $newColumn;
+        foreach ($column['columns'] as $cColumn) {
+            if (is_array($cColumn)) {
+                if (isset($cColumn['class'])) {
+                    $newColumn = $this->transColumn($cColumn);
+                    if (isset($newColumn['attribute']) || isset($newColumn['label'])) {
+                        $cColumn = $newColumn;
+                    } else {
+                        continue;
+                    }
                 } else {
-                    $column = $this->transSimpleColumn($column);
+                    $cColumn = $this->transSimpleColumn($cColumn);
                 }
             }
-            $columnArr[] = $column;
+            $columnArr[] = $cColumn;
         }
         return $columnArr;
     }

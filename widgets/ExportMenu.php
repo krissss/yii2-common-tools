@@ -44,7 +44,7 @@ class ExportMenu extends Widget
 
     public $savePath;
 
-    public $sendName = 'export.csv';
+    public $sendName;
 
     public $exportMenuLabel;
 
@@ -63,6 +63,9 @@ class ExportMenu extends Widget
 
     public function init()
     {
+        if (!$this->sendName) {
+            $this->sendName = 'export' . date('YmdHis') . '.csv';
+        }
         if (!isset($this->exportMenuLabel)) {
             $this->exportMenuLabel = Yii::t('kriss', '导出');
         }
