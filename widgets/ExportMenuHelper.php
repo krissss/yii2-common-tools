@@ -45,6 +45,11 @@ class ExportMenuHelper extends BaseObject
      * @var bool
      */
     public $transMapMergeDefault = true;
+    /**
+     * visible 为 false 时是否可以导出，默认不导出
+     * @var bool
+     */
+    public $isVisibleFalseCanExport = false;
 
     public function init()
     {
@@ -114,10 +119,17 @@ class ExportMenuHelper extends BaseObject
         return is_a($class, $matchClass, true);
     }
 
-    protected function transAttribute($column, $newColumn)
+    private $columnAttributeArgs = false;
+
+    protected function transAttribute(array $column, array $newColumn)
     {
-        $args = ['attribute', 'label', 'value', 'format', 'visible'];
-        foreach ($args as $arg) {
+        if ($this->columnAttributeArgs === false) {
+            $this->columnAttributeArgs = ['attribute', 'label', 'value', 'format'];
+            if (!$this->isVisibleFalseCanExport) {
+                $this->columnAttributeArgs[] = 'visible';
+            }
+        }
+        foreach ($this->columnAttributeArgs as $arg) {
             if (isset($column[$arg])) {
                 $newColumn[$arg] = $column[$arg];
             }
@@ -162,13 +174,17 @@ class ExportMenuHelper extends BaseObject
     {
         $columnArr = [];
         foreach ($column['columns'] as $column) {
-            if (is_array($column) && isset($column['class'])) {
-                $newColumn = [];
-                $newColumn = $this->transAttribute($column, $newColumn);
-                $newColumn['label'] .= "({$column['label']})";
-                $column = $newColumn;
+            if (is_array($column)) {
+                if (isset($column['class'])) {
+                    $newColumn = [];
+                    $newColumn = $this->transAttribute($column, $newColumn);
+                    $newColumn['label'] .= "({$column['label']})";
+                    $column = $newColumn;
+                } else {
+                    $column = $this->transSimpleColumn($column);
+                }
             }
-            $columnArr[] = $this->transSimpleColumn($column);
+            $columnArr[] = $column;
         }
         return $columnArr;
     }
