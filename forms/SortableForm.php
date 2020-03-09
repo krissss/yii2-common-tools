@@ -1,8 +1,8 @@
 <?php
 
-namespace common\forms;
+namespace kriss\forms;
 
-use common\widgets\SortableInputWidget;
+use kriss\widgets\SortableInputWidget;
 use yii\base\Model;
 
 abstract class SortableForm extends Model

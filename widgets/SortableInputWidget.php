@@ -1,9 +1,9 @@
 <?php
 
-namespace common\widgets;
+namespace kriss\widgets;
 
-use common\forms\SortableForm;
 use kartik\sortable\Sortable;
+use kriss\forms\SortableForm;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\widgets\InputWidget;
