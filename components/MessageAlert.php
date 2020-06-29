@@ -5,10 +5,11 @@ namespace kriss\components;
 use Yii;
 
 /**
- * @method static success(string | array $messages)
- * @method static error(string | array $messages)
- * @method static warning(string | array $messages)
- * @method static info(string | array $messages)
+ * @method static void error(string ...$messages)
+ * @method static void danger(string ...$messages)
+ * @method static void success(string ...$messages)
+ * @method static void info(string ...$messages)
+ * @method static void warning(string ...$messages)
  */
 class MessageAlert
 {
