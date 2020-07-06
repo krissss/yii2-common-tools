@@ -2,9 +2,9 @@
 
 namespace kriss\widgets;
 
-class DataColumn extends \kartik\grid\DataColumn
+/**
+ * @deprecated
+ */
+class DataColumn extends \kriss\widgets\columns\DataColumn
 {
-    public $vAlign = 'middle';
-
-    public $hAlign = 'center';
 }

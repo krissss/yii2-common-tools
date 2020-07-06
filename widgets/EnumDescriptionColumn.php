@@ -2,28 +2,9 @@
 
 namespace kriss\widgets;
 
-use kriss\enum\BaseEnum;
-
 /**
- * in view columns
- * [
- *    'class' => EnumDescriptionColumn::class,
- *    'attribute' => 'status',
- * ]
+ * @deprecated
  */
-class EnumDescriptionColumn extends DataColumn
+class EnumDescriptionColumn extends \kriss\widgets\columns\EnumDescriptionColumn
 {
-    /**
-     * @var BaseEnum
-     */
-    public $enumClass;
-
-    /**
-     * @inheritdoc
-     */
-    protected function renderDataCellContent($model, $key, $index)
-    {
-        $value = parent::renderDataCellContent($model, $key, $index);
-        return $this->enumClass::getDescription($value);
-    }
 }
