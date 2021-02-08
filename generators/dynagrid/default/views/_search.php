@@ -1,15 +1,15 @@
 <?php
 /**
- * @var $this yii\web\View
- * @var $generator \kriss\generators\dynagrid\Generator
+ * @var yii\web\View $this
+ * @var kriss\generators\dynagrid\Generator $generator
  */
 
 $searchAttributes = $generator->getSearchAttributes();
 echo "<?php\n";
 ?>
 /**
- * @var $this yii\web\view
- * @var $model <?= ltrim($generator->searchModelClass, '\\') ?>
+ * @var yii\web\view $this
+ * @var <?= ltrim($generator->searchModelClass, '\\') ?> $model
  */
 
 use backend\widgets\SimpleSearchForm;

@@ -1,7 +1,7 @@
 <?php
 /**
- * @var $this yii\web\View
- * @var $generator \kriss\generators\crud\Generator
+ * @var yii\web\View $this
+ * @var kriss\generators\crud\Generator $generator
  */
 
 if (!isset($formClass)) {
@@ -11,9 +11,8 @@ $attributes = $generator->getColumnNames();
 echo "<?php\n";
 ?>
 /**
- * @var $this yii\web\view
- * @var $model <?= $generator->getModelClass() ?>
-
+ * @var yii\web\view $this
+ * @var <?= $generator->getModelClass() ?> $model
  */
 
 use kriss\widgets\<?= $formClass ?>;

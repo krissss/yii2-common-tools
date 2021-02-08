@@ -1,16 +1,15 @@
 <?php
 /**
- * @var $this yii\web\View
- * @var $generator \kriss\generators\crud\Generator
+ * @var yii\web\View $this
+ * @var kriss\generators\crud\Generator $generator
  */
 
 $searchAttributes = $generator->getSearchAttributes();
 echo "<?php\n";
 ?>
 /**
- * @var $this yii\web\view
- * @var $model <?= $generator->getSearchClass() ?>
-
+ * @var yii\web\view $this
+ * @var <?= $generator->getSearchClass() ?> $model
  */
 
 use kriss\widgets\SimpleSearchForm;

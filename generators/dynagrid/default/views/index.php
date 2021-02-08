@@ -1,8 +1,8 @@
 <?php
 /**
- * @var $this yii\web\View
- * @var $generator \kriss\generators\dynagrid\Generator
- * @var $action string the action ID
+ * @var yii\web\View $this 
+ * @var kriss\generators\dynagrid\Generator $generator
+ * @var string $action the action ID
  */
 
 $actionColumns = $generator->getActionColumns();
@@ -14,10 +14,10 @@ $hasToolbarAction = (bool)$toolbarActions;
 echo "<?php\n";
 ?>
 /**
- * @var $this yii\web\View
- * @var $dataProvider <?= ltrim($generator->activeDataProviderClass, '\\') ?>
+ * @var yii\web\View $this
+ * @var <?= ltrim($generator->activeDataProviderClass, '\\') ?> $dataProvider
 <?php if(!empty($generator->searchModelClass)): ?>
- * @var $searchModel <?= ltrim($generator->searchModelClass, '\\') ?>
+ * @var <?= ltrim($generator->searchModelClass, '\\') ?> $searchModel
 <?php endif; ?>
  */
 

@@ -1,7 +1,7 @@
 <?php
 /**
- * @var $this yii\web\View
- * @var $generator \kriss\generators\crud\Generator
+ * @var yii\web\View $this
+ * @var kriss\generators\crud\Generator $generator
  */
 
 $hasActionColumn = $generator->hasView || $generator->hasUpdate || $generator->hasDelete;
@@ -9,10 +9,10 @@ $hasToolbar = $generator->hasCreate;
 echo "<?php\n";
 ?>
 /**
- * @var $this yii\web\View
- * @var $dataProvider
+ * @var yii\web\View $this
+ * @var yii\data\DataProviderInterface $dataProvider
 <?php if($generator->searchAttributes): ?>
- * @var $searchModel
+ * @var <?= $generator->getSearchClass() ?> $searchModel
 <?php endif; ?>
  */
 

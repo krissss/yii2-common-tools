@@ -1,7 +1,7 @@
 <?php
 /**
- * @var $this yii\web\View
- * @var $generator \kriss\generators\crud\Generator
+ * @var yii\web\View $this
+ * @var kriss\generators\crud\Generator $generator
  */
 
 echo $this->render('create_update', [
