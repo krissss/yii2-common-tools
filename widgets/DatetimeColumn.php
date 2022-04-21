@@ -33,7 +33,7 @@ class DatetimeColumn extends DataColumn
     protected function renderDataCellContent($model, $key, $index)
     {
         $value = parent::renderDataCellContent($model, $key, $index);
-        if ($this->skipEmptyValue && in_array($value, $this->emptyValue, true)) {
+        if ($this->skipEmptyValue && ($value == $this->grid->formatter->nullDisplay || in_array($value, $this->emptyValue, true))) {
             return $this->emptyValueShow;
         } else {
             return date($this->dateFormat, $value);
