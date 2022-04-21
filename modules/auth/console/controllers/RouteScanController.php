@@ -9,6 +9,7 @@ use yii\console\controllers\HelpController;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\web\Controller;
+use yii\web\Response;
 
 /**
  * 该类必须得放在对应的模块下访问才能生成文件
@@ -75,6 +76,7 @@ class RouteScanController extends HelpController
 
     public function actionList()
     {
+        Yii::$app->response->format = Response::FORMAT_JSON;
         return $this->getPrefixAndActions();
     }
 
@@ -192,5 +194,23 @@ PHP;
         }
 
         return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCommands()
+    {
+        $commands = $this->getModuleCommands(Yii::$app);
+        sort($commands);
+        return array_filter(array_unique($commands), function ($command) {
+            $result = Yii::$app->createController($command);
+            if ($result === false || !$result[0] instanceof Controller) {
+                return false;
+            }
+            list($controller, $actionID) = $result;
+            $actions = $this->getActions($controller);
+            return $actions !== [];
+        });
     }
 }
