@@ -69,7 +69,7 @@ class GroupAttributeColumn extends DataColumn
                 ], $columnConfig));
             }
             $value = $column->renderDataCellContent($model, $key, $index);
-            if ($value == $column->grid->formatter->nullDisplay || in_array($value, $this->emptyValue)) {
+            if ($value == $column->grid->formatter->nullDisplay || in_array($value, $this->emptyValue, true)) {
                 if ($this->emptyValueShow === false) {
                     continue;
                 } else {
